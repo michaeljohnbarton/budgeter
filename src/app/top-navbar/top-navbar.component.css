@@ -1,0 +1,38 @@
+#top-navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: lightsalmon;
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px black solid;
+}
+
+#month, #new, #budgeter {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 0;
+}
+
+#month, #new {
+    border: 1px black;
+    border-style: solid;
+    background-color: white;
+}
+
+#month {
+    margin: 0 auto;
+    width: 100px;
+}
+
+#new {
+    float: right;
+    width: 60px;
+    margin-right: 10px;
+}
+
+#budgeter {
+    float: left;
+    width: 62px;
+    margin-left: 10px;
+}

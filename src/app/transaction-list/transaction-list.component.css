@@ -11,6 +11,10 @@
     margin: 2px auto;
 }
 
+.transaction-item:first-child {
+    margin-top: 75px;
+}
+
 .transaction-item:last-child {
     margin-bottom: 100px;
 }
