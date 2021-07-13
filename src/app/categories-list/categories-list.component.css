@@ -1,3 +1,29 @@
-p {
-    margin-top: 100px;
+.category {
+    max-width: 350px;
+    text-align: center;
+    margin: 5px auto;
+    border: 1px solid black;
+}
+
+.category:first-child {
+    margin-top: 70px;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto 10px auto;
+    width: 75%;
+}
+
+td {
+    border: 1px solid black;
+    padding: 3px;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+td:last-child {
+    text-align: right;
 }

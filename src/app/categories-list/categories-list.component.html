@@ -1,1 +1,19 @@
-<p>categories-list works!</p>
+<div class="category">
+    <h2>Job Income</h2>
+    <table>
+        <tr>
+            <td>Expected</td>
+            <td>$3000.00</td>
+        </tr>
+        <tr>
+            <td>Actual</td>
+            <td>$2782.01</td>
+        </tr>
+    </table>
+    <table>
+        <tr *ngFor="let transaction of transactions">
+            <td>{{ transaction.name }}</td>
+            <td>{{ transaction.cost | currency }}</td>
+        </tr>
+    </table>
+</div>
