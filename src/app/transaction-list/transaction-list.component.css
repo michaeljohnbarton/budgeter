@@ -1,0 +1,12 @@
+.transaction-item {
+    border: 2px black;
+    border-style: solid;
+    max-width: 400px;
+    text-align: center;
+    margin: 5px auto;
+    padding: 5px;
+}
+
+.transaction-item p, .transaction-item h2 {
+    margin: 2px auto;
+}
