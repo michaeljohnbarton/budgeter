@@ -6,13 +6,19 @@ import { AppComponent } from './app.component';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
 import { BottomNavbarComponent } from './bottom-navbar/bottom-navbar.component';
 import { TopNavbarComponent } from './top-navbar/top-navbar.component';
+import { CategoriesListComponent } from './categories-list/categories-list.component';
+import { OverviewComponent } from './overview/overview.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TransactionListComponent,
     BottomNavbarComponent,
-    TopNavbarComponent
+    TopNavbarComponent,
+    CategoriesListComponent,
+    OverviewComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
