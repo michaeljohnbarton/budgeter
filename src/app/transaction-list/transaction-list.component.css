@@ -10,3 +10,7 @@
 .transaction-item p, .transaction-item h2 {
     margin: 2px auto;
 }
+
+.transaction-item:last-child {
+    margin-bottom: 100px;
+}
