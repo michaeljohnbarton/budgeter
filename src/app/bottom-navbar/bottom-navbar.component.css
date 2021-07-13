@@ -2,15 +2,14 @@
     width: 100%;
     position: fixed;
     bottom: 0;
+    background-color: lightsalmon;
 }
 
 a div {
     display: inline-block;
-    width: 24%;
+    width: 25%;
     margin: 0;
-    border: 1px black;
-    border-style: solid;
+    outline: 1px black solid;
     text-align: center;
     padding: 25px 0;
-    background-color: white;
 }
