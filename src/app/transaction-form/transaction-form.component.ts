@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TransactionData } from '../transaction-data';
 
 @Component({
   selector: 'app-transaction-form',
@@ -8,17 +9,40 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class TransactionFormComponent implements OnInit {
 
-  constructor( private dialogRef: MatDialogRef<TransactionFormComponent> ) { 
-    }
+  title: string
+  create: boolean
+
+  constructor(
+    private dialogRef: MatDialogRef<TransactionFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: TransactionData) { 
+
+      if(this.isEmpty(data)) {
+        this.title = "Create transaction";
+        this.create = true;
+      } else {
+        this.title = "Edit transaction";
+        this.create = false;
+      }
+      
+  }
 
   ngOnInit(): void {
   }
 
-  save() {
+  isEmpty(obj: any) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+  close() {
     this.dialogRef.close();
   }
 
-  close() {
+  save() {
+    console.log(this.data.name);
     this.dialogRef.close();
   }
 

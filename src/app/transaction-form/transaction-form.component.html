@@ -1,9 +1,43 @@
-<h2 mat-dialog-title>This is a Dialog title</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 
 <mat-dialog-content>
-<p> Place content here </p>
+    <mat-form-field appearance="fill">
+        <mat-label>Transaction Date</mat-label>
+        <input matInput [(ngModel)]="data.date">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Transaction Name</mat-label>
+        <input matInput [(ngModel)]="data.name">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Transaction Cost</mat-label>
+        <input matInput [(ngModel)]="data.cost">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Transaction Type</mat-label>
+        <input matInput [(ngModel)]="data.type">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Transaction Category</mat-label>
+        <input matInput [(ngModel)]="data.category">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Transaction Sub-category</mat-label>
+        <input matInput [(ngModel)]="data.subcategory">
+    </mat-form-field>
 </mat-dialog-content>
 
-<mat-dialog-actions>
-    <button class="mat-raised-button" (click)="close()">Close</button>
+<mat-dialog-actions id="transaction-form-button-row">
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
 </mat-dialog-actions>

@@ -16,9 +16,10 @@ export class TopNavbarComponent implements OnInit {
 
   openNewDialog() {
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = '400px';
+    dialogConfig.data = {};
 
     this.dialog.open(TransactionFormComponent, dialogConfig);
   }
