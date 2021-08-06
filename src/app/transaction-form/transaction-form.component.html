@@ -17,25 +17,32 @@
 
     <mat-form-field appearance="fill">
         <mat-label>Transaction Cost</mat-label>
-        <input matInput [(ngModel)]="data.cost">
+        <input type="number" matInput [(ngModel)]="data.cost">
     </mat-form-field>
     <br>
 
     <mat-form-field appearance="fill">
         <mat-label>Transaction Type</mat-label>
-        <input matInput [(ngModel)]="data.type">
+        <mat-select [(ngModel)]="data.type">
+            <mat-option value="Debit">Debit</mat-option>
+            <mat-option value="Credit">Credit</mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
 
     <mat-form-field appearance="fill">
         <mat-label>Transaction Category</mat-label>
-        <input matInput [(ngModel)]="data.category">
+        <mat-select [(ngModel)]="data.category">
+            <mat-option *ngFor="let category of categoriesList" [value]="category">{{ category }}</mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
 
     <mat-form-field appearance="fill">
         <mat-label>Transaction Sub-category</mat-label>
-        <input matInput [(ngModel)]="data.subcategory">
+        <mat-select [(ngModel)]="data.subcategory">
+            <mat-option *ngFor="let subcategory of categoryMapping[data.category]" value="subcategory">{{ subcategory }}</mat-option>
+        </mat-select>
     </mat-form-field>
 </mat-dialog-content>
 

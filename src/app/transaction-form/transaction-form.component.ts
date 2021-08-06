@@ -43,7 +43,21 @@ export class TransactionFormComponent implements OnInit {
 
   save() {
     console.log(this.data.name);
+    console.log(this.data.type);
     this.dialogRef.close();
   }
+
+  categoriesList = [ 
+    "Income", "Expense"
+  ];
+
+  categoryMapping: { [key: string]: string[] } = {
+    "Income" : [
+      "Job Income", "Other Income"
+    ],
+    "Expense" : [
+      "Spending Money", "House Rent", "Gas", "Electric"
+    ]
+  };
 
 }
