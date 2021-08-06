@@ -18,3 +18,13 @@
 .transaction-item:last-child {
     margin-bottom: 100px;
 }
+
+.button-row {
+    float: right;
+}
+
+.date-text {
+    position: relative;
+    left: 20px;
+    pointer-events: none;
+}

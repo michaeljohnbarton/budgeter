@@ -1,6 +1,6 @@
 enum TransactionType {
-    Debit,
-    Credit
+    Debit = "Debit",
+    Credit = "Credit"
 }
 
 export interface Transaction {
@@ -13,7 +13,7 @@ export interface Transaction {
     subcategory: string
 }
 
-export const transactions = [
+export const transactions: Transaction[] = [
     {
         id: 1,
         date: new Date('June 26, 2021'),

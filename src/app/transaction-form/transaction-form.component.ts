@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TransactionData } from '../transaction-data';
+import { Transaction } from '../transactions';
 
 @Component({
   selector: 'app-transaction-form',
@@ -14,7 +14,7 @@ export class TransactionFormComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<TransactionFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TransactionData) { 
+    @Inject(MAT_DIALOG_DATA) public data: Transaction) { 
 
       if(this.isEmpty(data)) {
         this.title = "Create transaction";

@@ -41,7 +41,7 @@
     <mat-form-field appearance="fill">
         <mat-label>Transaction Sub-category</mat-label>
         <mat-select [(ngModel)]="data.subcategory">
-            <mat-option *ngFor="let subcategory of categoryMapping[data.category]" value="subcategory">{{ subcategory }}</mat-option>
+            <mat-option *ngFor="let subcategory of categoryMapping[data.category]" [value]="subcategory">{{ subcategory }}</mat-option>
         </mat-select>
     </mat-form-field>
 </mat-dialog-content>

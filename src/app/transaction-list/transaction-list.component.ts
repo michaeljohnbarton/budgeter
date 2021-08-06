@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { TransactionFormComponent } from '../transaction-form/transaction-form.component';
 
-import { transactions } from '../transactions'
+import { Transaction, transactions } from '../transactions'
 
 
 @Component({
@@ -12,9 +14,30 @@ export class TransactionListComponent implements OnInit {
 
   transactions = transactions
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  editTransaction(id: number) {
+    let transaction = this.getTransactionById(id);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = '400px';
+    dialogConfig.data = transaction;
+
+    this.dialog.open(TransactionFormComponent, dialogConfig);
+  }
+
+  getTransactionById(id: number): Transaction {
+    for(let i = 0; i < transactions.length; i++) {
+      if(transactions[i].id == id) {
+        return transactions[i];
+      }
+    }
+    return {} as Transaction;
   }
 
 }

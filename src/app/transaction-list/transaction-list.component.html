@@ -1,5 +1,8 @@
 <div class="transaction-item" *ngFor="let transaction of transactions">
-    <p>{{ transaction.date | date:'mediumDate' }}</p>
+    <div class="button-row">
+        <button (click)="editTransaction(transaction.id)">Edit</button>
+    </div>
+    <p class="date-text">{{ transaction.date | date:'mediumDate' }}</p>
     <h2>{{ transaction.name }}</h2>
     <p>{{ transaction.cost | currency }}</p>
     <p>{{ transaction.subcategory }}</p>
