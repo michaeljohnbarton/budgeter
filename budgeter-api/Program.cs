@@ -1,4 +1,4 @@
-﻿using budgeter_api.Services;
+﻿using budgeter_api.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +14,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 ServiceIoC.AddServices(builder.Services);
+SqlServerRepositoryIoC.AddServices(builder.Services);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

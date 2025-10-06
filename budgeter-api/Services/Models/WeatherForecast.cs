@@ -1,4 +1,4 @@
-﻿namespace budgeter_api;
+﻿namespace budgeter_api.Services.Models;
 
 public class WeatherForecast
 {

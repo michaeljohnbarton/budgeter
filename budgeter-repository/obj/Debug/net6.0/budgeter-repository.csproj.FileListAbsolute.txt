@@ -1,0 +1,12 @@
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/bin/Debug/net6.0/budgeter-repository.deps.json
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/bin/Debug/net6.0/budgeter-repository.dll
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/bin/Debug/net6.0/budgeter-repository.pdb
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.csproj.AssemblyReference.cache
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.GeneratedMSBuildEditorConfig.editorconfig
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.AssemblyInfoInputs.cache
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.AssemblyInfo.cs
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.csproj.CoreCompileInputs.cache
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.dll
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/refint/budgeter-repository.dll
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/budgeter-repository.pdb
+/Users/michaeljohnbarton/Documents/Code/budgeter-api/budgeter-repository/obj/Debug/net6.0/ref/budgeter-repository.dll

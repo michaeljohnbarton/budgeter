@@ -1,4 +1,5 @@
 ﻿using budgeter_api.Services;
+using budgeter_api.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace budgeter_api.Controllers;

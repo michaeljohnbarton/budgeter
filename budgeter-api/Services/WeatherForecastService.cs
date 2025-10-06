@@ -1,21 +1,27 @@
 ﻿using System;
+using budgeter_api.Services.Models;
+using budgeter_repository.Repositories;
+using WeatherForecastRepositoryModel = budgeter_repository.Models.WeatherForecast;
 namespace budgeter_api.Services
 {
 	public class WeatherForecastService : IWeatherForecastService
 	{
-		public WeatherForecastService()
+        private readonly IWeatherForecastRepository _weatherForecastRepository;
+
+        public WeatherForecastService(IWeatherForecastRepository weatherForecastRepository)
 		{
+            _weatherForecastRepository = weatherForecastRepository;
 		}
 
 		public IEnumerable<WeatherForecast> Get()
 		{
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            IEnumerable<WeatherForecastRepositoryModel> results = _weatherForecastRepository.Get();
+            return results.Select(result => new WeatherForecast
             {
-                Date = DateTime.Now.AddDays(index),
+                Date = result.Date,
                 TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = "test"
-            })
-            .ToArray();
+                Summary = result.Summary
+            });
         }
 	}
 }
