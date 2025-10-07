@@ -1,6 +1,7 @@
 ﻿using System;
 using budgeter_repository.Repositories;
 using budgeter_repository.Models;
+using budgeter_sql_server.Queries;
 
 namespace budgeter_sql_server.Repositories
 {
@@ -8,12 +9,7 @@ namespace budgeter_sql_server.Repositories
 	{
 		public IEnumerable<WeatherForecast> Get()
 		{
-            return Enumerable.Range(1, 10).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                Summary = "test"
-            })
-            .ToArray();
+            return GetWeatherForecast.Execute();
         }
 	}
 }

@@ -10,4 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\budgeter-repository\budgeter-repository.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+  </ItemGroup>
 </Project>
