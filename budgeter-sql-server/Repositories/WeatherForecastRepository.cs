@@ -1,15 +1,22 @@
-﻿using System;
-using budgeter_repository.Repositories;
+﻿using System.Data.SqlClient;
 using budgeter_repository.Models;
-using budgeter_sql_server.Queries;
+using budgeter_repository.Repositories;
+using Dapper;
 
 namespace budgeter_sql_server.Repositories
 {
-	public class WeatherForecastRepository : IWeatherForecastRepository
+    public class WeatherForecastRepository : IWeatherForecastRepository
 	{
-		public IEnumerable<WeatherForecast> Get()
+        private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
+        public IEnumerable<WeatherForecast> Get()
 		{
-            return GetWeatherForecast.Execute();
+            string sql = "SELECT * FROM WeatherForecast";
+            List<WeatherForecast> results = new List<WeatherForecast>();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<WeatherForecast>(sql).ToList();
+            }
         }
 	}
 }
