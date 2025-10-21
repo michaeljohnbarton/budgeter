@@ -1,0 +1,14 @@
+[
+    {
+        "name": "WeatherForecast",
+        "dependsOn": []
+    },
+    {
+        "name": "Job",
+        "dependsOn": []
+    },
+    {
+        "name": "Person",
+        "dependsOn": ["Job"]
+    }
+]
