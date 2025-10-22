@@ -1,5 +1,4 @@
 USE budgeter;
-GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'WeatherForecast')
 BEGIN
@@ -10,4 +9,3 @@ BEGIN
         Summary VARCHAR(100)
     );
 END;
-GO

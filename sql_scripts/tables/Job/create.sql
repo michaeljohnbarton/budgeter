@@ -1,9 +1,7 @@
 USE budgeter;
-GO
 
 CREATE TABLE dbo.Job
 (
     ID INT PRIMARY KEY CLUSTERED,
     [Name] VARCHAR(50)
 );
-GO

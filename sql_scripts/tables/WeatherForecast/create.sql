@@ -1,5 +1,4 @@
 USE budgeter;
-GO
 
 CREATE TABLE dbo.WeatherForecast
 (
@@ -7,4 +6,3 @@ CREATE TABLE dbo.WeatherForecast
     [Date] DATETIME2,
     Summary VARCHAR(100)
 );
-GO

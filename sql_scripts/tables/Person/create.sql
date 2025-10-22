@@ -1,5 +1,4 @@
 USE budgeter;
-GO
 
 CREATE TABLE dbo.Person
 (
@@ -7,4 +6,3 @@ CREATE TABLE dbo.Person
     [Name] VARCHAR(100),
     Job_ID INT FOREIGN KEY REFERENCES Job(ID) 
 );
-GO
