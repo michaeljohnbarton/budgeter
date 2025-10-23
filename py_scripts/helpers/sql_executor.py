@@ -5,7 +5,7 @@ def execute(sql_file_path: str):
     connection_string = settings_loader.get_connection_string()
 
     try:
-        cnxn = pyodbc.connect(connection_string)
+        cnxn = pyodbc.connect(connection_string, autocommit=True)
         cursor = cnxn.cursor()
 
         with open(sql_file_path, 'r') as f:

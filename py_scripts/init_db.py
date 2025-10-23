@@ -14,4 +14,5 @@ with open(SQL_FILE_PATH, 'w') as init_db_file:
             init_db_file.write(table_file.read())
             init_db_file.write("\n\n")
 
+sql_executor.execute(f"../sql_scripts/create-database.sql")
 sql_executor.execute(SQL_FILE_PATH)

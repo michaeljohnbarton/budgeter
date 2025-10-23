@@ -1,3 +1,3 @@
 {
-    "connectionString": "DRIVER={ODBC Driver 18 for SQL Server};SERVER=localhost;DATABASE=budgeter;UID=sa;PWD=Mjbarton46;TrustServerCertificate=yes"
+    "connectionString": "DRIVER={ODBC Driver 18 for SQL Server};SERVER=localhost;DATABASE=master;UID=sa;PWD=Mjbarton46;TrustServerCertificate=yes"
 }
