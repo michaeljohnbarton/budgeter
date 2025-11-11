@@ -12,13 +12,14 @@ def execute(sql_file_path: str):
             sql_script = f.read()
 
         cursor.execute(sql_script)
+        while cursor.nextset(): # Check all results to see if any errors occurred
+            pass
         cnxn.commit()
 
         print(f"SQL file '{sql_file_path}' executed successfully.")
 
     except pyodbc.Error as ex:
-        sqlstate = ex.args[0]
-        print(f"Error executing SQL file: {sqlstate}")
+        print(f"An error occurred while executing '{sql_file_path}'.")
         print(ex)
 
     finally:
