@@ -1,0 +1,12 @@
+USE budgeter;
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Month')
+BEGIN
+    CREATE TABLE dbo.[Month]
+    (
+        ID INT PRIMARY KEY CLUSTERED,
+        [Month] INT NOT NULL,
+        [Year] INT NOT NULL,
+        [Name] VARCHAR(9) NOT NULL
+    );
+END;

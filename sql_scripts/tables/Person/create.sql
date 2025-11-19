@@ -1,8 +1,0 @@
-USE budgeter;
-
-CREATE TABLE dbo.Person
-(
-    ID INT PRIMARY KEY CLUSTERED,
-    [Name] VARCHAR(100),
-    Job_ID INT FOREIGN KEY REFERENCES Job(ID) 
-);

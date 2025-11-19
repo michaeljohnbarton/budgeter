@@ -1,0 +1,9 @@
+USE budgeter;
+
+CREATE TABLE dbo.Category
+(
+    ID INT PRIMARY KEY CLUSTERED,
+    [Name] VARCHAR(100) NOT NULL,
+    BankAccountID INT NOT NULL FOREIGN KEY REFERENCES BankAccount(ID),
+    IsCredit BIT NOT NULL DEFAULT(0)
+);

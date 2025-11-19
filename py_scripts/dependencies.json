@@ -1,14 +1,30 @@
 [
     {
-        "name": "WeatherForecast",
+        "name": "MonthlyBalancePropogationType",
         "dependsOn": []
     },
     {
-        "name": "Job",
+        "name": "BankAccount",
+        "dependsOn": ["MonthlyBalancePropogationType"]
+    },
+    {
+        "name": "Category",
+        "dependsOn": ["BankAccount"]
+    },
+    {
+        "name": "Subcategory",
+        "dependsOn": ["Category"]
+    },
+    {
+        "name": "Month",
         "dependsOn": []
     },
     {
-        "name": "Person",
-        "dependsOn": ["Job"]
+        "name": "MonthlyBudget",
+        "dependsOn": ["Subcategory", "Month"]
+    },
+    {
+        "name": "Transaction",
+        "dependsOn": ["Subcategory", "Month"]
     }
 ]
