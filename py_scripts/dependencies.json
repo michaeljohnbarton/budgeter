@@ -20,7 +20,7 @@
         "dependsOn": []
     },
     {
-        "name": "MonthlyBudget",
+        "name": "MonthlyBalance",
         "dependsOn": ["Subcategory", "Month"]
     },
     {
