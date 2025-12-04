@@ -1,8 +1,8 @@
 USE budgeter;
 
-CREATE TABLE dbo.[Transaction]
+CREATE TABLE [Transaction]
 (
-    ID INT PRIMARY KEY CLUSTERED,
+    ID INT IDENTITY(1,1) CONSTRAINT PK_Transaction_ID PRIMARY KEY,
     [Description] VARCHAR(255) NOT NULL,
     IsCredit BIT NOT NULL,
     Amount DECIMAL(9, 2) NOT NULL,

@@ -2,12 +2,12 @@ USE budgeter;
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Subcategory')
 BEGIN
-    CREATE TABLE dbo.Subcategory
+    CREATE TABLE Subcategory
     (
-        ID INT PRIMARY KEY CLUSTERED,
+        ID INT IDENTITY(1,1) CONSTRAINT PK_Subcategory_ID PRIMARY KEY,
         [Name] VARCHAR(100) NOT NULL,
         CategoryID INT NOT NULL FOREIGN KEY REFERENCES Category(ID),
-        RecalculateFutureBalances BIT NOT NULL DEFAULT(0),
-        HasTransactions BIT NOT NULL DEFAULT(0)
+        RecalculateFutureBalances BIT NOT NULL,
+        HasTransactions BIT NOT NULL
     );
 END;

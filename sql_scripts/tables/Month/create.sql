@@ -1,8 +1,8 @@
 USE budgeter;
 
-CREATE TABLE dbo.[Month]
+CREATE TABLE [Month]
 (
-    ID INT PRIMARY KEY CLUSTERED,
+    ID INT IDENTITY(1,1) CONSTRAINT PK_Month_ID PRIMARY KEY,
     [Month] INT NOT NULL,
     [Year] INT NOT NULL,
     [Name] VARCHAR(9) NOT NULL

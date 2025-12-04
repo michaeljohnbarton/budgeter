@@ -1,6 +1,9 @@
 USE budgeter;
 
-INSERT INTO dbo.MonthlyBalance
+SET IDENTITY_INSERT MonthlyBalance ON;
+
+INSERT INTO MonthlyBalance
+    (ID, MonthID, SubcategoryID, BudgetedAmount, ActualAmount)
 VALUES
     (1, 0, 1, 0.00, 0.00),
     (2, 0, 2, 0.00, 0.00),
@@ -116,3 +119,5 @@ VALUES
     (112, 11, 55, 0.00, 0.00),
     (113, 11, 56, 0.00, 0.00),
     (114, 11, 57, 0.00, 0.00);
+
+SET IDENTITY_INSERT MonthlyBalance OFF;

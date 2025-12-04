@@ -1,11 +1,7 @@
 [
     {
-        "name": "MonthlyBalancePropogationType",
-        "dependsOn": []
-    },
-    {
         "name": "BankAccount",
-        "dependsOn": ["MonthlyBalancePropogationType"]
+        "dependsOn": []
     },
     {
         "name": "Category",

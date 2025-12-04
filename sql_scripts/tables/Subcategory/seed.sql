@@ -1,6 +1,9 @@
 USE budgeter;
 
-INSERT INTO dbo.Subcategory
+SET IDENTITY_INSERT Subcategory ON;
+
+INSERT INTO Subcategory
+    (ID, [Name], CategoryID, RecalculateFutureBalances, HasTransactions)
 VALUES
     (1, 'Mindex', 1, 1, 1),
     (2, 'Additional Income', 1, 1, 1),
@@ -59,3 +62,5 @@ VALUES
     (55, 'Cincinnati Insurance', 7, 1, 0),
     (56, 'Investment Contribution', 7, 1, 0),
     (57, 'Other', 7, 1, 1);
+
+SET IDENTITY_INSERT Subcategory OFF;

@@ -1,6 +1,9 @@
 USE budgeter;
 
-INSERT INTO dbo.[Month]
+SET IDENTITY_INSERT [Month] ON;
+
+INSERT INTO [Month]
+    (ID, [Month], [Year], [Name])
 VALUES
     (0, 0, 0, 'Default'),
     (1, 1, 2025, 'January'),
@@ -27,3 +30,5 @@ VALUES
     (22, 10, 2026, 'October'),
     (23, 11, 2026, 'November'),
     (24, 12, 2026, 'December');
+
+SET IDENTITY_INSERT [Month] OFF;
