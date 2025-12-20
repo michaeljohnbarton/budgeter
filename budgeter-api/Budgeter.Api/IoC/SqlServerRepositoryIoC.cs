@@ -9,7 +9,7 @@ namespace Budgeter.Api.IoC
         public static void AddServices(IServiceCollection services)
         {
             services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+            services.AddScoped<IMonthRepository, MonthRepository>();
         }
     }
 }
-

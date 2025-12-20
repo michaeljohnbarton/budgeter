@@ -3,11 +3,11 @@ import './Navbar.css';
 
 const Navbar = () => {
   return (
-    <nav class="navbar">
-      <div class="navbar-logo">
+    <nav className="navbar">
+      <div className="navbar-logo">
         <Link to="/">Budgeter</Link>
       </div>
-      <ul class="nav-links">
+      <ul className="nav-links">
         <li>
           <Link to="/">Home</Link>
         </li>
