@@ -1,15 +1,19 @@
 import './Home.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { LoadingContext } from "../../contexts/LoadingContext";
 
 function Home() {
+    const { setLoading } = useContext(LoadingContext);
     const [months, setMonths] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null);
+    const [hasLoaded, setHasLoaded] = useState(false);
 
     useEffect(() => {
         async function fetchMonths() {
             try {
+                setLoading(true);
+
                 const response = await fetch("http://localhost:60060/api/Month");
                 if (!response.ok) {
                     throw new Error("Failed to fetch months");
@@ -36,13 +40,14 @@ function Home() {
                 
             } finally {
                 setLoading(false);
+                setHasLoaded(true);
             }
         }
 
         fetchMonths();
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    if (!hasLoaded) return null;
     if (error) return <p>Error: {error}</p>;
     if (months.length === 0) return <p>No months available. Add months in Configuration.</p>;
 
@@ -59,8 +64,6 @@ function Home() {
             </div>
             <p>{months[selectedMonth - 1]?.name} {months[selectedMonth - 1]?.year} is selected</p>
         </div>
-
-        
     )
 }
 
