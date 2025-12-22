@@ -1,6 +1,7 @@
 import './Home.css';
 import { useContext, useEffect, useState } from 'react';
 import { LoadingContext } from "../../contexts/LoadingContext";
+import TitleDropdown from '../../components/titleDropdown/TitleDropdown';
 
 function Home() {
 	const { setLoading } = useContext(LoadingContext);
@@ -51,17 +52,15 @@ function Home() {
 	if (error) return <p>Error: {error}</p>;
 	if (months.length === 0) return <p>No months available. Add months in Configuration.</p>;
 
+	var monthsForDropdown = months.map((month) => ({
+		key: month.id,
+		value: month.id,
+		display: `${month.name} ${month.year}`
+	}));
+
 	return (
 		<div id="home-page">
-			<div id="month-selector-wrapper">
-				<select id="month-selector" value={selectedMonth} onChange={(e) => setSelectedMonth(Number(e.target.value))}>
-					{months.map((month) => (
-						<option key={month.id} value={month.id}>
-							{month.name} {month.year}
-						</option>
-					))}
-				</select>
-			</div>
+			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth}/>
 			<p>{months[selectedMonth - 1]?.name} {months[selectedMonth - 1]?.year} is selected</p>
 		</div>
 	)

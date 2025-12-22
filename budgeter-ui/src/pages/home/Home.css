@@ -2,37 +2,3 @@ p {
 	margin-top: 1rem;
 	text-align: center;
 }
-
-#month-selector-wrapper {
-	margin-top: 2rem;
-	text-align: center;
-}
-
-#month-selector {
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	border: none;
-
-	font: inherit;
-	cursor: pointer;
-
-	font-size: 2rem;
-	font-weight: 800;
-	text-align: center;
-
-	border-bottom: 3px solid transparent;
-
-	transition:
-		border-color 0.2s ease,
-		transform 0.15s ease;
-}
-
-#month-selector:hover {
-	border-bottom-color: currentColor;
-	transform: translateY(-1px);
-}
-
-#month-selector:focus {
-	outline: none;
-}
