@@ -7,22 +7,22 @@ import LoadingIndicator from './components/loadingIndicator/LoadingIndicator';
 import { LoadingContext } from "./contexts/LoadingContext";
 
 function App() {
-  const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-  return (
-    <LoadingContext.Provider value={{ loading, setLoading }}>
-      <Router>
-        <Navbar /> 
-        <LoadingIndicator show={loading} />
-        <div>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/configuration" element={<Configuration />} />
-          </Routes>
-        </div>
-      </Router>
-    </LoadingContext.Provider>
-  );
+	return (
+		<LoadingContext.Provider value={{ loading, setLoading }}>
+			<Router>
+				<Navbar />
+				<LoadingIndicator show={loading} />
+				<div>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/configuration" element={<Configuration />} />
+					</Routes>
+				</div>
+			</Router>
+		</LoadingContext.Provider>
+	);
 }
 
 export default App;
