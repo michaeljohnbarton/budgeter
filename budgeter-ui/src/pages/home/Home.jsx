@@ -1,7 +1,7 @@
 import './Home.css';
 import { useContext, useEffect, useState } from 'react';
 import { LoadingContext } from "../../contexts/LoadingContext";
-import TitleDropdown from '../../components/titleDropdown/TitleDropdown';
+import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 
 function Home() {
 	const { setLoading } = useContext(LoadingContext);

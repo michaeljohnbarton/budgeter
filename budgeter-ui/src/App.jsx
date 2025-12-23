@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState } from "react";
-import Navbar from './components/navbar/Navbar';
+import Navbar from './commonComponents/navbar/Navbar';
 import Home from './pages/home/Home';
 import Configuration from './pages/configuration/Configuration';
-import LoadingIndicator from './components/loadingIndicator/LoadingIndicator';
+import LoadingIndicator from './commonComponents/loadingIndicator/LoadingIndicator';
 import { LoadingContext } from "./contexts/LoadingContext";
 
 function App() {
