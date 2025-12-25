@@ -1,9 +1,9 @@
-#configuration-page {
-	height: 100%;
+#app-layout {
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
 }
 
-#configuration-content {
+#app-content {
 	overflow: hidden;
 }
