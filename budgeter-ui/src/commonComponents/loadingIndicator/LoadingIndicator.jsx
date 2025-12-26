@@ -1,7 +1,10 @@
 import "./LoadingIndicator.css";
+import { useLoading } from "../../contexts/LoadingContext";
 
-function LoadingIndicator({ show }) {
-	if (!show) return null;
+function LoadingIndicator() {
+	const { loading } = useLoading();
+
+	if (!loading) return null;
 
 	return (
 		<div className="loading-indicator">

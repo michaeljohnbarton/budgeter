@@ -1,13 +1,13 @@
 import './Configuration.css';
-import { useState, useContext, useEffect } from 'react';
-import { LoadingContext } from "../../contexts/LoadingContext";
+import { useState } from 'react';
+import { useLoading } from '../../contexts/LoadingContext';
+import { useMonths } from '../../contexts/MonthsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import Months from './components/Months';
 
 function Configuration() {
-	const { setLoading } = useContext(LoadingContext);
-	const [error, setError] = useState(null);
-	const [months, setMonths] = useState([]);
+	const { loading } = useLoading();
+	const { months, error } = useMonths();
 	const [selectedOption, setSelectedOption] = useState(1);
 
 	const options = [
@@ -20,33 +20,7 @@ function Configuration() {
 	const selected = options.find(o => o.key === selectedOption);
 	const SelectedComponent = selected?.component;
 
-	useEffect(() => {
-		async function fetchMonths() {
-			try {
-				setLoading(true);
-
-				const response = await fetch("http://localhost:60060/api/Month");
-				if (!response.ok) {
-					throw new Error("Failed to fetch months");
-				}
-
-				const data = await response.json();
-				setMonths(data);
-			} catch (err) {
-				if (err.message === 'Failed to fetch') {
-					setError("Could not connect to the API.");
-				} else {
-					setError(err.message);
-				}
-
-			} finally {
-				setLoading(false);
-			}
-		}
-
-		fetchMonths();
-	}, []);
-
+	if (loading) return null;
 	if (error) return <p>Error: {error}</p>;
 
 	return (

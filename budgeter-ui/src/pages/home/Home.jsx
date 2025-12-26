@@ -1,54 +1,25 @@
 import './Home.css';
-import { useContext, useEffect, useState } from 'react';
-import { LoadingContext } from "../../contexts/LoadingContext";
+import { useState, useEffect } from 'react';
+import { useLoading } from '../../contexts/LoadingContext';
+import { useMonths } from '../../contexts/MonthsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 
 function Home() {
-	const { setLoading } = useContext(LoadingContext);
-	const [months, setMonths] = useState([]);
-	const [error, setError] = useState(null);
-	const [selectedMonth, setSelectedMonth] = useState(null);
-	const [hasLoaded, setHasLoaded] = useState(false);
+	const { loading } = useLoading();
+	const { months, error } = useMonths();
+	const [selectedMonth, setSelectedMonth] = useState('');
+
+	const currentDate = new Date();
+	const currentYear = currentDate.getFullYear();
+	const currentMonthNumber = currentDate.getMonth() + 1;
 
 	useEffect(() => {
-		async function fetchMonths() {
-			try {
-				setLoading(true);
+		if (months.length === 0) return;
+		const current = months.find(m => m.monthNumber === currentMonthNumber && m.year === currentYear);
+		setSelectedMonth(current?.id || months[0].id);
+	}, [months, currentMonthNumber, currentYear]);
 
-				const response = await fetch("http://localhost:60060/api/Month");
-				if (!response.ok) {
-					throw new Error("Failed to fetch months");
-				}
-
-				const data = await response.json();
-				setMonths(data);
-
-				const currentDate = new Date();
-				const currentYear = currentDate.getFullYear();
-				const currentMonthNumber = currentDate.getMonth() + 1;
-				const currentMonth = data.find(m => m.monthNumber === currentMonthNumber && m.year === currentYear);
-				if (currentMonth) {
-					setSelectedMonth(currentMonth.id);
-				} else {
-					setSelectedMonth(data[0]?.id || null);
-				}
-			} catch (err) {
-				if (err.message === 'Failed to fetch') {
-					setError("Could not connect to the API.");
-				} else {
-					setError(err.message);
-				}
-
-			} finally {
-				setLoading(false);
-				setHasLoaded(true);
-			}
-		}
-
-		fetchMonths();
-	}, []);
-
-	if (!hasLoaded) return null;
+	if (loading) return null;
 	if (error) return <p>Error: {error}</p>;
 	if (months.length === 0) return <p>No months available. Add months in Configuration.</p>;
 
@@ -60,7 +31,7 @@ function Home() {
 
 	return (
 		<div id="home-page">
-			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth}/>
+			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth} />
 			<p>{months[selectedMonth - 1]?.name} {months[selectedMonth - 1]?.year} is selected</p>
 		</div>
 	)

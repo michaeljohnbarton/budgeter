@@ -17,9 +17,7 @@ function Months({ months }) {
 		}
 	}, [months]);
 
-	if (!months || months.length === 0) {
-		return <p>No months were found. Create one.</p>;
-	}
+	if (!months || months.length === 0) return <p>No months were found. Create one.</p>;
 
 	return (
 		<div id="months-configuration">
