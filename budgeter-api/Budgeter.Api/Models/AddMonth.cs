@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Budgeter.Api.Models
 {
-    public class AddMonth
-    {
-        [Required, Range(1,12)]
-        public int? MonthNumber { get; set; }
-        [Required, Range(2000, 3000)]
-        public int? Year { get; set; }
-        public string Name { get; set; } = string.Empty;
-    }
+	public class AddMonth
+	{
+		[Required, Range(1,12)]
+		public int? MonthNumber { get; set; }
+		[Required, Range(2000, 3000)]
+		public int? Year { get; set; }
+		public string Name { get; set; } = string.Empty;
+	}
 }
-

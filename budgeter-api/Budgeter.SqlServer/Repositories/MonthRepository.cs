@@ -8,28 +8,27 @@ namespace Budgeter.SqlServer.Repositories
 {
 	public class MonthRepository : IMonthRepository
 	{
-        private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
+		private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
 
-        public IEnumerable<Month> Get()
-        {
-            // Month with ID 0 is the Default month which is only used for Configuration and setting default budgeted values, etc.
-            string sql = "SELECT ID, [Month] as MonthNumber, [Year], [Name] FROM [Month] WHERE ID > 0";
+		public IEnumerable<Month> Get()
+		{
+			// Month with ID 0 is the Default month which is only used for Configuration and setting default budgeted values, etc.
+			string sql = "SELECT ID, [Month] as MonthNumber, [Year], [Name] FROM [Month] WHERE ID > 0";
 
-            using (var connection = new SqlConnection(connectionString))
-            {
-                return connection.Query<Month>(sql).ToList();
-            }
-        }
+			using (var connection = new SqlConnection(connectionString))
+			{
+				return connection.Query<Month>(sql).ToList();
+			}
+		}
 
-        public void Create(AddMonth monthToAdd)
-        {
-            string sql = "INSERT INTO [Month] ([Month], [Year], [Name]) VALUES (@MonthNumber, @Year, @Name)";
+		public void Create(AddMonth monthToAdd)
+		{
+			string sql = "INSERT INTO [Month] ([Month], [Year], [Name]) VALUES (@MonthNumber, @Year, @Name)";
 
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Execute(sql, monthToAdd);
-            }
-        }
-    }
+			using (var connection = new SqlConnection(connectionString))
+			{
+				connection.Execute(sql, monthToAdd);
+			}
+		}
+	}
 }
-

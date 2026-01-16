@@ -6,10 +6,9 @@ namespace Budgeter.Api.IoC
 {
 	public class SqlServerRepositoryIoC
 	{
-        public static void AddServices(IServiceCollection services)
-        {
-            services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
-            services.AddScoped<IMonthRepository, MonthRepository>();
-        }
-    }
+		public static void AddServices(IServiceCollection services)
+		{
+			services.AddScoped<IMonthRepository, MonthRepository>();
+		}
+	}
 }

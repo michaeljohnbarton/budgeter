@@ -17,17 +17,17 @@ namespace Budgeter.Api.Services
 			_monthRepository = monthRepository;
 		}
 
-        public IEnumerable<Month> Get()
+		public IEnumerable<Month> Get()
 		{
-            IEnumerable<MonthRepositoryModel> results = _monthRepository.Get();
-            return results.Select(result => new Month
-            {
-                ID = result.ID,
+			IEnumerable<MonthRepositoryModel> results = _monthRepository.Get();
+			return results.Select(result => new Month
+			{
+				ID = result.ID,
 				MonthNumber = result.MonthNumber,
 				Year = result.Year,
 				Name = result.Name
-            });
-        }
+			});
+		}
 
 		public void Create(AddMonth monthToAdd)
 		{

@@ -10,4 +10,3 @@ namespace Budgeter.Repository.Repositories
 		void Create(AddMonth monthToAdd);
 	}
 }
-
