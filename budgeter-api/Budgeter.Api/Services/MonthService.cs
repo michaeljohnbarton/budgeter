@@ -3,6 +3,7 @@ using Budgeter.Api.Models;
 using Budgeter.Repository.Repositories;
 using Budgeter.SqlServer.Repositories;
 using MonthRepositoryModel = Budgeter.Repository.Models.Month;
+using AddMonthRepositoryModel = Budgeter.Repository.Models.AddMonth;
 
 
 namespace Budgeter.Api.Services
@@ -27,5 +28,15 @@ namespace Budgeter.Api.Services
 				Name = result.Name
             });
         }
+
+		public void Create(AddMonth monthToAdd)
+		{
+			_monthRepository.Create(new AddMonthRepositoryModel
+			{
+				MonthNumber = monthToAdd.MonthNumber!.Value,
+				Year = monthToAdd.Year!.Value,
+				Name = monthToAdd.Name
+			});
+		}
 	}
 }

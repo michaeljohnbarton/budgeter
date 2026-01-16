@@ -9,9 +9,10 @@ function Configuration() {
 	const { loading } = useLoading();
 	const { months, error } = useMonths();
 	const [selectedOption, setSelectedOption] = useState(1);
+	const [newButtonHandler, setNewButtonHandler] = useState(null);
 
 	const options = [
-		{ key: 1, value: 1, display: 'Months', component: Months, props: { months: months } },
+		{ key: 1, value: 1, display: 'Months', component: Months, props: { months: months, registerNewHandler: setNewButtonHandler } },
 		{ key: 2, value: 2, display: 'Bank Accounts' },
 		{ key: 3, value: 3, display: 'Categories' },
 		{ key: 4, value: 4, display: 'Subcategories' }
@@ -25,7 +26,7 @@ function Configuration() {
 
 	return (
 		<div id="configuration-page">
-			<TitleDropdown items={options} selectedValue={selectedOption} setSelectedValue={setSelectedOption} />
+			<TitleDropdown items={options} selectedValue={selectedOption} setSelectedValue={setSelectedOption} onNewButtonClick={newButtonHandler} />
 			<div id="configuration-content">
 				{SelectedComponent && <SelectedComponent {...selected.props} />}
 			</div>

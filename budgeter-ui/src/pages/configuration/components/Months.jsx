@@ -1,7 +1,19 @@
 import './Months.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import MonthModal from './MonthModal';
 
-function Months({ months }) {
+function Months({ months, registerNewHandler }) {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	useEffect(() => {
+		registerNewHandler(() => handleNewClick);
+		return () => registerNewHandler(null); // Cleanup on unmount
+	}, [registerNewHandler]);
+
+	const handleNewClick = () => {
+		setIsModalOpen(true);
+	};
+
 	const currentRowRef = useRef(null);
 
 	const currentDate = new Date();
@@ -44,6 +56,7 @@ function Months({ months }) {
 					</tbody>
 				</table>
 			</div>
+			<MonthModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 		</div>
 	);
 }

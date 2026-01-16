@@ -1,6 +1,6 @@
 import "./TitleDropdown.css";
 
-function TitleDropdown({ items, selectedValue, setSelectedValue }) {
+function TitleDropdown({ items, selectedValue, setSelectedValue, onNewButtonClick }) {
 	return (
 		<div id="title-dropdown-wrapper">
 			<select id="title-dropdown" value={selectedValue} onChange={(e) => setSelectedValue(Number(e.target.value))}>
@@ -10,6 +10,9 @@ function TitleDropdown({ items, selectedValue, setSelectedValue }) {
 					</option>
 				))}
 			</select>
+			{
+				onNewButtonClick && <button id="new-item-button" onClick={onNewButtonClick}>New</button>
+			}
 		</div>
 	);
 }

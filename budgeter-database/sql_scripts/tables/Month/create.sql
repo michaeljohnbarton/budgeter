@@ -2,8 +2,9 @@ USE budgeter;
 
 CREATE TABLE [Month]
 (
-    ID INT IDENTITY(1,1) CONSTRAINT PK_Month_ID PRIMARY KEY,
-    [Month] INT NOT NULL,
-    [Year] INT NOT NULL,
-    [Name] VARCHAR(9) NOT NULL
+	ID INT IDENTITY(1,1) CONSTRAINT PK_Month_ID PRIMARY KEY,
+	[Month] INT NOT NULL,
+	[Year] INT NOT NULL,
+	[Name] VARCHAR(9) NOT NULL,
+	CONSTRAINT UQ_Month_MonthYear UNIQUE ([Month], [Year])
 );

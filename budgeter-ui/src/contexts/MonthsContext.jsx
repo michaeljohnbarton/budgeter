@@ -31,12 +31,36 @@ export function MonthsProvider({ children }) {
 		}
 	}
 
+	async function createMonth(payload) {
+		try {
+			setLoading(true);
+
+			const response = await fetch("http://localhost:60060/api/Month", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to create month");
+			}
+
+			await fetchMonths({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	useEffect(() => {
 		fetchMonths();
 	}, []);
 
 	return (
-		<MonthsContext.Provider value={{ months, error, fetchMonths }}>
+		<MonthsContext.Provider value={{ months, error, fetchMonths, createMonth }}>
 			{children}
 		</MonthsContext.Provider>
 	);

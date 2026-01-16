@@ -2,11 +2,12 @@ USE budgeter;
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Month')
 BEGIN
-    CREATE TABLE [Month]
-    (
-        ID INT IDENTITY(1,1) CONSTRAINT PK_Month_ID PRIMARY KEY,
-        [Month] INT NOT NULL,
-        [Year] INT NOT NULL,
-        [Name] VARCHAR(9) NOT NULL
-    );
+	CREATE TABLE [Month]
+	(
+		ID INT IDENTITY(1,1) CONSTRAINT PK_Month_ID PRIMARY KEY,
+		[Month] INT NOT NULL,
+		[Year] INT NOT NULL,
+		[Name] VARCHAR(9) NOT NULL,
+		CONSTRAINT UQ_Month_MonthYear UNIQUE ([Month], [Year])
+	);
 END;

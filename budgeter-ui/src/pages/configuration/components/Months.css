@@ -29,11 +29,11 @@
 }
 
 #months-table tbody tr:nth-child(even) {
-	background-color: #f9fafb;
+	background-color: #f8f8f8;
 }
 
 #months-table tbody tr:hover {
-	background-color: #eef2f7;
+	background-color: #c4c4c4;
 }
 
 #months-table td:nth-child(2),
@@ -43,6 +43,6 @@
 }
 
 .current-month {
-	background-color: #e0f2fe !important;
+	background-color: #dedede;
 	font-weight: 600;
 }

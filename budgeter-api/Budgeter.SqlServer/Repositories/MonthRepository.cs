@@ -20,6 +20,16 @@ namespace Budgeter.SqlServer.Repositories
                 return connection.Query<Month>(sql).ToList();
             }
         }
+
+        public void Create(AddMonth monthToAdd)
+        {
+            string sql = "INSERT INTO [Month] ([Month], [Year], [Name]) VALUES (@MonthNumber, @Year, @Name)";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(sql, monthToAdd);
+            }
+        }
     }
 }
 
