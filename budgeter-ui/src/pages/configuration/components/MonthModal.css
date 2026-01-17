@@ -9,6 +9,10 @@
 	margin-bottom: 1.25rem;
 }
 
+.form-group:nth-last-of-type(1) {
+	margin-bottom: 0;
+}
+
 .form-group label {
 	margin-bottom: 0.4rem;
 	font-size: 0.9rem;
@@ -24,6 +28,7 @@
 	margin-top: 0.35rem;
 	font-size: 0.8rem;
 	color: #dc2626;
+	display: inline-block;
 }
 
 .form-group input,
