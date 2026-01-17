@@ -1,8 +1,10 @@
 import './Months.css';
 import { useEffect, useState, useRef } from 'react';
+import { useMonths } from '../../../contexts/MonthsContext';
 import MonthModal from './MonthModal';
 
-function Months({ months, registerNewHandler }) {
+function Months({ registerNewHandler }) {
+	const { months, monthMap } = useMonths();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
@@ -47,7 +49,7 @@ function Months({ months, registerNewHandler }) {
 									ref={isCurrent ? currentRowRef : null}
 									className={isCurrent ? "current-month" : undefined}
 								>
-									<td>{month.name} {month.year}</td>
+									<td>{monthMap.find(x => x.number === month.monthNumber).name} {month.year}</td>
 									<td>Edit</td>
 									<td>Delete</td>
 								</tr>

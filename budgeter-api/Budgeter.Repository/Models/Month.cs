@@ -6,6 +6,5 @@ namespace Budgeter.Repository.Models
 		public int ID { get; set; }
 		public int MonthNumber { get; set; }
 		public int Year { get; set; }
-		public string Name { get; set; } = string.Empty;
 	}
 }

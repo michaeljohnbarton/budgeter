@@ -9,6 +9,21 @@ export function MonthsProvider({ children }) {
 	const [months, setMonths] = useState([]);
 	const [error, setError] = useState(null);
 
+	const monthMap = [
+		{ number: 1, name: "January" },
+		{ number: 2, name: "February" },
+		{ number: 3, name: "March" },
+		{ number: 4, name: "April" },
+		{ number: 5, name: "May" },
+		{ number: 6, name: "June" },
+		{ number: 7, name: "July" },
+		{ number: 8, name: "August" },
+		{ number: 9, name: "September" },
+		{ number: 10, name: "October" },
+		{ number: 11, name: "November" },
+		{ number: 12, name: "December" }
+	]
+
 	const hasFetched = useRef(false);
 
 	async function fetchMonths({ force = false } = {}) {
@@ -60,7 +75,7 @@ export function MonthsProvider({ children }) {
 	}, []);
 
 	return (
-		<MonthsContext.Provider value={{ months, error, fetchMonths, createMonth }}>
+		<MonthsContext.Provider value={{ months, error, monthMap, fetchMonths, createMonth }}>
 			{children}
 		</MonthsContext.Provider>
 	);

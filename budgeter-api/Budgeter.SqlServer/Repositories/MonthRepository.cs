@@ -13,7 +13,7 @@ namespace Budgeter.SqlServer.Repositories
 		public IEnumerable<Month> Get()
 		{
 			// Month with ID 0 is the Default month which is only used for Configuration and setting default budgeted values, etc.
-			string sql = "SELECT ID, [Month] as MonthNumber, [Year], [Name] FROM [Month] WHERE ID > 0";
+			string sql = "SELECT ID, [Month] as MonthNumber, [Year] FROM [Month] WHERE ID > 0";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
@@ -23,7 +23,7 @@ namespace Budgeter.SqlServer.Repositories
 
 		public void Create(AddMonth monthToAdd)
 		{
-			string sql = "INSERT INTO [Month] ([Month], [Year], [Name]) VALUES (@MonthNumber, @Year, @Name)";
+			string sql = "INSERT INTO [Month] ([Month], [Year]) VALUES (@MonthNumber, @Year)";
 
 			using (var connection = new SqlConnection(connectionString))
 			{

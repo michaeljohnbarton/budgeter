@@ -5,7 +5,7 @@ import { useMonths } from '../../../contexts/MonthsContext';
 import Modal from "../../../commonComponents/modal/Modal";
 
 function MonthModal({ isOpen, setIsModalOpen, monthData }) {
-	const { months, createMonth } = useMonths();
+	const { months, monthMap, createMonth } = useMonths();
 
 	const isEditMode = monthData !== undefined;
 	const title = isEditMode ? "Edit Month" : "Add Month";
@@ -32,7 +32,7 @@ function MonthModal({ isOpen, setIsModalOpen, monthData }) {
 
 	const handleSave = async () => {
 		try {
-			await createMonth({ monthNumber: month, year: year, name: monthOptions.find(m => m.value === month).label });
+			await createMonth({ monthNumber: month, year: year });
 			toast.success("Month created successfully");
 			closeModal();
 		}
@@ -55,21 +55,8 @@ function MonthModal({ isOpen, setIsModalOpen, monthData }) {
 		setIsModalOpen(false);
 	}
 
-	const monthOptions = [
-		{ value: 0, label: "-- Select Month --" },
-		{ value: 1, label: "January" },
-		{ value: 2, label: "February" },
-		{ value: 3, label: "March" },
-		{ value: 4, label: "April" },
-		{ value: 5, label: "May" },
-		{ value: 6, label: "June" },
-		{ value: 7, label: "July" },
-		{ value: 8, label: "August" },
-		{ value: 9, label: "September" },
-		{ value: 10, label: "October" },
-		{ value: 11, label: "November" },
-		{ value: 12, label: "December" }
-	]
+	const monthOptions = monthMap.map(m => ({ value: m.number, label: m.name }));
+	monthOptions.unshift({ value: 0, label: "-- Select Month --" });
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} onSave={handleSave} isSaveEnabled={isFormValid} title={title} hasUnsavedChanges={hasUnsavedChanges}>
@@ -112,7 +99,7 @@ function MonthModal({ isOpen, setIsModalOpen, monthData }) {
 						<span className="error-text">Year must be between 2000 and 3000 (inclusive)</span>
 					)}
 				</div>
-				{monthAlreadyExists && (
+				{touched.month && touched.year && monthAlreadyExists && (
 					<span className="error-text">A month with this month and year already exists</span>
 				)}
 			</form>

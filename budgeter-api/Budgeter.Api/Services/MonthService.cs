@@ -24,8 +24,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = result.ID,
 				MonthNumber = result.MonthNumber,
-				Year = result.Year,
-				Name = result.Name
+				Year = result.Year
 			});
 		}
 
@@ -34,8 +33,7 @@ namespace Budgeter.Api.Services
 			_monthRepository.Create(new AddMonthRepositoryModel
 			{
 				MonthNumber = monthToAdd.MonthNumber!.Value,
-				Year = monthToAdd.Year!.Value,
-				Name = monthToAdd.Name
+				Year = monthToAdd.Year!.Value
 			});
 		}
 	}

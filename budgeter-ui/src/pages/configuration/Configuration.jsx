@@ -7,12 +7,12 @@ import Months from './components/Months';
 
 function Configuration() {
 	const { loading } = useLoading();
-	const { months, error } = useMonths();
+	const { error } = useMonths();
 	const [selectedOption, setSelectedOption] = useState(1);
 	const [newButtonHandler, setNewButtonHandler] = useState(null);
 
 	const options = [
-		{ key: 1, value: 1, display: 'Months', component: Months, props: { months: months, registerNewHandler: setNewButtonHandler } },
+		{ key: 1, value: 1, display: 'Months', component: Months, props: { registerNewHandler: setNewButtonHandler } },
 		{ key: 2, value: 2, display: 'Bank Accounts' },
 		{ key: 3, value: 3, display: 'Categories' },
 		{ key: 4, value: 4, display: 'Subcategories' }

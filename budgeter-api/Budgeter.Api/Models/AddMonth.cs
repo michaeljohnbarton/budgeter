@@ -9,6 +9,5 @@ namespace Budgeter.Api.Models
 		public int? MonthNumber { get; set; }
 		[Required, Range(2000, 3000)]
 		public int? Year { get; set; }
-		public string Name { get; set; } = string.Empty;
 	}
 }
