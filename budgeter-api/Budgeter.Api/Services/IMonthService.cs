@@ -5,8 +5,8 @@ namespace Budgeter.Api.Services
 {
 	public interface IMonthService
 	{
+		void Create(CreateMonth monthToCreate);
 		IEnumerable<Month> Get();
-		void Create(AddMonth monthToAdd);
 		void Update(int monthId, UpdateMonth monthToUpdate);
 	}
 }

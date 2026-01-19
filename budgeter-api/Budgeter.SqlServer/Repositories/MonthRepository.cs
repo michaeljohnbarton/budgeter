@@ -11,6 +11,16 @@ namespace Budgeter.SqlServer.Repositories
 	{
 		private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
 
+		public void Create(Month monthToCreate)
+		{
+			string sql = "INSERT INTO [Month] ([Month], [Year]) VALUES (@MonthNumber, @Year)";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				connection.Execute(sql, monthToCreate);
+			}
+		}
+
 		public IEnumerable<Month> Get()
 		{
 			// Month with ID 0 is the Default month which is only used for Configuration and setting default budgeted values, etc.
@@ -19,16 +29,6 @@ namespace Budgeter.SqlServer.Repositories
 			using (var connection = new SqlConnection(connectionString))
 			{
 				return connection.Query<Month>(sql).ToList();
-			}
-		}
-
-		public void Create(Month monthToAdd)
-		{
-			string sql = "INSERT INTO [Month] ([Month], [Year]) VALUES (@MonthNumber, @Year)";
-
-			using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Execute(sql, monthToAdd);
 			}
 		}
 

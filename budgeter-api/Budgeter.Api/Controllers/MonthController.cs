@@ -20,36 +20,36 @@ namespace Budgeter.Api.Controllers
 			_monthService = monthService;
 		}
 
-		[HttpGet]
-		public IEnumerable<Month> Get()
-		{
-			return _monthService.Get();
-		}
-
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]
-		public IActionResult Create([FromBody] AddMonth monthToAdd)
+		public IActionResult Create([FromBody] CreateMonth monthToCreate)
 		{
 			try
 			{
-				if(!ModelState.IsValid)
+				if (!ModelState.IsValid)
 				{
 					return BadRequest(ModelState);
 				}
 
-				_monthService.Create(monthToAdd);
+				_monthService.Create(monthToCreate);
 				return Ok();
 			}
 			catch (SqlException e)
 			{
-				if(e.Number == 2627)
+				if (e.Number == 2627)
 				{
 					return Conflict("Month already exists");
 				}
 				throw;
 			}
+		}
+
+		[HttpGet]
+		public IEnumerable<Month> Get()
+		{
+			return _monthService.Get();
 		}
 
 		[HttpPut("{id}")]

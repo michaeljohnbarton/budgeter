@@ -16,6 +16,15 @@ namespace Budgeter.Api.Services
 			_monthRepository = monthRepository;
 		}
 
+		public void Create(CreateMonth monthToCreate)
+		{
+			_monthRepository.Create(new MonthRepositoryModel
+			{
+				MonthNumber = monthToCreate.MonthNumber!.Value,
+				Year = monthToCreate.Year!.Value
+			});
+		}
+
 		public IEnumerable<Month> Get()
 		{
 			IEnumerable<MonthRepositoryModel> results = _monthRepository.Get();
@@ -24,15 +33,6 @@ namespace Budgeter.Api.Services
 				ID = result.ID,
 				MonthNumber = result.MonthNumber,
 				Year = result.Year
-			});
-		}
-
-		public void Create(AddMonth monthToAdd)
-		{
-			_monthRepository.Create(new MonthRepositoryModel
-			{
-				MonthNumber = monthToAdd.MonthNumber!.Value,
-				Year = monthToAdd.Year!.Value
 			});
 		}
 
