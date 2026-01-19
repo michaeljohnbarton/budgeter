@@ -3,10 +3,15 @@ import { createContext, useContext, useState } from "react";
 const LoadingContext = createContext();
 
 export function LoadingProvider({ children }) {
-	const [loading, setLoading] = useState(false);
+	const LoadingType = {
+		NONE: 0,
+		OVERLAY: 1,
+		FULLSCREEN: 2
+	}
+	const [loading, setLoading] = useState(LoadingType.NONE);
 
 	return (
-		<LoadingContext.Provider value={{ loading, setLoading }}>
+		<LoadingContext.Provider value={{ loading, setLoading, LoadingType }}>
 			{children}
 		</LoadingContext.Provider>
 	);

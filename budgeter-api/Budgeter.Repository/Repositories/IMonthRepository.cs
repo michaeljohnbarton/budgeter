@@ -7,6 +7,7 @@ namespace Budgeter.Repository.Repositories
 	public interface IMonthRepository
 	{
 		IEnumerable<Month> Get();
-		void Create(AddMonth monthToAdd);
+		void Create(Month monthToAdd);
+		void Update(Month monthToUpdate);
 	}
 }

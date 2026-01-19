@@ -7,5 +7,6 @@ namespace Budgeter.Api.Services
 	{
 		IEnumerable<Month> Get();
 		void Create(AddMonth monthToAdd);
+		void Update(int monthId, UpdateMonth monthToUpdate);
 	}
 }

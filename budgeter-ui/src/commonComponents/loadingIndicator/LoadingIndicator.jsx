@@ -2,9 +2,9 @@ import "./LoadingIndicator.css";
 import { useLoading } from "../../contexts/LoadingContext";
 
 function LoadingIndicator() {
-	const { loading } = useLoading();
+	const { loading, LoadingType } = useLoading();
 
-	if (!loading) return null;
+	if (loading == LoadingType.NONE) return null;
 
 	return (
 		<div className="loading-indicator">

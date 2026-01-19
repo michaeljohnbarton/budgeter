@@ -1,11 +1,13 @@
 import './Months.css';
 import { useEffect, useState, useRef } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useMonths } from '../../../contexts/MonthsContext';
 import MonthModal from './MonthModal';
 
 function Months({ registerNewHandler }) {
 	const { months, monthMap } = useMonths();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [monthData, setMonthData] = useState(null);
 
 	useEffect(() => {
 		registerNewHandler(() => handleNewClick);
@@ -15,6 +17,15 @@ function Months({ registerNewHandler }) {
 	const handleNewClick = () => {
 		setIsModalOpen(true);
 	};
+
+	const handleEditClick = (month) => {
+		setMonthData(month);
+		setIsModalOpen(true);
+	};
+
+	const handleDeleteClick = (monthId) => {
+		// Implement delete functionality here
+	}
 
 	const currentRowRef = useRef(null);
 
@@ -50,15 +61,31 @@ function Months({ registerNewHandler }) {
 									className={isCurrent ? "current-month" : undefined}
 								>
 									<td>{monthMap.find(x => x.number === month.monthNumber).name} {month.year}</td>
-									<td>Edit</td>
-									<td>Delete</td>
+									<td className="actions">
+										{/* Delete and edit ordered this way because of float right CSS */}
+										<button
+											className="icon-button delete"
+											onClick={() => handleDeleteClick(month.id)}
+											aria-label="Delete"
+										>
+											<FaTrash />
+										</button>
+
+										<button
+											className="icon-button edit"
+											onClick={() => handleEditClick(month)}
+											aria-label="Edit"
+										>
+											<FaEdit />
+										</button>
+									</td>
 								</tr>
 							);
 						})}
 					</tbody>
 				</table>
 			</div>
-			<MonthModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+			<MonthModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} monthData={monthData} setMonthData={setMonthData} />
 		</div>
 	);
 }

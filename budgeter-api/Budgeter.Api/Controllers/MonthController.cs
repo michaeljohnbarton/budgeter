@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Budgeter.Api.Models;
 using Budgeter.Api.Services;
+using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Budgeter.Api.Controllers
@@ -49,9 +50,27 @@ namespace Budgeter.Api.Controllers
 				}
 				throw;
 			}
-			catch (Exception)
+		}
+
+		[HttpPut("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public IActionResult Update([FromRoute] int id, [FromBody] UpdateMonth monthToUpdate)
+		{
+			try
 			{
-				throw;
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				_monthService.Update(id, monthToUpdate);
+				return Ok();
+			}
+			catch (NotFoundException e)
+			{
+				return NotFound(e.Message);
 			}
 		}
 	}

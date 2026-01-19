@@ -4,7 +4,7 @@ import { LoadingContext } from "./LoadingContext";
 const MonthsContext = createContext();
 
 export function MonthsProvider({ children }) {
-	const { setLoading } = useContext(LoadingContext);
+	const { setLoading, LoadingType } = useContext(LoadingContext);
 
 	const [months, setMonths] = useState([]);
 	const [error, setError] = useState(null);
@@ -30,7 +30,7 @@ export function MonthsProvider({ children }) {
 		if (hasFetched.current && !force) return;
 
 		try {
-			setLoading(true);
+			setLoading(LoadingType.FULLSCREEN);
 			setError(null);
 
 			const response = await fetch("http://localhost:60060/api/Month");
@@ -42,13 +42,13 @@ export function MonthsProvider({ children }) {
 		} catch (err) {
 			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
 		} finally {
-			setLoading(false);
+			setLoading(LoadingType.NONE);
 		}
 	}
 
 	async function createMonth(payload) {
 		try {
-			setLoading(true);
+			setLoading(LoadingType.OVERLAY);
 
 			const response = await fetch("http://localhost:60060/api/Month", {
 				method: "POST",
@@ -66,7 +66,31 @@ export function MonthsProvider({ children }) {
 		} catch (err) {
 			throw err;
 		} finally {
-			setLoading(false);
+			setLoading(LoadingType.NONE);
+		}
+	}
+
+	async function updateMonth(monthId, payload) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/Month/${monthId}`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to update month");
+			}
+
+			await fetchMonths({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
 		}
 	}
 
@@ -75,7 +99,7 @@ export function MonthsProvider({ children }) {
 	}, []);
 
 	return (
-		<MonthsContext.Provider value={{ months, error, monthMap, fetchMonths, createMonth }}>
+		<MonthsContext.Provider value={{ months, error, monthMap, fetchMonths, createMonth, updateMonth }}>
 			{children}
 		</MonthsContext.Provider>
 	);

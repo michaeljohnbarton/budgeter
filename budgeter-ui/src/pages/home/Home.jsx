@@ -5,7 +5,7 @@ import { useMonths } from '../../contexts/MonthsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 
 function Home() {
-	const { loading } = useLoading();
+	const { loading, LoadingType } = useLoading();
 	const { months, error } = useMonths();
 	const [selectedMonth, setSelectedMonth] = useState('');
 
@@ -19,7 +19,7 @@ function Home() {
 		setSelectedMonth(current?.id || months[0].id);
 	}, [months, currentMonthNumber, currentYear]);
 
-	if (loading) return null;
+	if (loading == LoadingType.FULLSCREEN) return null;
 	if (error) return <p>Error: {error}</p>;
 	if (months.length === 0) return <p>No months available. Add months in Configuration.</p>;
 

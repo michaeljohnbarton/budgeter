@@ -6,7 +6,7 @@ import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import Months from './components/Months';
 
 function Configuration() {
-	const { loading } = useLoading();
+	const { loading, LoadingType } = useLoading();
 	const { error } = useMonths();
 	const [selectedOption, setSelectedOption] = useState(1);
 	const [newButtonHandler, setNewButtonHandler] = useState(null);
@@ -21,7 +21,7 @@ function Configuration() {
 	const selected = options.find(o => o.key === selectedOption);
 	const SelectedComponent = selected?.component;
 
-	if (loading) return null;
+	if (loading == LoadingType.FULLSCREEN) return null;
 	if (error) return <p>Error: {error}</p>;
 
 	return (

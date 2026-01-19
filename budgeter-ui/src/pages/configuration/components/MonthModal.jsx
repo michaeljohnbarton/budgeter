@@ -1,23 +1,31 @@
 import './MonthModal.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useMonths } from '../../../contexts/MonthsContext';
 import Modal from "../../../commonComponents/modal/Modal";
 
-function MonthModal({ isOpen, setIsModalOpen, monthData }) {
-	const { months, monthMap, createMonth } = useMonths();
+function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
+	const { months, monthMap, createMonth, updateMonth } = useMonths();
 
-	const isEditMode = monthData !== undefined;
+	const isEditMode = monthData !== null;
 	const title = isEditMode ? "Edit Month" : "Add Month";
-	const initialMonth = isEditMode ? monthData.monthNumber : 0;
-	const initialYear = isEditMode ? monthData.year : "";
 
-	const [month, setMonth] = useState(initialMonth);
-	const [year, setYear] = useState(initialYear);
+	const [month, setMonth] = useState(0);
+	const [year, setYear] = useState("");
 	const [touched, setTouched] = useState({
 		month: false,
 		year: false
 	});
+
+	useEffect(() => {
+		if (isEditMode && monthData) {
+			setMonth(monthData.monthNumber);
+			setYear(monthData.year);
+		} else {
+			setMonth(0);
+			setYear("");
+		}
+	}, [isOpen]);
 
 	const isMonthSet = month !== 0;
 	const isYearSet = year !== "";
@@ -25,27 +33,33 @@ function MonthModal({ isOpen, setIsModalOpen, monthData }) {
 	const monthAlreadyExists = months.find(m => m.monthNumber === month && m.year === year && (!isEditMode || m.id !== monthData.id)) !== undefined;
 	const isFormValid = isMonthSet && isYearValid && !monthAlreadyExists;
 
-	// TODO: Test this once we implement edit mode!
 	const hasUnsavedChanges = isEditMode
-		? (month !== initialMonth) || (year !== initialYear)
+		? (month !== monthData.monthNumber) || (year !== monthData.year)
 		: isMonthSet || isYearSet;
 
 	const handleSave = async () => {
 		try {
-			await createMonth({ monthNumber: month, year: year });
-			toast.success("Month created successfully");
-			closeModal();
+			if (isEditMode) {
+				if(month !== monthData.monthNumber || year !== monthData.year) {
+					await updateMonth(monthData.id, { monthNumber: month, year: year });
+					toast.success("Month updated successfully");
+				} else {
+					toast.info("No changes to save");
+				}
+			} else {
+				await createMonth({ monthNumber: month, year: year });
+				toast.success("Month created successfully");
+			}
+			handleClose();
 		}
 		catch (error) {
-			toast.error(error.message || "Failed to create month");
+			let verb = isEditMode ? "update" : "create";
+			toast.error(error.message || `Failed to ${verb} month`);
 		}
 	};
 
 	const handleClose = () => {
-		closeModal();
-	}
-
-	const closeModal = () => {
+		setMonthData(null);
 		setMonth(0);
 		setYear("");
 		setTouched({
@@ -53,14 +67,14 @@ function MonthModal({ isOpen, setIsModalOpen, monthData }) {
 			year: false
 		});
 		setIsModalOpen(false);
-	}
+	};
 
 	const monthOptions = monthMap.map(m => ({ value: m.number, label: m.name }));
 	monthOptions.unshift({ value: 0, label: "-- Select Month --" });
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} onSave={handleSave} isSaveEnabled={isFormValid} title={title} hasUnsavedChanges={hasUnsavedChanges}>
-			<form className="month-form">
+			<div className="month-form">
 				<div className="form-group">
 					<label htmlFor="monthDropdown" className="required-label">Month</label>
 					<select
@@ -99,10 +113,10 @@ function MonthModal({ isOpen, setIsModalOpen, monthData }) {
 						<span className="error-text">Year must be between 2000 and 3000 (inclusive)</span>
 					)}
 				</div>
-				{touched.month && touched.year && monthAlreadyExists && (
+				{(touched.month || touched.year) && monthAlreadyExists && (
 					<span className="error-text">A month with this month and year already exists</span>
 				)}
-			</form>
+			</div>
 		</Modal>
 	);
 }

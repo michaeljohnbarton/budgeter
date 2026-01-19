@@ -36,13 +36,30 @@
 	background-color: #c4c4c4;
 }
 
-#months-table td:nth-child(2),
-#months-table td:nth-child(3) {
-	width: 2rem;
-	text-align: right;
-}
-
 .current-month {
 	background-color: #dedede;
 	font-weight: 600;
+}
+
+.icon-button {
+	float: right;
+	background: none;
+	border: none;
+	cursor: pointer;
+	margin: 0 0.25rem;
+	display: inline-flex;
+	font-size: 1rem;
+	color: #333;
+}
+
+.icon-button:hover {
+	color: #111827;
+}
+
+.icon-button.delete:hover {
+	color: #dc2626;
+}
+
+.icon-button.edit:hover {
+	color: gray;
 }
