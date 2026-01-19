@@ -45,5 +45,19 @@ namespace Budgeter.SqlServer.Repositories
 				}
 			}
 		}
+
+		public void Delete(int monthId)
+		{
+			string sql = "DELETE FROM [Month] WHERE ID = @Id";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				int rowsAffected = connection.Execute(sql, new { id = monthId });
+				if (rowsAffected == 0)
+				{
+					throw new NotFoundException("Month does not exist");
+				}
+			}
+		}
 	}
 }

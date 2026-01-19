@@ -9,5 +9,6 @@ namespace Budgeter.Repository.Repositories
 		void Create(Month monthToCreate);
 		IEnumerable<Month> Get();
 		void Update(Month monthToUpdate);
+		void Delete(int monthId);
 	}
 }

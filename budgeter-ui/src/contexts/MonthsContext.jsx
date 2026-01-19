@@ -26,26 +26,6 @@ export function MonthsProvider({ children }) {
 
 	const hasFetched = useRef(false);
 
-	async function fetchMonths({ force = false } = {}) {
-		if (hasFetched.current && !force) return;
-
-		try {
-			setLoading(LoadingType.FULLSCREEN);
-			setError(null);
-
-			const response = await fetch("http://localhost:60060/api/Month");
-			if (!response.ok) throw new Error("Failed to fetch months");
-
-			const data = await response.json();
-			setMonths(data);
-			hasFetched.current = true;
-		} catch (err) {
-			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
-		} finally {
-			setLoading(LoadingType.NONE);
-		}
-	}
-
 	async function createMonth(payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
@@ -65,6 +45,26 @@ export function MonthsProvider({ children }) {
 			await fetchMonths({ force: true });
 		} catch (err) {
 			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
+	async function fetchMonths({ force = false } = {}) {
+		if (hasFetched.current && !force) return;
+
+		try {
+			setLoading(LoadingType.FULLSCREEN);
+			setError(null);
+
+			const response = await fetch("http://localhost:60060/api/Month");
+			if (!response.ok) throw new Error("Failed to fetch months");
+
+			const data = await response.json();
+			setMonths(data);
+			hasFetched.current = true;
+		} catch (err) {
+			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
 		} finally {
 			setLoading(LoadingType.NONE);
 		}
@@ -94,12 +94,34 @@ export function MonthsProvider({ children }) {
 		}
 	}
 
+	async function deleteMonth(monthId) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/Month/${monthId}`, {
+				method: "DELETE"
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to delete month");
+			}
+
+			await fetchMonths({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchMonths();
 	}, []);
 
 	return (
-		<MonthsContext.Provider value={{ months, error, monthMap, fetchMonths, createMonth, updateMonth }}>
+		<MonthsContext.Provider value={{ months, error, monthMap, createMonth, fetchMonths, updateMonth, deleteMonth }}>
 			{children}
 		</MonthsContext.Provider>
 	);

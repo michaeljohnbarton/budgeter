@@ -45,5 +45,10 @@ namespace Budgeter.Api.Services
 				Year = monthToUpdate.Year!.Value
 			});
 		}
+
+		public void Delete(int monthId)
+		{
+			_monthRepository.Delete(monthId);
+		}
 	}
 }
