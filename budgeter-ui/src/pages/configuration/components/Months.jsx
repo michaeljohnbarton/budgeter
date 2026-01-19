@@ -54,7 +54,14 @@ function Months({ registerNewHandler }) {
 		}
 	}, [months]);
 
-	if (!months || months.length === 0) return <p>No months were found. Create one.</p>;
+	if (!months || months.length === 0) {
+		return (
+			<>
+				<p>No months were found. Create one.</p>
+				<MonthModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setMonthData={setMonthData} />
+			</>
+		);
+	}
 
 	return (
 		<div id="months-configuration">
