@@ -6,7 +6,7 @@ import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 
 function Home() {
 	const { loading, LoadingType } = useLoading();
-	const { months, error } = useMonths();
+	const { months, monthMap, error } = useMonths();
 	const [selectedMonth, setSelectedMonth] = useState('');
 
 	const currentDate = new Date();
@@ -26,13 +26,16 @@ function Home() {
 	var monthsForDropdown = months.map((month) => ({
 		key: month.id,
 		value: month.id,
-		display: `${month.name} ${month.year}`
+		display: `${monthMap.find(x => x.number === month.monthNumber).name} ${month.year}`
 	}));
+
+	// TODO: Probably temporary for the <p> tag to display forn ow as we build this
+	var selectedMonthObject = months.find(m => m.id === selectedMonth);
 
 	return (
 		<div id="home-page">
 			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth} />
-			<p>{months[selectedMonth - 1]?.name} {months[selectedMonth - 1]?.year} is selected</p>
+			<p>{monthMap.find(x => x.number === selectedMonthObject?.monthNumber)?.name} {selectedMonthObject?.year} is selected</p>
 		</div>
 	)
 }
