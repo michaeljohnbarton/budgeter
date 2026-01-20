@@ -2,7 +2,7 @@ import './Months.css';
 import { useEffect, useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { useMonths } from '../../../contexts/MonthsContext';
+import { useMonths } from '../../../../contexts/MonthsContext';
 import MonthModal from './MonthModal';
 
 function Months({ registerNewHandler }) {

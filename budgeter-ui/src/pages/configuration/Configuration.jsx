@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
-import Months from './components/Months';
+import Months from './components/Month/Months';
 
 function Configuration() {
 	const { loading, LoadingType } = useLoading();

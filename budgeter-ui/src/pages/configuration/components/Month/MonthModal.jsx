@@ -1,8 +1,8 @@
 import './MonthModal.css';
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
-import { useMonths } from '../../../contexts/MonthsContext';
-import Modal from "../../../commonComponents/modal/Modal";
+import { useMonths } from '../../../../contexts/MonthsContext';
+import Modal from "../../../../commonComponents/modal/Modal";
 
 function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 	const { months, monthMap, createMonth, updateMonth } = useMonths();
