@@ -1,4 +1,4 @@
-import "./Modal.css";
+import styles from "./Modal.module.css";
 
 function Modal({ isOpen, onClose, onSave, isSaveEnabled, title, children, hasUnsavedChanges }) {
 	if (!isOpen) return null;
@@ -19,14 +19,14 @@ function Modal({ isOpen, onClose, onSave, isSaveEnabled, title, children, hasUns
 
 	return (
 		<>
-			<div className="modal-backdrop" onClick={handleClose} />
+			<div className={styles.modalBackdrop} onClick={handleClose} />
 
-			<div className="modal">
-				<div className="modal-header">
+			<div className={styles.modal}>
+				<div className={styles.modalHeader}>
 					<h2>{title}</h2>
 				</div>
-				<div className="modal-body">{children}</div>
-				<div className="modal-footer">
+				<div className={styles.modalBody}>{children}</div>
+				<div className={styles.modalFooter}>
 					<button onClick={handleClose}>Cancel</button>
 					<button onClick={handleSave} disabled={!isSaveEnabled}>Save</button>
 				</div>

@@ -1,38 +1,38 @@
-.month-form {
+.monthForm {
 	max-width: 400px;
 	padding: 1.5rem;
 }
 
-.form-group {
+.formGroup {
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 1.25rem;
 }
 
-.form-group:nth-last-of-type(1) {
+.formGroup:nth-last-of-type(1) {
 	margin-bottom: 0;
 }
 
-.form-group label {
+.formGroup label {
 	margin-bottom: 0.4rem;
 	font-size: 0.9rem;
 }
 
-.required-label::after {
+.requiredLabel::after {
 	content: " *";
 	color: #dc2626;
 	font-weight: 600;
 }
 
-.error-text {
+.errorText {
 	margin-top: 0.35rem;
 	font-size: 0.8rem;
 	color: #dc2626;
 	display: inline-block;
 }
 
-.form-group input,
-.form-group select {
+.formGroup input,
+.formGroup select {
 	padding: 0.5rem 0.65rem;
 	font-size: 0.95rem;
 	border: 1px solid #ccc;
@@ -41,14 +41,14 @@
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.formGroup input:focus,
+.formGroup select:focus {
 	outline: none;
 	border-color: #4f46e5;
 	box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
 }
 
-.form-group input:hover,
-.form-group select:hover {
+.formGroup input:hover,
+.formGroup select:hover {
 	border-color: #999;
 }

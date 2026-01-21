@@ -1,4 +1,4 @@
-import './Home.css';
+import styles from './Home.module.css';
 import { useState, useEffect } from 'react';
 import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
@@ -35,7 +35,7 @@ function Home() {
 	return (
 		<div id="home-page">
 			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth} />
-			<p>{monthMap.find(x => x.number === selectedMonthObject?.monthNumber)?.name} {selectedMonthObject?.year} is selected</p>
+			<p className={styles.text}>{monthMap.find(x => x.number === selectedMonthObject?.monthNumber)?.name} {selectedMonthObject?.year} is selected</p>
 		</div>
 	)
 }

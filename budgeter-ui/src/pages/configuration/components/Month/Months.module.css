@@ -1,10 +1,10 @@
-#months-configuration {
+.monthsConfiguration {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 }
 
-#table-wrapper {
+.tableWrapper {
 	width: 50%;
 	overflow-y: auto;
 	margin: 1rem auto;
@@ -17,31 +17,31 @@
 		0 4px 8px rgba(0, 0, 0, 0.04);
 }
 
-#months-table {
+.monthsTable {
 	width: 100%;
 	border-collapse: collapse;
 	font-size: 0.95rem;
 }
 
-#months-table td {
+.monthsTable td {
 	padding: 0.75rem 1rem;
 	border-bottom: 1px solid #f0f0f0;
 }
 
-#months-table tbody tr:nth-child(even) {
+.monthsTable tbody tr:nth-child(even) {
 	background-color: #f8f8f8;
 }
 
-#months-table tbody tr:hover {
+.monthsTable tbody tr:hover {
 	background-color: #c4c4c4;
 }
 
-.current-month {
+.currentMonth {
 	background-color: #dedede;
 	font-weight: 600;
 }
 
-.icon-button {
+.iconButton {
 	float: right;
 	background: none;
 	border: none;
@@ -52,14 +52,14 @@
 	color: #333;
 }
 
-.icon-button:hover {
+.iconButton:hover {
 	color: #111827;
 }
 
-.icon-button.delete:hover {
+.delete:hover {
 	color: #dc2626;
 }
 
-.icon-button.edit:hover {
+.edit:hover {
 	color: gray;
 }

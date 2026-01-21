@@ -1,4 +1,4 @@
-.modal-backdrop {
+.modalBackdrop {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -22,44 +22,45 @@
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.modal-header h2 {
+/*CHECK!*/
+.modalHeader h2 {
 	margin-top: 0;
 }
 
-.modal-body {
+.modalBody {
 	margin-top: 1rem;
 }
 
-.modal-footer {
+.modalFooter {
 	display: flex;
 	justify-content: flex-end;
 	gap: 0.5rem;
 	margin-top: 1rem;
 }
 
-.modal-footer button {
+.modalFooter button {
 	padding: 0.5rem 1rem;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
 }
 
-.modal-footer button:hover {
+.modalFooter button:hover {
 	opacity: 0.9;
 }
 
 /* Cancel */
-.modal-footer button:first-child {
+.modalFooter button:first-child {
 	background-color: #ccc;
 }
 
 /* Save */
-.modal-footer button:last-child {
+.modalFooter button:last-child {
 	background-color: #333;
 	color: white;
 }
 
-.modal-footer button:last-child:disabled {
+.modalFooter button:last-child:disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
 }

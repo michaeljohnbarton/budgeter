@@ -1,7 +1,8 @@
-import './Months.css';
+import styles from './Months.module.css';
 import { useEffect, useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import clsx from 'clsx';
 import { useMonths } from '../../../../contexts/MonthsContext';
 import MonthModal from './MonthModal';
 
@@ -64,9 +65,9 @@ function Months({ registerNewHandler }) {
 	}
 
 	return (
-		<div id="months-configuration">
-			<div id="table-wrapper">
-				<table id="months-table">
+		<div className={styles.monthsConfiguration}>
+			<div className={styles.tableWrapper}>
+				<table className={styles.monthsTable}>
 					<tbody>
 						{months.map((month) => {
 							const isCurrent =
@@ -77,13 +78,13 @@ function Months({ registerNewHandler }) {
 								<tr
 									key={month.id}
 									ref={isCurrent ? currentRowRef : null}
-									className={isCurrent ? "current-month" : undefined}
+									className={isCurrent ? styles.currentMonth : undefined}
 								>
 									<td>{monthMap.find(x => x.number === month.monthNumber).name} {month.year}</td>
 									<td className="actions">
 										{/* Delete and edit ordered this way because of float right CSS */}
 										<button
-											className="icon-button delete"
+											className={clsx(styles.iconButton, styles.delete)}
 											onClick={() => handleDeleteClick(month.id)}
 											aria-label="Delete"
 										>
@@ -91,7 +92,7 @@ function Months({ registerNewHandler }) {
 										</button>
 
 										<button
-											className="icon-button edit"
+											className={clsx(styles.iconButton, styles.edit)}
 											onClick={() => handleEditClick(month)}
 											aria-label="Edit"
 										>

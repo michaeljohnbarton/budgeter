@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-// import "./styles.css"; // Only used for React tutorial example
-import "./index.css";
+import "./global.css";
 
 import App from "./App";
 // import App from "./oldFiles/AppReactTutorial"

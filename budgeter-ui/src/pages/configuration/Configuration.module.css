@@ -1,9 +1,9 @@
-#configuration-page {
+.configurationPage {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 }
 
-#configuration-content {
+.configurationContent {
 	overflow: hidden;
 }

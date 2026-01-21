@@ -7,24 +7,24 @@
 	padding: 10px 20px;
 }
 
-.navbar-logo a {
+.navbarLogo a {
 	color: white;
 	text-decoration: none;
 	font-size: 1.5rem;
 	font-weight: bold;
 }
 
-.nav-links {
+.navLinks {
 	list-style: none;
 	display: flex;
 }
 
-.nav-links li a {
+.navLinks li a {
 	color: white;
 	text-decoration: none;
 	padding: 0 10px;
 }
 
-.nav-links li a:hover {
+.navLinks li a:hover {
 	color: #ddd;
 }

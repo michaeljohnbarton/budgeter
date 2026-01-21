@@ -1,4 +1,4 @@
-import './Configuration.css';
+import styles from './Configuration.module.css';
 import { useState } from 'react';
 import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
@@ -25,9 +25,9 @@ function Configuration() {
 	if (error) return <p>Error: {error}</p>;
 
 	return (
-		<div id="configuration-page">
+		<div className={styles.configurationPage}>
 			<TitleDropdown items={options} selectedValue={selectedOption} setSelectedValue={setSelectedOption} onNewButtonClick={newButtonHandler} />
-			<div id="configuration-content">
+			<div className={styles.configurationContent}>
 				{SelectedComponent && <SelectedComponent {...selected.props} />}
 			</div>
 		</div>

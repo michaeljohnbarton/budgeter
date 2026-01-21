@@ -1,9 +1,9 @@
-import "./TitleDropdown.css";
+import styles from "./TitleDropdown.module.css";
 
 function TitleDropdown({ items, selectedValue, setSelectedValue, onNewButtonClick }) {
 	return (
-		<div id="title-dropdown-wrapper">
-			<select id="title-dropdown" value={selectedValue} onChange={(e) => setSelectedValue(Number(e.target.value))}>
+		<div className={styles.titleDropdownWrapper}>
+			<select id="title-dropdown" className={styles.titleDropdown} value={selectedValue} onChange={(e) => setSelectedValue(Number(e.target.value))}>
 				{items.map((item) => (
 					<option key={item.key} value={item.value}>
 						{item.display}
@@ -11,7 +11,7 @@ function TitleDropdown({ items, selectedValue, setSelectedValue, onNewButtonClic
 				))}
 			</select>
 			{
-				onNewButtonClick && <button id="new-item-button" onClick={onNewButtonClick}>New</button>
+				onNewButtonClick && <button className={styles.newItemButton} onClick={onNewButtonClick}>New</button>
 			}
 		</div>
 	);

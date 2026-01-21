@@ -1,9 +1,0 @@
-#app-layout {
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-}
-
-#app-content {
-	overflow: hidden;
-}

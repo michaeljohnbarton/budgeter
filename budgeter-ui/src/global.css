@@ -12,3 +12,13 @@ body,
 body {
 	overflow: hidden;
 }
+
+#app-layout {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+#app-content {
+	overflow: hidden;
+}

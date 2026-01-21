@@ -1,4 +1,4 @@
-import './MonthModal.css';
+import styles from './MonthModal.module.css';
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useMonths } from '../../../../contexts/MonthsContext';
@@ -74,9 +74,9 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} onSave={handleSave} isSaveEnabled={isFormValid} title={title} hasUnsavedChanges={hasUnsavedChanges}>
-			<div className="month-form">
-				<div className="form-group">
-					<label htmlFor="monthDropdown" className="required-label">Month</label>
+			<div className={styles.monthForm}>
+				<div className={styles.formGroup}>
+					<label htmlFor="monthDropdown" className={styles.requiredLabel}>Month</label>
 					<select
 						id="monthDropdown"
 						name="monthDropdown"
@@ -91,11 +91,11 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 						}
 					</select>
 					{touched.month && !isMonthSet && (
-						<span className="error-text">This field is required</span>
+						<span className={styles.errorText}>This field is required</span>
 					)}
 				</div>
-				<div className="form-group">
-					<label htmlFor="year" className="required-label">Year</label>
+				<div className={styles.formGroup}>
+					<label htmlFor="year" className={styles.requiredLabel}>Year</label>
 					<input
 						type="number"
 						id="year"
@@ -107,14 +107,14 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 						onBlur={() => setTouched((t) => ({ ...t, year: true }))}
 						required />
 					{touched.year && !isYearSet && (
-						<span className="error-text">This field is required</span>
+						<span className={styles.errorText}>This field is required</span>
 					)}
 					{touched.year && !isYearValid && (
-						<span className="error-text">Year must be between 2000 and 3000 (inclusive)</span>
+						<span className={styles.errorText}>Year must be between 2000 and 3000 (inclusive)</span>
 					)}
 				</div>
 				{(touched.month || touched.year) && monthAlreadyExists && (
-					<span className="error-text">A month with this month and year already exists</span>
+					<span className={styles.errorText}>A month with this month and year already exists</span>
 				)}
 			</div>
 		</Modal>

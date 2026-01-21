@@ -1,4 +1,4 @@
-#title-dropdown-wrapper {
+.titleDropdownWrapper {
 	width: 50%;
 	margin: 2rem auto 0 auto;
 	display: grid;
@@ -6,7 +6,7 @@
 	align-items: center;
 }
 
-#title-dropdown {
+.titleDropdown {
 	grid-column: 2;
 	appearance: none;
 	-webkit-appearance: none;
@@ -27,16 +27,16 @@
 		transform 0.15s ease;
 }
 
-#title-dropdown:hover {
+.titleDropdown:hover {
 	border-bottom-color: currentColor;
 	transform: translateY(-1px);
 }
 
-#title-dropdown:focus {
+.titleDropdown:focus {
 	outline: none;
 }
 
-#new-item-button {
+.newItemButton {
 	grid-column: 3;
 	width: fit-content;
 	justify-self: end;
@@ -51,11 +51,11 @@
 	transition: background-color 0.3s, transform 0.15s ease;
 }
 
-#new-item-button:hover {
+.newItemButton:hover {
 	background-color: gray;
 	transform: translateY(-1px);
 }
 
-#new-item-button:active {
+.newItemButton:active {
 	transform: translateY(0);
 }

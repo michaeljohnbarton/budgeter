@@ -1,4 +1,4 @@
-.loading-indicator {
+.loadingIndicator {
 	position: fixed;
 	inset: 0;
 	background: rgba(255, 255, 255, 0.75);
@@ -8,7 +8,7 @@
 	z-index: 9999;
 }
 
-.loading-content {
+.loadingContent {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
