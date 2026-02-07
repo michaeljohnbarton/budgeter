@@ -9,6 +9,7 @@ namespace Budgeter.Api.IoC
 		public static void AddServices(IServiceCollection services)
 		{
 			services.AddScoped<IMonthRepository, MonthRepository>();
+			services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 		}
 	}
 }

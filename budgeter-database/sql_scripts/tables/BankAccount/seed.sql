@@ -3,7 +3,7 @@ USE budgeter;
 SET IDENTITY_INSERT BankAccount ON;
 
 INSERT INTO BankAccount
-    (ID, [Name], MonthlyBalancePropogationType, HasBudgetedAmounts)
+    (ID, [Name], MonthlyBalancePropagationType, HasBudgetedAmounts)
 VALUES
     (1, 'ONE Debit', 'BankAccount', 1),
     (2, 'ONE Savings', 'Subcategory', 0),

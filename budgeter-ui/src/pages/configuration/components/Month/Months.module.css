@@ -1,3 +1,7 @@
+p {
+	text-align: center;
+}
+
 .monthsConfiguration {
 	height: 100%;
 	display: flex;

@@ -4,6 +4,7 @@ import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import Months from './components/Month/Months';
+import BankAccounts from './components/BankAccount/BankAccounts';
 
 function Configuration() {
 	const { loading, LoadingType } = useLoading();
@@ -13,7 +14,7 @@ function Configuration() {
 
 	const options = [
 		{ key: 1, value: 1, display: 'Months', component: Months, props: { registerNewHandler: setNewButtonHandler } },
-		{ key: 2, value: 2, display: 'Bank Accounts' },
+		{ key: 2, value: 2, display: 'Bank Accounts', component: BankAccounts, props: { registerNewHandler: setNewButtonHandler } },
 		{ key: 3, value: 3, display: 'Categories' },
 		{ key: 4, value: 4, display: 'Subcategories' }
 	]

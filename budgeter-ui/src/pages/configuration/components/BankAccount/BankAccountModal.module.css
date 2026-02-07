@@ -1,0 +1,61 @@
+.monthForm {
+	max-width: 400px;
+	padding: 1.5rem;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1.25rem;
+}
+
+.formGroup:nth-last-of-type(1) {
+	margin-bottom: 0;
+}
+
+.formGroup label {
+	margin-bottom: 0.4rem;
+	font-size: 0.9rem;
+}
+
+.requiredLabel::after {
+	content: " *";
+	color: #dc2626;
+	font-weight: 600;
+}
+
+.errorText {
+	margin-top: 0.35rem;
+	font-size: 0.8rem;
+	color: #dc2626;
+	display: inline-block;
+}
+
+.formGroup input,
+.formGroup select {
+	padding: 0.5rem 0.65rem;
+	font-size: 0.95rem;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background-color: #fff;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+	outline: none;
+	border-color: #4f46e5;
+	box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+}
+
+.formGroup input:hover,
+.formGroup select:hover {
+	border-color: #999;
+}
+
+.checkboxLabel {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0;
+}

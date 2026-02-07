@@ -6,9 +6,9 @@ BEGIN
     (
         ID INT IDENTITY(1,1) CONSTRAINT PK_BankAccount_ID PRIMARY KEY,
         [Name] VARCHAR(100) NOT NULL,
-        MonthlyBalancePropogationType VARCHAR(11) NOT NULL
-            CONSTRAINT CHK_BankAccount_MonthlyBalancePropogationType
-            CHECK (MonthlyBalancePropogationType IN ('BankAccount', 'Subcategory')),
+        MonthlyBalancePropagationType VARCHAR(11) NOT NULL
+            CONSTRAINT CHK_BankAccount_MonthlyBalancePropagationType
+            CHECK (MonthlyBalancePrapogationType IN ('BankAccount', 'Subcategory')),
         HasBudgetedAmounts BIT NOT NULL
     );
 END;

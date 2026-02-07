@@ -79,7 +79,6 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 					<label htmlFor="monthDropdown" className={styles.requiredLabel}>Month</label>
 					<select
 						id="monthDropdown"
-						name="monthDropdown"
 						value={month}
 						onChange={(e) => setMonth(Number(e.target.value))}
 						onBlur={() => setTouched((t) => ({ ...t, month: true }))}
@@ -99,7 +98,6 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 					<input
 						type="number"
 						id="year"
-						name="year"
 						min="2000"
 						max="3000"
 						value={year}
