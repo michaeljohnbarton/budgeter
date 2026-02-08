@@ -5,7 +5,7 @@ using Dapper;
 
 namespace Budgeter.SqlServer.Repositories
 {
-    public class BankAccountRepository : IBankAccountRepository
+	public class BankAccountRepository : IBankAccountRepository
 	{
 		public BankAccountRepository()
 		{
@@ -20,6 +20,16 @@ namespace Budgeter.SqlServer.Repositories
 			using (var connection = new SqlConnection(connectionString))
 			{
 				connection.Execute(sql, bankAccountToCreate);
+			}
+		}
+
+		public IEnumerable<BankAccount> Get()
+		{
+			string sql = "SELECT ID, [Name], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, HasBudgetedAmounts FROM [BankAccount] ORDER BY [Name]";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				return connection.Query<BankAccount>(sql).ToList();
 			}
 		}
 	}

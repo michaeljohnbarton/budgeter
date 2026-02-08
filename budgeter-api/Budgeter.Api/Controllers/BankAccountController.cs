@@ -29,6 +29,12 @@ namespace Budgeter.Api.Controllers
 			_bankAccountService.Create(bankAccountToCreate);
 			return Ok();
 		}
+
+		[HttpGet]
+		public IEnumerable<BankAccount> Get()
+		{
+			return _bankAccountService.Get();
+		}
 	}
 }
 

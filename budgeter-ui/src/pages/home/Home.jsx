@@ -29,7 +29,7 @@ function Home() {
 		display: `${monthMap.find(x => x.number === month.monthNumber).name} ${month.year}`
 	}));
 
-	// TODO: Probably temporary for the <p> tag to display forn ow as we build this
+	// TODO: Probably temporary for the <p> tag to display for now as we build this
 	var selectedMonthObject = months.find(m => m.id === selectedMonth);
 
 	return (

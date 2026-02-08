@@ -1,9 +1,12 @@
 import styles from './BankAccounts.module.css';
 import { useEffect, useState } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import clsx from 'clsx';
+import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import BankAccountModal from './BankAccountModal';
 
 function BankAccounts({ registerNewHandler }) {
-	const bankAccounts = [];
+	const { bankAccounts } = useBankAccounts();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
@@ -25,8 +28,37 @@ function BankAccounts({ registerNewHandler }) {
 	}
 
 	return (
-		<div id="bank-accounts-configuration">
-			<p>No bank accounts yet</p>
+		<div className={styles.bankAccountsConfiguration}>
+			<div className={styles.tableWrapper}>
+				<table className={styles.bankAccountsTable}>
+					<tbody>
+						{bankAccounts.map((account) => (
+							<tr key={account.id}>
+								<td>{account.name}</td>
+								<td className="actions">
+									{/* Delete and edit ordered this way because of float right CSS */}
+									<button
+										className={clsx(styles.iconButton, styles.delete)}
+										// onClick={() => handleDeleteClick(month.id)}
+										aria-label="Delete"
+									>
+										<FaTrash />
+									</button>
+
+									<button
+										className={clsx(styles.iconButton, styles.edit)}
+										// onClick={() => handleEditClick(month)}
+										aria-label="Edit"
+									>
+										<FaEdit />
+									</button>
+								</td>
+							</tr>
+						))}
+
+					</tbody>
+				</table>
+			</div>
 			<BankAccountModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 		</div>
 	);

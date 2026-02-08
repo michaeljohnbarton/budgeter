@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
 
 const BankAccountsContext = createContext();
@@ -7,7 +7,8 @@ export function BankAccountsProvider({ children }) {
 	const { setLoading, LoadingType } = useContext(LoadingContext);
 
 	const [bankAccounts, setBankAccounts] = useState([]);
-	const [error, setError] = useState(null);
+
+	const hasFetched = useRef(false);
 
 	async function createBankAccount(payload) {
 		try {
@@ -24,6 +25,8 @@ export function BankAccountsProvider({ children }) {
 				const responseData = await response.text();
 				throw new Error(responseData || "Failed to create bank account");
 			}
+
+			await fetchBankAccounts({ force: true });
 		} catch (err) {
 			throw err;
 		} finally {
@@ -31,8 +34,31 @@ export function BankAccountsProvider({ children }) {
 		}
 	}
 
+	async function fetchBankAccounts({ force = false } = {}) {
+		if (hasFetched.current && !force) return;
+
+		try {
+			setLoading(LoadingType.FULLSCREEN);
+
+			const response = await fetch("http://localhost:60060/api/BankAccount");
+			if (!response.ok) throw new Error("Failed to fetch bank accounts");
+
+			const data = await response.json();
+			setBankAccounts(data);
+			hasFetched.current = true;
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
+	useEffect(() => {
+		fetchBankAccounts();
+	}, []);
+
 	return (
-		<BankAccountsContext.Provider value={{ bankAccounts, error, createBankAccount }}>
+		<BankAccountsContext.Provider value={{ bankAccounts, createBankAccount }}>
 			{children}
 		</BankAccountsContext.Provider>
 	);

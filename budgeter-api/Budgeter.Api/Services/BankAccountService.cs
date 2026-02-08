@@ -17,26 +17,40 @@ namespace Budgeter.Api.Services
 
 		public void Create(CreateBankAccount bankAccountToCreate)
 		{
-			MonthlyBalancePropagationTypeRepositoryEnum monthlyBalancePropagationType;
-
-			switch(bankAccountToCreate.MonthlyBalancePropagationType)
+			MonthlyBalancePropagationTypeRepositoryEnum monthlyBalancePropagationType = bankAccountToCreate.MonthlyBalancePropagationType switch
 			{
-				case MonthlyBalancePropagationType.BankAccount:
-					monthlyBalancePropagationType = MonthlyBalancePropagationTypeRepositoryEnum.BankAccount;
-					break;
-				case MonthlyBalancePropagationType.Subcategory:
-					monthlyBalancePropagationType = MonthlyBalancePropagationTypeRepositoryEnum.Subcategory;
-					break;
-				default:
-					monthlyBalancePropagationType = MonthlyBalancePropagationTypeRepositoryEnum.BankAccount;
-					break;
-			}
+				MonthlyBalancePropagationType.BankAccount => MonthlyBalancePropagationTypeRepositoryEnum.BankAccount,
+				MonthlyBalancePropagationType.Subcategory => MonthlyBalancePropagationTypeRepositoryEnum.Subcategory,
+				_ => MonthlyBalancePropagationTypeRepositoryEnum.BankAccount
+			};
 
 			_bankAccountRepository.Create(new BankAccountRepositoryModel
 			{
 				Name = bankAccountToCreate.Name,
 				MonthlyBalancePropagationType = monthlyBalancePropagationType,
 				HasBudgetedAmounts = bankAccountToCreate.HasBudgetedAmounts ?? false
+			});
+		}
+
+		public IEnumerable<BankAccount> Get()
+		{
+			IEnumerable<BankAccountRepositoryModel> results = _bankAccountRepository.Get();
+			return results.Select(result =>
+			{
+				MonthlyBalancePropagationType monthlyBalancePropagationType = result.MonthlyBalancePropagationType switch
+				{
+					MonthlyBalancePropagationTypeRepositoryEnum.BankAccount => MonthlyBalancePropagationType.BankAccount,
+					MonthlyBalancePropagationTypeRepositoryEnum.Subcategory => MonthlyBalancePropagationType.Subcategory,
+					_ => MonthlyBalancePropagationType.BankAccount
+				};
+
+				return new BankAccount
+				{
+					ID = result.ID,
+					Name = result.Name,
+					MonthlyBalancePropagationType = monthlyBalancePropagationType,
+					HasBudgetedAmounts = result.HasBudgetedAmounts
+				};
 			});
 		}
 	}

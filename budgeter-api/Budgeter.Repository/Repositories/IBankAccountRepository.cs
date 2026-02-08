@@ -6,6 +6,7 @@ namespace Budgeter.Repository.Repositories
 	public interface IBankAccountRepository
 	{
 		void Create(BankAccount bankAccountToCreate);
+		IEnumerable<BankAccount> Get();
 	}
 }
 
