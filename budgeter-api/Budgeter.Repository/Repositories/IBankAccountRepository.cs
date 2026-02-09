@@ -8,6 +8,7 @@ namespace Budgeter.Repository.Repositories
 		void Create(BankAccount bankAccountToCreate);
 		IEnumerable<BankAccount> Get();
 		void Update(BankAccount bankAccountToUpdate);
+		void Delete(int bankAccountId);
 	}
 }
 

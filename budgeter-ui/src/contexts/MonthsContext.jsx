@@ -121,7 +121,7 @@ export function MonthsProvider({ children }) {
 	}, []);
 
 	return (
-		<MonthsContext.Provider value={{ months, error, monthMap, createMonth, fetchMonths, updateMonth, deleteMonth }}>
+		<MonthsContext.Provider value={{ months, error, monthMap, createMonth, updateMonth, deleteMonth }}>
 			{children}
 		</MonthsContext.Provider>
 	);

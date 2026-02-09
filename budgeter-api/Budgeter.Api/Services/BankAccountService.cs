@@ -58,6 +58,11 @@ namespace Budgeter.Api.Services
 			});
 		}
 
+		public void Delete(int bankAccountId)
+		{
+			_bankAccountRepository.Delete(bankAccountId);
+		}
+
 		private static MonthlyBalancePropagationTypeRepositoryEnum ConvertToRepositoryEnum(MonthlyBalancePropagationType? monthlyBalancePropagationType)
 		{
 			return monthlyBalancePropagationType switch

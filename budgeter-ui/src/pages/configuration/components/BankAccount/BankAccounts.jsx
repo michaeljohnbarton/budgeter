@@ -1,12 +1,13 @@
 import styles from './BankAccounts.module.css';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import clsx from 'clsx';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import BankAccountModal from './BankAccountModal';
 
 function BankAccounts({ registerNewHandler }) {
-	const { bankAccounts } = useBankAccounts();
+	const { bankAccounts, deleteBankAccount } = useBankAccounts();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [bankAccountData, setBankAccountData] = useState(null);
 
@@ -22,6 +23,21 @@ function BankAccounts({ registerNewHandler }) {
 	const handleEditClick = (bankAccount) => {
 		setBankAccountData(bankAccount);
 		setIsModalOpen(true);
+	};
+
+	const handleDeleteClick = (bankAccountId) => {
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete this bank account? This action cannot be undone."
+		);
+		if (!confirmDelete) return;
+
+		try {
+			deleteBankAccount(bankAccountId);
+			toast.success("Bank account deleted successfully");
+		}
+		catch (error) {
+			toast.error(error.message || "Failed to delete bank account");
+		}
 	};
 
 	if (!bankAccounts || bankAccounts.length === 0) {
@@ -45,7 +61,7 @@ function BankAccounts({ registerNewHandler }) {
 									{/* Delete and edit ordered this way because of float right CSS */}
 									<button
 										className={clsx(styles.iconButton, styles.delete)}
-										// onClick={() => handleDeleteClick(month.id)}
+										onClick={() => handleDeleteClick(bankAccount.id)}
 										aria-label="Delete"
 									>
 										<FaTrash />

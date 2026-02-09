@@ -8,10 +8,6 @@ namespace Budgeter.SqlServer.Repositories
 {
 	public class BankAccountRepository : IBankAccountRepository
 	{
-		public BankAccountRepository()
-		{
-		}
-
 		private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
 
 		public void Create(BankAccount bankAccountToCreate)
@@ -48,6 +44,20 @@ WHERE ID = @ID";
 			using (var connection = new SqlConnection(connectionString))
 			{
 				int rowsAffected = connection.Execute(sql, bankAccountToUpdate);
+				if (rowsAffected == 0)
+				{
+					throw new NotFoundException("Bank account does not exist");
+				}
+			}
+		}
+
+		public void Delete(int bankAccountId)
+		{
+			string sql = "DELETE FROM [BankAccount] WHERE ID = @ID";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				int rowsAffected = connection.Execute(sql, new { id = bankAccountId });
 				if (rowsAffected == 0)
 				{
 					throw new NotFoundException("Bank account does not exist");

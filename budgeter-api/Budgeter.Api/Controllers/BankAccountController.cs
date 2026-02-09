@@ -56,6 +56,22 @@ namespace Budgeter.Api.Controllers
 				return NotFound(e.Message);
 			}
 		}
+
+		[HttpDelete("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public IActionResult Delete([FromRoute] int id)
+		{
+			try
+			{
+				_bankAccountService.Delete(id);
+				return Ok();
+			}
+			catch (NotFoundException e)
+			{
+				return NotFound(e.Message);
+			}
+		}
 	}
 }
 

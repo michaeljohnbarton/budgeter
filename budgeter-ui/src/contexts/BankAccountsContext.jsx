@@ -77,12 +77,34 @@ export function BankAccountsProvider({ children }) {
 		}
 	}
 
+	async function deleteBankAccount(bankAccountId) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/BankAccount/${bankAccountId}`, {
+				method: "DELETE"
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to delete bank account");
+			}
+
+			await fetchBankAccounts({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchBankAccounts();
 	}, []);
 
 	return (
-		<BankAccountsContext.Provider value={{ bankAccounts, createBankAccount, updateBankAccount }}>
+		<BankAccountsContext.Provider value={{ bankAccounts, createBankAccount, updateBankAccount, deleteBankAccount }}>
 			{children}
 		</BankAccountsContext.Provider>
 	);
