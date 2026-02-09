@@ -8,6 +8,7 @@ import BankAccountModal from './BankAccountModal';
 function BankAccounts({ registerNewHandler }) {
 	const { bankAccounts } = useBankAccounts();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [bankAccountData, setBankAccountData] = useState(null);
 
 	useEffect(() => {
 		registerNewHandler(() => handleNewClick);
@@ -18,11 +19,16 @@ function BankAccounts({ registerNewHandler }) {
 		setIsModalOpen(true);
 	};
 
+	const handleEditClick = (bankAccount) => {
+		setBankAccountData(bankAccount);
+		setIsModalOpen(true);
+	};
+
 	if (!bankAccounts || bankAccounts.length === 0) {
 		return (
 			<>
 				<p>No bank accounts were found. Create one.</p>
-				<BankAccountModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+				<BankAccountModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setBankAccountData={setBankAccountData} />
 			</>
 		);
 	}
@@ -32,9 +38,9 @@ function BankAccounts({ registerNewHandler }) {
 			<div className={styles.tableWrapper}>
 				<table className={styles.bankAccountsTable}>
 					<tbody>
-						{bankAccounts.map((account) => (
-							<tr key={account.id}>
-								<td>{account.name}</td>
+						{bankAccounts.map((bankAccount) => (
+							<tr key={bankAccount.id}>
+								<td>{bankAccount.name}</td>
 								<td className="actions">
 									{/* Delete and edit ordered this way because of float right CSS */}
 									<button
@@ -47,7 +53,7 @@ function BankAccounts({ registerNewHandler }) {
 
 									<button
 										className={clsx(styles.iconButton, styles.edit)}
-										// onClick={() => handleEditClick(month)}
+										onClick={() => handleEditClick(bankAccount)}
 										aria-label="Edit"
 									>
 										<FaEdit />
@@ -59,7 +65,7 @@ function BankAccounts({ registerNewHandler }) {
 					</tbody>
 				</table>
 			</div>
-			<BankAccountModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+			<BankAccountModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccountData={bankAccountData} setBankAccountData={setBankAccountData} />
 		</div>
 	);
 }

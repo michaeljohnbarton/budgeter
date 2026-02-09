@@ -17,17 +17,10 @@ namespace Budgeter.Api.Services
 
 		public void Create(CreateBankAccount bankAccountToCreate)
 		{
-			MonthlyBalancePropagationTypeRepositoryEnum monthlyBalancePropagationType = bankAccountToCreate.MonthlyBalancePropagationType switch
-			{
-				MonthlyBalancePropagationType.BankAccount => MonthlyBalancePropagationTypeRepositoryEnum.BankAccount,
-				MonthlyBalancePropagationType.Subcategory => MonthlyBalancePropagationTypeRepositoryEnum.Subcategory,
-				_ => MonthlyBalancePropagationTypeRepositoryEnum.BankAccount
-			};
-
 			_bankAccountRepository.Create(new BankAccountRepositoryModel
 			{
 				Name = bankAccountToCreate.Name,
-				MonthlyBalancePropagationType = monthlyBalancePropagationType,
+				MonthlyBalancePropagationType = ConvertToRepositoryEnum(bankAccountToCreate.MonthlyBalancePropagationType),
 				HasBudgetedAmounts = bankAccountToCreate.HasBudgetedAmounts ?? false
 			});
 		}
@@ -52,6 +45,27 @@ namespace Budgeter.Api.Services
 					HasBudgetedAmounts = result.HasBudgetedAmounts
 				};
 			});
+		}
+
+		public void Update(int bankAccountId, UpdateBankAccount bankAccountToUpdate)
+		{
+			_bankAccountRepository.Update(new BankAccountRepositoryModel
+			{
+				ID = bankAccountId,
+				Name = bankAccountToUpdate.Name,
+				MonthlyBalancePropagationType = ConvertToRepositoryEnum(bankAccountToUpdate.MonthlyBalancePropagationType),
+				HasBudgetedAmounts = bankAccountToUpdate.HasBudgetedAmounts ?? false
+			});
+		}
+
+		private static MonthlyBalancePropagationTypeRepositoryEnum ConvertToRepositoryEnum(MonthlyBalancePropagationType? monthlyBalancePropagationType)
+		{
+			return monthlyBalancePropagationType switch
+			{
+				MonthlyBalancePropagationType.BankAccount => MonthlyBalancePropagationTypeRepositoryEnum.BankAccount,
+				MonthlyBalancePropagationType.Subcategory => MonthlyBalancePropagationTypeRepositoryEnum.Subcategory,
+				_ => MonthlyBalancePropagationTypeRepositoryEnum.BankAccount
+			};
 		}
 	}
 }

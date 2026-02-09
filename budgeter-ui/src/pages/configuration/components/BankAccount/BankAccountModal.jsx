@@ -1,13 +1,13 @@
 import styles from './BankAccountModal.module.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import Modal from "../../../../commonComponents/modal/Modal";
 
-function BankAccountModal({ isOpen, setIsModalOpen }) {
-	const { createBankAccount } = useBankAccounts();
+function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAccountData }) {
+	const { createBankAccount, updateBankAccount } = useBankAccounts();
 
-	const isEditMode = false;
+	const isEditMode = bankAccountData !== null && bankAccountData !== undefined;
 	const title = isEditMode ? "Edit Bank Account" : "Add Bank Account";
 
 	const [name, setName] = useState("");
@@ -18,17 +18,30 @@ function BankAccountModal({ isOpen, setIsModalOpen }) {
 		monthlyBalancePropagationType: false
 	});
 
+	useEffect(() => {
+			if (isEditMode && bankAccountData) {
+				setName(bankAccountData.name);
+				setMonthlyBalancePropagationType(bankAccountData.monthlyBalancePropagationType);
+				setHasBudgetedAmounts(bankAccountData.hasBudgetedAmounts);
+			}
+		}, [isOpen]);
+
 	const isNameSet = name !== "";
 	const isMonthlyBalancePropagationTypeSet = monthlyBalancePropagationType !== "";
 	const isFormValid = isNameSet && isMonthlyBalancePropagationTypeSet;
 	const hasUnsavedChanges = isEditMode
-	 	? false
+	 	? name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || hasBudgetedAmounts !== bankAccountData.hasBudgetedAmounts
 	 	: isNameSet || isMonthlyBalancePropagationTypeSet;
 
 	const handleSave = async () => {
 		try {
 			if (isEditMode) {
-				// Call update function
+				if(name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || hasBudgetedAmounts !== bankAccountData.hasBudgetedAmounts) {
+					await updateBankAccount(bankAccountData.id, { name: name, monthlyBalancePropagationType: monthlyBalancePropagationType, hasBudgetedAmounts: hasBudgetedAmounts });
+					toast.success("Bank account updated successfully");
+				} else {
+					toast.info("No changes to save");
+				}
 			} else {
 				await createBankAccount({
 					name: name,
@@ -46,6 +59,7 @@ function BankAccountModal({ isOpen, setIsModalOpen }) {
 	};
 
 	const handleClose = () => {
+		setBankAccountData(null);
 		setName("");
 		setMonthlyBalancePropagationType("");
 		setHasBudgetedAmounts(false);

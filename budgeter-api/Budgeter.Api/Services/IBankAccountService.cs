@@ -7,6 +7,7 @@ namespace Budgeter.Api.Services
 	{
 		void Create(CreateBankAccount bankAccountToCreate);
 		IEnumerable<BankAccount> Get();
+		void Update(int bankAccountId, UpdateBankAccount bankAccountToUpdate);
 	}
 }
 

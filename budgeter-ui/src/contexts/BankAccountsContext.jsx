@@ -53,12 +53,36 @@ export function BankAccountsProvider({ children }) {
 		}
 	}
 
+	async function updateBankAccount(bankAccountId, payload) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/BankAccount/${bankAccountId}`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to update bank account");
+			}
+
+			await fetchBankAccounts({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchBankAccounts();
 	}, []);
 
 	return (
-		<BankAccountsContext.Provider value={{ bankAccounts, createBankAccount }}>
+		<BankAccountsContext.Provider value={{ bankAccounts, createBankAccount, updateBankAccount }}>
 			{children}
 		</BankAccountsContext.Provider>
 	);

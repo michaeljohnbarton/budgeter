@@ -21,9 +21,6 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 		if (isEditMode && monthData) {
 			setMonth(monthData.monthNumber);
 			setYear(monthData.year);
-		} else {
-			setMonth(0);
-			setYear("");
 		}
 	}, [isOpen]);
 
