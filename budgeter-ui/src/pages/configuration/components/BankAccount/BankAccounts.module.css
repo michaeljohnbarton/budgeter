@@ -2,6 +2,7 @@ p {
 	text-align: center;
 }
 
+/* Contributes to scrollability for table */
 .bankAccountsConfiguration {
 	height: 100%;
 	display: flex;

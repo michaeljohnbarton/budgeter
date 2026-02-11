@@ -2,6 +2,7 @@ p {
 	text-align: center;
 }
 
+/* Contributes to scrollability for table */
 .monthsConfiguration {
 	height: 100%;
 	display: flex;
