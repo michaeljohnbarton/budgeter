@@ -112,7 +112,6 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 							onChange={(e) => { setHasBudgetedAmounts(e.target.checked);}}
 						/>
 					</label>
-					
 				</div>
 			</div>
 		</Modal>

@@ -1,0 +1,44 @@
+﻿using System;
+using System.Data.SqlClient;
+using Budgeter.Api.Models;
+using Budgeter.Api.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Budgeter.Api.Controllers
+{
+	[Route("api/[controller]")]
+	public class CategoryController : Controller
+	{
+		private readonly ICategoryService _categoryService;
+
+		public CategoryController(ICategoryService categoryService)
+		{
+			_categoryService = categoryService;
+		}
+
+		[HttpPost]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public IActionResult Create([FromBody] CreateCategory categoryToCreate)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				_categoryService.Create(categoryToCreate);
+				return Ok();
+			}
+			catch (SqlException e)
+			{
+				if (e.Number == 547)
+				{
+					return BadRequest("Bank account does not exist");
+				}
+				throw;
+			}
+		}
+	}
+}

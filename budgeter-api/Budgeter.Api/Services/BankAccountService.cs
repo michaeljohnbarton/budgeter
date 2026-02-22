@@ -21,7 +21,7 @@ namespace Budgeter.Api.Services
 			{
 				Name = bankAccountToCreate.Name,
 				MonthlyBalancePropagationType = ConvertToRepositoryEnum(bankAccountToCreate.MonthlyBalancePropagationType),
-				HasBudgetedAmounts = bankAccountToCreate.HasBudgetedAmounts ?? false
+				HasBudgetedAmounts = bankAccountToCreate.HasBudgetedAmounts!.Value
 			});
 		}
 
@@ -54,7 +54,7 @@ namespace Budgeter.Api.Services
 				ID = bankAccountId,
 				Name = bankAccountToUpdate.Name,
 				MonthlyBalancePropagationType = ConvertToRepositoryEnum(bankAccountToUpdate.MonthlyBalancePropagationType),
-				HasBudgetedAmounts = bankAccountToUpdate.HasBudgetedAmounts ?? false
+				HasBudgetedAmounts = bankAccountToUpdate.HasBudgetedAmounts!.Value
 			});
 		}
 

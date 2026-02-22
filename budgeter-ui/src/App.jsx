@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { LoadingProvider } from "./contexts/LoadingContext";
 import { MonthsProvider } from './contexts/MonthsContext';
 import { BankAccountsProvider } from './contexts/BankAccountsContext';
+import { CategoriesProvider } from './contexts/CategoriesContext';
 import Navbar from './commonComponents/navbar/Navbar';
 import LoadingIndicator from './commonComponents/loadingIndicator/LoadingIndicator';
 import ScrollPage from './commonComponents/scrollPage/ScrollPage';
@@ -16,19 +17,21 @@ function App() {
 			<LoadingProvider>
 				<MonthsProvider>
 					<BankAccountsProvider>
-						<Router>
-							<div id="app-layout">
-								<Navbar />
-								<LoadingIndicator />
+						<CategoriesProvider>
+							<Router>
+								<div id="app-layout">
+									<Navbar />
+									<LoadingIndicator />
 
-								<div id="app-content">
-									<Routes>
-										<Route path="/" element={<ScrollPage><Home /></ScrollPage>} />
-										<Route path="/configuration" element={<Configuration />} />
-									</Routes>
+									<div id="app-content">
+										<Routes>
+											<Route path="/" element={<ScrollPage><Home /></ScrollPage>} />
+											<Route path="/configuration" element={<Configuration />} />
+										</Routes>
+									</div>
 								</div>
-							</div>
-						</Router>
+							</Router>
+						</CategoriesProvider>
 					</BankAccountsProvider>
 				</MonthsProvider>
 			</LoadingProvider>

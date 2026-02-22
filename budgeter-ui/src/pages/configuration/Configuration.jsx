@@ -16,7 +16,7 @@ function Configuration() {
 	const options = [
 		{ key: 1, value: 1, display: 'Months', component: Months, props: { registerNewHandler: setNewButtonHandler } },
 		{ key: 2, value: 2, display: 'Bank Accounts', component: BankAccounts, props: { registerNewHandler: setNewButtonHandler } },
-		{ key: 3, value: 3, display: 'Categories', component: Categories },
+		{ key: 3, value: 3, display: 'Categories', component: Categories, props: { registerNewHandler: setNewButtonHandler } },
 		{ key: 4, value: 4, display: 'Subcategories' }
 	]
 
