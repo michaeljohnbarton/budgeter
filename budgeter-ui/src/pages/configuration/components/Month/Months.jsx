@@ -25,14 +25,14 @@ function Months({ registerNewHandler }) {
 		setIsModalOpen(true);
 	};
 
-	const handleDeleteClick = (monthId) => {
+	const handleDeleteClick = async (monthId) => {
 		const confirmDelete = window.confirm(
 			"Are you sure you want to delete this month? This action cannot be undone."
 		);
 		if (!confirmDelete) return;
 
 		try {
-			deleteMonth(monthId);
+			await deleteMonth(monthId);
 			toast.success("Month deleted successfully");
 		}
 		catch (error) {
@@ -81,7 +81,7 @@ function Months({ registerNewHandler }) {
 									className={isCurrent ? styles.currentMonth : undefined}
 								>
 									<td>{monthMap.find(x => x.number === month.monthNumber).name} {month.year}</td>
-									<td className="actions">
+									<td>
 										{/* Delete and edit ordered this way because of float right CSS */}
 										<button
 											className={clsx(styles.iconButton, styles.delete)}

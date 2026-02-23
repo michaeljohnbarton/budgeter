@@ -1,23 +1,36 @@
 import styles from './Categories.module.css';
 import { useState, useEffect } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import clsx from 'clsx';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
+import { useCategories } from '../../../../contexts/CategoriesContext';
 import CategoryModal from './CategoryModal';
 
 function Categories({ registerNewHandler }) {
-	const { bankAccounts } = useBankAccounts();
+	const { bankAccounts, selectedBankAccountId, setSelectedBankAccountId } = useBankAccounts();
+	const { categories } = useCategories();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedBankAccountId, setSelectedBankAccountId] = useState(bankAccounts && bankAccounts.length > 0 ? bankAccounts[0].id : null);
-	const selectedBankAccount = bankAccounts && bankAccounts.length > 0 ? bankAccounts.find(ba => ba.id === selectedBankAccountId) : null;
+	
+	const selectedBankAccount = bankAccounts?.find(ba => ba.id === selectedBankAccountId) ?? null;
+	const selectedBankAccountCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
 
 	useEffect(() => {
 		if(bankAccounts && bankAccounts.length > 0) {
 			registerNewHandler(() => handleNewClick);
 			return () => registerNewHandler(null); // Cleanup on unmount
 		}
-	}, [registerNewHandler]);
+	}, [registerNewHandler, bankAccounts]);
 
 	const handleNewClick = () => {
 		setIsModalOpen(true);
+	};
+
+	const handleEditClick = (category) => {
+
+	};
+
+	const handleDeleteClick = (categoryId) => {
+
 	};
 
 	if(!bankAccounts || bankAccounts.length === 0) {
@@ -36,6 +49,41 @@ function Categories({ registerNewHandler }) {
 					}
 				</select>
 			</div>
+
+			{selectedBankAccountCategories.length === 0 ? (
+				<p className={styles.emptyMessage}>No categories were found for this bank account. Create one.</p>
+			) : (
+				<div className={styles.tableWrapper}>
+					<table className={styles.categoriesTable}>
+						<tbody>
+							{selectedBankAccountCategories.map((category) => (
+								<tr key={category.id}>
+									<td>{category.name}</td>
+									<td>
+										{/* Delete and edit ordered this way because of float right CSS */}
+										<button
+											className={clsx(styles.iconButton, styles.delete)}
+											onClick={() => handleDeleteClick(category.id)}
+											aria-label="Delete"
+										>
+											<FaTrash />
+										</button>
+
+										<button
+											className={clsx(styles.iconButton, styles.edit)}
+											onClick={() => handleEditClick(category)}
+											aria-label="Edit"
+										>
+											<FaEdit />
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			)}
+
 			<CategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} />
 		</div>
 	)

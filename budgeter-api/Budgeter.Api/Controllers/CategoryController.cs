@@ -40,5 +40,11 @@ namespace Budgeter.Api.Controllers
 				throw;
 			}
 		}
+
+		[HttpGet]
+		public IEnumerable<Category> Get()
+		{
+			return _categoryService.Get();
+		}
 	}
 }

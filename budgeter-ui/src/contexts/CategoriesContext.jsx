@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
 
 const CategoriesContext = createContext();
@@ -7,6 +7,9 @@ export function CategoriesProvider({ children }) {
 	const { setLoading, LoadingType } = useContext(LoadingContext);
 
 	const [categories, setCategories] = useState([]);
+	const [error, setError] = useState(null);
+
+	const hasFetched = useRef(false);
 
 	async function createCategory(payload) {
 		try {
@@ -23,6 +26,8 @@ export function CategoriesProvider({ children }) {
 				const responseData = await response.text();
 				throw new Error(responseData || "Failed to create category");
 			}
+
+			await fetchCategories({ force: true });
 		} catch (err) {
 			throw err;
 		} finally {
@@ -30,8 +35,31 @@ export function CategoriesProvider({ children }) {
 		}
 	}
 
+	async function fetchCategories({ force = false } = {}) {
+		if (hasFetched.current && !force) return;
+
+		try {
+			setLoading(LoadingType.FULLSCREEN);
+
+			const response = await fetch("http://localhost:60060/api/Category");
+			if (!response.ok) throw new Error("Failed to fetch categories");
+
+			const data = await response.json();
+			setCategories(data);
+			hasFetched.current = true;
+		} catch (err) {
+			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
+	useEffect(() => {
+		fetchCategories();
+	}, []);
+
 	return (
-		<CategoriesContext.Provider value={{ categories, createCategory }}>
+		<CategoriesContext.Provider value={{ categories, error, createCategory }}>
 			{children}
 		</CategoriesContext.Provider>
 	);

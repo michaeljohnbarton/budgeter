@@ -20,5 +20,15 @@ VALUES (@Name, @BankAccountId, @IsCredit)";
 				connection.Execute(sql, categoryToCreate);
 			}
 		}
+
+		public IEnumerable<Category> Get()
+		{
+			string sql = "SELECT ID, [Name], BankAccountId, IsCredit FROM Category ORDER BY [Name]";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				return connection.Query<Category>(sql);
+			}
+		}
 	}
 }

@@ -23,5 +23,17 @@ namespace Budgeter.Api.Services
 				IsCredit = categoryToCreate.IsCredit!.Value
 			});
 		}
+
+		public IEnumerable<Category> Get()
+		{
+			IEnumerable<CategoryRepositoryModel> results = _categoryRepository.Get();
+			return results.Select(x => new Category
+			{
+				ID = x.ID,
+				Name = x.Name,
+				BankAccountId = x.BankAccountId,
+				IsCredit = x.IsCredit
+			});
+		}
 	}
 }

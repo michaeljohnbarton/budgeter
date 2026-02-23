@@ -28,7 +28,7 @@ namespace Budgeter.SqlServer.Repositories
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Month>(sql).ToList();
+				return connection.Query<Month>(sql);
 			}
 		}
 

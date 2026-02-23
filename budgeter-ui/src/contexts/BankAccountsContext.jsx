@@ -7,6 +7,14 @@ export function BankAccountsProvider({ children }) {
 	const { setLoading, LoadingType } = useContext(LoadingContext);
 
 	const [bankAccounts, setBankAccounts] = useState([]);
+	const [error, setError] = useState(null);
+	const [selectedBankAccountId, setSelectedBankAccountId] = useState(null);
+
+	useEffect(() => {
+		if (bankAccounts?.length && !selectedBankAccountId) {
+			setSelectedBankAccountId(bankAccounts[0].id);
+		}
+	}, [bankAccounts, selectedBankAccountId]);
 
 	const hasFetched = useRef(false);
 
@@ -47,7 +55,7 @@ export function BankAccountsProvider({ children }) {
 			setBankAccounts(data);
 			hasFetched.current = true;
 		} catch (err) {
-			throw err;
+			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
 		} finally {
 			setLoading(LoadingType.NONE);
 		}
@@ -104,7 +112,7 @@ export function BankAccountsProvider({ children }) {
 	}, []);
 
 	return (
-		<BankAccountsContext.Provider value={{ bankAccounts, createBankAccount, updateBankAccount, deleteBankAccount }}>
+		<BankAccountsContext.Provider value={{ bankAccounts, error, createBankAccount, updateBankAccount, deleteBankAccount, selectedBankAccountId, setSelectedBankAccountId }}>
 			{children}
 		</BankAccountsContext.Provider>
 	);

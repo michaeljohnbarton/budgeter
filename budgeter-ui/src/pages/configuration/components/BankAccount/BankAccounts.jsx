@@ -25,14 +25,14 @@ function BankAccounts({ registerNewHandler }) {
 		setIsModalOpen(true);
 	};
 
-	const handleDeleteClick = (bankAccountId) => {
+	const handleDeleteClick = async (bankAccountId) => {
 		const confirmDelete = window.confirm(
 			"Are you sure you want to delete this bank account? This action cannot be undone."
 		);
 		if (!confirmDelete) return;
 
 		try {
-			deleteBankAccount(bankAccountId);
+			await deleteBankAccount(bankAccountId);
 			toast.success("Bank account deleted successfully");
 		}
 		catch (error) {
@@ -57,7 +57,7 @@ function BankAccounts({ registerNewHandler }) {
 						{bankAccounts.map((bankAccount) => (
 							<tr key={bankAccount.id}>
 								<td>{bankAccount.name}</td>
-								<td className="actions">
+								<td>
 									{/* Delete and edit ordered this way because of float right CSS */}
 									<button
 										className={clsx(styles.iconButton, styles.delete)}

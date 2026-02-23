@@ -30,7 +30,7 @@ FROM [BankAccount] ORDER BY [Name]";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<BankAccount>(sql).ToList();
+				return connection.Query<BankAccount>(sql);
 			}
 		}
 
