@@ -1,4 +1,5 @@
-﻿using Budgeter.Api.Models;
+﻿using System.Data.SqlClient;
+using Budgeter.Api.Models;
 using Budgeter.Api.Services;
 using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +71,14 @@ namespace Budgeter.Api.Controllers
 			catch (NotFoundException e)
 			{
 				return NotFound(e.Message);
+			}
+			catch (SqlException e)
+			{
+				if (e.Number == 547)
+				{
+					return BadRequest("Bank account still has linked categories");
+				}
+				throw;
 			}
 		}
 	}
