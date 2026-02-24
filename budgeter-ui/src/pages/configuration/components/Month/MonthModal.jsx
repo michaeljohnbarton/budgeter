@@ -1,4 +1,4 @@
-import styles from './MonthModal.module.css';
+import styles from '../../../../styles/ModalForm.module.css';
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useMonths } from '../../../../contexts/MonthsContext';
@@ -71,7 +71,7 @@ function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} onSave={handleSave} isSaveEnabled={isFormValid} title={title} hasUnsavedChanges={hasUnsavedChanges}>
-			<div className={styles.monthForm}>
+			<div className={styles.form}>
 				<div className={styles.formGroup}>
 					<label htmlFor="monthDropdown" className={styles.requiredLabel}>Month</label>
 					<select

@@ -1,4 +1,4 @@
-import styles from './CategoryModal.module.css';
+import styles from '../../../../styles/ModalForm.module.css';
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useCategories } from '../../../../contexts/CategoriesContext';
@@ -67,7 +67,7 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCa
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} onSave={handleSave} isSaveEnabled={isFormValid} title={title} hasUnsavedChanges={hasUnsavedChanges}>
-			<div className={styles.categoryForm}>
+			<div className={styles.form}>
 					<div className={styles.formGroup}>
 						<label htmlFor="bankAccountName">Bank Account</label>
 						<input type="text" id="bankAccountName" value={bankAccount.name} readOnly />

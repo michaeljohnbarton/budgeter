@@ -1,4 +1,4 @@
-.monthForm {
+.form {
 	max-width: 400px;
 	padding: 1.5rem;
 }
@@ -51,4 +51,23 @@
 .formGroup input:hover,
 .formGroup select:hover {
 	border-color: #999;
+}
+
+.formGroup input:read-only {
+	background-color: #f9fafb;
+	color: #6b7280;
+	border-color: #e5e7eb;
+}
+
+.formGroup input:read-only:focus,
+.formGroup input:read-only:hover {
+	border-color: #e5e7eb;
+	box-shadow: none;
+}
+
+.checkboxLabel {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0;
 }

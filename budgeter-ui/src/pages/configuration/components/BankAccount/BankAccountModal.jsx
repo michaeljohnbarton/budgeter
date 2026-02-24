@@ -1,4 +1,4 @@
-import styles from './BankAccountModal.module.css';
+import styles from '../../../../styles/ModalForm.module.css';
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
@@ -72,7 +72,7 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} onSave={handleSave} isSaveEnabled={isFormValid} title={title} hasUnsavedChanges={hasUnsavedChanges}>
-			<div className={styles.bankAccountForm}>
+			<div className={styles.form}>
 				<div className={styles.formGroup}>
 					<label htmlFor="name" className={styles.requiredLabel}>Name</label>
 					<input
