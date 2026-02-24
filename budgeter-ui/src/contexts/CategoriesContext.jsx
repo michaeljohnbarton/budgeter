@@ -54,12 +54,36 @@ export function CategoriesProvider({ children }) {
 		}
 	}
 
+	async function updateCategory(categoryId, payload) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/Category/${categoryId}`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to update category");
+			}
+
+			await fetchCategories({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchCategories();
 	}, []);
 
 	return (
-		<CategoriesContext.Provider value={{ categories, error, createCategory }}>
+		<CategoriesContext.Provider value={{ categories, error, createCategory, updateCategory }}>
 			{children}
 		</CategoriesContext.Provider>
 	);

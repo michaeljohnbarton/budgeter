@@ -10,6 +10,7 @@ function Categories({ registerNewHandler }) {
 	const { bankAccounts, selectedBankAccountId, setSelectedBankAccountId } = useBankAccounts();
 	const { categories } = useCategories();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [categoryData, setCategoryData] = useState(null);
 	
 	const selectedBankAccount = bankAccounts?.find(ba => ba.id === selectedBankAccountId) ?? null;
 	const selectedBankAccountCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
@@ -26,7 +27,8 @@ function Categories({ registerNewHandler }) {
 	};
 
 	const handleEditClick = (category) => {
-
+		setCategoryData(category);
+		setIsModalOpen(true);
 	};
 
 	const handleDeleteClick = (categoryId) => {
@@ -84,7 +86,7 @@ function Categories({ registerNewHandler }) {
 				</div>
 			)}
 
-			<CategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} />
+			<CategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} categoryData={categoryData} setCategoryData={setCategoryData} />
 		</div>
 	)
 }

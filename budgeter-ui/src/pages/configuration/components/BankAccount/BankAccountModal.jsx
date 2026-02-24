@@ -19,12 +19,12 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 	});
 
 	useEffect(() => {
-			if (isEditMode && bankAccountData) {
-				setName(bankAccountData.name);
-				setMonthlyBalancePropagationType(bankAccountData.monthlyBalancePropagationType);
-				setHasBudgetedAmounts(bankAccountData.hasBudgetedAmounts);
-			}
-		}, [isOpen]);
+		if (isEditMode && bankAccountData) {
+			setName(bankAccountData.name);
+			setMonthlyBalancePropagationType(bankAccountData.monthlyBalancePropagationType);
+			setHasBudgetedAmounts(bankAccountData.hasBudgetedAmounts);
+		}
+	}, [isOpen]);
 
 	const isNameSet = name !== "";
 	const isMonthlyBalancePropagationTypeSet = monthlyBalancePropagationType !== "";

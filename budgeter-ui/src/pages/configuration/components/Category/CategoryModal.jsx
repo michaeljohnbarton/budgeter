@@ -1,13 +1,13 @@
 import styles from './CategoryModal.module.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import Modal from '../../../../commonComponents/modal/Modal';
 
-function CategoryModal({isOpen, setIsModalOpen, bankAccount}) {
-	const { createCategory } = useCategories();
+function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCategoryData}) {
+	const { createCategory, updateCategory } = useCategories();
 
-	const isEditMode = false;
+	const isEditMode = categoryData !== null && categoryData !== undefined;
 	const title = isEditMode ? "Edit Category" : "Add Category";
 
 	const [name, setName] = useState("");
@@ -16,16 +16,28 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount}) {
 		name: false
 	});
 
+	useEffect(() => {
+		if (isEditMode && categoryData) {
+			setName(categoryData.name);
+			setIsCredit(categoryData.isCredit);
+		}
+	}, [isOpen]);
+
 	const isNameSet = name !== "";
 	const isFormValid = isNameSet;
 	const hasUnsavedChanges = isEditMode
-		? false
+		? name !== categoryData.name || isCredit !== categoryData.isCredit
 		: isNameSet || isCredit;
 
 	const handleSave = async () => {
 		try {
 			if(isEditMode) {
-				toast.info("Not yet implemented");
+				if(name !== categoryData.name || isCredit !== categoryData.isCredit) {
+					await updateCategory(categoryData.id, { name: name, isCredit: isCredit });
+					toast.success("Category updated successfully");
+				} else {
+					toast.info("No changes to save");
+				}
 			}
 			else {
 				await createCategory({
@@ -44,6 +56,7 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount}) {
 	};
 
 	const handleClose = () => {
+		setCategoryData(null);
 		setName("");
 		setIsCredit(false);
 		setTouched({

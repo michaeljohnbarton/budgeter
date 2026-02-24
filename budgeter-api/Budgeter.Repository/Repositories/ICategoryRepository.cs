@@ -7,5 +7,6 @@ namespace Budgeter.Repository.Repositories
 	{
 		void Create(Category categoryToCreate);
 		IEnumerable<Category> Get();
+		void Update(Category categoryToUpdate);
 	}
 }

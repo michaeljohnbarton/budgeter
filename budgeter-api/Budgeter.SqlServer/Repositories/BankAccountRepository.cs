@@ -13,7 +13,7 @@ namespace Budgeter.SqlServer.Repositories
 		public void Create(BankAccount bankAccountToCreate)
 		{
 			string sql =
-@"INSERT INTO [BankAccount] ([Name], MonthlyBalancePropagationType, HasBudgetedAmounts)
+@"INSERT INTO BankAccount ([Name], MonthlyBalancePropagationType, HasBudgetedAmounts)
 VALUES (@Name, @MonthlyBalancePropagationTypeString, @HasBudgetedAmounts)";
 
 			using (var connection = new SqlConnection(connectionString))
@@ -26,7 +26,7 @@ VALUES (@Name, @MonthlyBalancePropagationTypeString, @HasBudgetedAmounts)";
 		{
 			string sql =
 @"SELECT ID, [Name], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, HasBudgetedAmounts
-FROM [BankAccount] ORDER BY [Name]";
+FROM BankAccount ORDER BY [Name]";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
@@ -37,8 +37,8 @@ FROM [BankAccount] ORDER BY [Name]";
 		public void Update(BankAccount bankAccountToUpdate)
 		{
 			string sql =
-@"UPDATE [BankAccount]
-SET [Name] = @Name, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, [HasBudgetedAmounts] = @HasBudgetedAmounts
+@"UPDATE BankAccount
+SET [Name] = @Name, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, HasBudgetedAmounts = @HasBudgetedAmounts
 WHERE ID = @ID";
 
 			using (var connection = new SqlConnection(connectionString))
@@ -53,7 +53,7 @@ WHERE ID = @ID";
 
 		public void Delete(int bankAccountId)
 		{
-			string sql = "DELETE FROM [BankAccount] WHERE ID = @ID";
+			string sql = "DELETE FROM BankAccount WHERE ID = @ID";
 
 			using (var connection = new SqlConnection(connectionString))
 			{

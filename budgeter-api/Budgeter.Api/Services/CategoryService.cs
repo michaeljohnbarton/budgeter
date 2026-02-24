@@ -35,5 +35,15 @@ namespace Budgeter.Api.Services
 				IsCredit = x.IsCredit
 			});
 		}
+
+		public void Update(int categoryId, UpdateCategory categoryToUpdate)
+		{
+			_categoryRepository.Update(new CategoryRepositoryModel
+			{
+				ID = categoryId,
+				Name = categoryToUpdate.Name,
+				IsCredit = categoryToUpdate.IsCredit!.Value
+			});
+		}
 	}
 }

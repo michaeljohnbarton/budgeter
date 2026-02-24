@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using Budgeter.Api.Models;
 using Budgeter.Api.Services;
+using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Budgeter.Api.Controllers
@@ -45,6 +46,28 @@ namespace Budgeter.Api.Controllers
 		public IEnumerable<Category> Get()
 		{
 			return _categoryService.Get();
+		}
+
+		[HttpPut("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public IActionResult Update([FromRoute] int id, [FromBody] UpdateCategory categoryToUpdate)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				_categoryService.Update(id, categoryToUpdate);
+				return Ok();
+			}
+			catch (NotFoundException e)
+			{
+				return NotFound(e.Message);
+			}
 		}
 	}
 }

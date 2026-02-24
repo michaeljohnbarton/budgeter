@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
@@ -11,9 +12,7 @@ namespace Budgeter.SqlServer.Repositories
 
 		public void Create(Category categoryToCreate)
 		{
-			string sql =
-@"INSERT INTO Category ([Name], BankAccountId, IsCredit)
-VALUES (@Name, @BankAccountId, @IsCredit)";
+			string sql = "INSERT INTO Category ([Name], BankAccountId, IsCredit) VALUES (@Name, @BankAccountId, @IsCredit)";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
@@ -28,6 +27,20 @@ VALUES (@Name, @BankAccountId, @IsCredit)";
 			using (var connection = new SqlConnection(connectionString))
 			{
 				return connection.Query<Category>(sql);
+			}
+		}
+
+		public void Update(Category categoryToUpdate)
+		{
+			string sql = "UPDATE Category SET [Name] = @Name, IsCredit = @IsCredit WHERE ID = @ID";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				int rowsAffected = connection.Execute(sql, categoryToUpdate);
+				if (rowsAffected == 0)
+				{
+					throw new NotFoundException("Category does not exist");
+				}
 			}
 		}
 	}
