@@ -78,12 +78,34 @@ export function CategoriesProvider({ children }) {
 		}
 	}
 
+	async function deleteCategory(categoryId) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/Category/${categoryId}`, {
+				method: "DELETE"
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to delete category");
+			}
+
+			await fetchCategories({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchCategories();
 	}, []);
 
 	return (
-		<CategoriesContext.Provider value={{ categories, error, createCategory, updateCategory }}>
+		<CategoriesContext.Provider value={{ categories, error, createCategory, updateCategory, deleteCategory }}>
 			{children}
 		</CategoriesContext.Provider>
 	);

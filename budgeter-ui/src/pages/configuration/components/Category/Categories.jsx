@@ -1,5 +1,6 @@
 import styles from './Categories.module.css';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import clsx from 'clsx';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
@@ -8,7 +9,7 @@ import CategoryModal from './CategoryModal';
 
 function Categories({ registerNewHandler }) {
 	const { bankAccounts, selectedBankAccountId, setSelectedBankAccountId } = useBankAccounts();
-	const { categories } = useCategories();
+	const { categories, deleteCategory } = useCategories();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [categoryData, setCategoryData] = useState(null);
 	
@@ -31,8 +32,19 @@ function Categories({ registerNewHandler }) {
 		setIsModalOpen(true);
 	};
 
-	const handleDeleteClick = (categoryId) => {
+	const handleDeleteClick = async (categoryId) => {
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete this category? This action cannot be undone."
+		);
+		if (!confirmDelete) return;
 
+		try {
+			await deleteCategory(categoryId);
+			toast.success("Category deleted successfully");
+		}
+		catch (error) {
+			toast.error(error.message || "Failed to delete category");
+		}
 	};
 
 	if(!bankAccounts || bankAccounts.length === 0) {

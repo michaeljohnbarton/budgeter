@@ -45,5 +45,10 @@ namespace Budgeter.Api.Services
 				IsCredit = categoryToUpdate.IsCredit!.Value
 			});
 		}
+
+		public void Delete(int categoryId)
+		{
+			_categoryRepository.Delete(categoryId);
+		}
 	}
 }

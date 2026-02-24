@@ -8,5 +8,6 @@ namespace Budgeter.Api.Services
 		void Create(CreateCategory categoryToCreate);
 		IEnumerable<Category> Get();
 		void Update(int categoryId, UpdateCategory categoryToUpdate);
+		void Delete(int categoryId);
 	}
 }

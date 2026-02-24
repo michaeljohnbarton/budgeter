@@ -43,5 +43,19 @@ namespace Budgeter.SqlServer.Repositories
 				}
 			}
 		}
+
+		public void Delete(int categoryId)
+		{
+			string sql = "DELETE FROM Category WHERE ID = @ID";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				int rowsAffected = connection.Execute(sql, new { id = categoryId });
+				if (rowsAffected == 0)
+				{
+					throw new NotFoundException("Category does not exist");
+				}
+			}
+		}
 	}
 }
