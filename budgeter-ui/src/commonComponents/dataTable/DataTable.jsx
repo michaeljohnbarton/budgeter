@@ -1,0 +1,45 @@
+import tableStyles from './DataTable.module.css';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import clsx from 'clsx';
+
+function DataTable({ dataRecords, currentRowRef, handleDeleteClick, handleEditClick }) {
+	return (
+		<div className={tableStyles.tableWrapper}>
+			<table className={tableStyles.table}>
+				<tbody>
+					{dataRecords.map((dataRecord) => {
+						return (
+							<tr
+								key={dataRecord.id}
+								ref={(dataRecord.isCurrent ?? false) ? currentRowRef : null}
+								className={(dataRecord.isCurrent ?? false) ? tableStyles.currentRecord : undefined}
+							>
+								<td>{dataRecord.displayName ?? dataRecord.name}</td>
+								<td>
+									{/* Delete and edit ordered this way because of float right CSS */}
+									<button
+										className={clsx(tableStyles.iconButton, tableStyles.delete)}
+										onClick={() => handleDeleteClick(dataRecord.id)}
+										aria-label="Delete"
+									>
+										<FaTrash />
+									</button>
+
+									<button
+										className={clsx(tableStyles.iconButton, tableStyles.edit)}
+										onClick={() => handleEditClick(dataRecord)}
+										aria-label="Edit"
+									>
+										<FaEdit />
+									</button>
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</div>
+	)
+}
+
+export default DataTable;

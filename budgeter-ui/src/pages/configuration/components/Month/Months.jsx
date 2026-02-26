@@ -1,11 +1,9 @@
 import styles from './Months.module.css';
-import tableStyles from '../../../../styles/DataTable.module.css';
 import { useEffect, useState, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import clsx from 'clsx';
 import { useMonths } from '../../../../contexts/MonthsContext';
 import MonthModal from './MonthModal';
+import DataTable from '../../../../commonComponents/dataTable/DataTable';
 
 function Months({ registerNewHandler }) {
 	const { months, monthMap, deleteMonth } = useMonths();
@@ -47,6 +45,12 @@ function Months({ registerNewHandler }) {
 	const currentYear = currentDate.getFullYear();
 	const currentMonthNumber = currentDate.getMonth() + 1;
 
+	const monthDataRecords = months.map(month => ({
+		...month,
+		displayName: `${monthMap.find(x => x.number === month.monthNumber).name} ${month.year}`,
+		isCurrent: month.monthNumber === currentMonthNumber && month.year === currentYear
+	}));
+
 	useEffect(() => {
 		if (currentRowRef.current) {
 			currentRowRef.current.scrollIntoView({
@@ -67,46 +71,18 @@ function Months({ registerNewHandler }) {
 
 	return (
 		<div className={styles.monthsConfiguration}>
-			<div className={tableStyles.tableWrapper}>
-				<table className={tableStyles.table}>
-					<tbody>
-						{months.map((month) => {
-							const isCurrent =
-								month.monthNumber === currentMonthNumber &&
-								month.year === currentYear;
-
-							return (
-								<tr
-									key={month.id}
-									ref={isCurrent ? currentRowRef : null}
-									className={isCurrent ? styles.currentMonth : undefined}
-								>
-									<td>{monthMap.find(x => x.number === month.monthNumber).name} {month.year}</td>
-									<td>
-										{/* Delete and edit ordered this way because of float right CSS */}
-										<button
-											className={clsx(tableStyles.iconButton, tableStyles.delete)}
-											onClick={() => handleDeleteClick(month.id)}
-											aria-label="Delete"
-										>
-											<FaTrash />
-										</button>
-
-										<button
-											className={clsx(tableStyles.iconButton, tableStyles.edit)}
-											onClick={() => handleEditClick(month)}
-											aria-label="Edit"
-										>
-											<FaEdit />
-										</button>
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
-			</div>
-			<MonthModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} monthData={monthData} setMonthData={setMonthData} />
+			 <DataTable
+			 	dataRecords={monthDataRecords}
+				currentRowRef={currentRowRef}
+				handleDeleteClick={handleDeleteClick}
+				handleEditClick={handleEditClick}
+			/>
+			<MonthModal
+				isOpen={isModalOpen}
+				setIsModalOpen={setIsModalOpen}
+				monthData={monthData}
+				setMonthData={setMonthData}
+			/>
 		</div>
 	);
 }

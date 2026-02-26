@@ -1,11 +1,9 @@
 import styles from './BankAccounts.module.css';
-import tableStyles from '../../../../styles/DataTable.module.css';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import clsx from 'clsx';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import BankAccountModal from './BankAccountModal';
+import DataTable from '../../../../commonComponents/dataTable/DataTable';
 
 function BankAccounts({ registerNewHandler }) {
 	const { bankAccounts, deleteBankAccount } = useBankAccounts();
@@ -52,37 +50,17 @@ function BankAccounts({ registerNewHandler }) {
 
 	return (
 		<div className={styles.bankAccountsConfiguration}>
-			<div className={tableStyles.tableWrapper}>
-				<table className={tableStyles.table}>
-					<tbody>
-						{bankAccounts.map((bankAccount) => (
-							<tr key={bankAccount.id}>
-								<td>{bankAccount.name}</td>
-								<td>
-									{/* Delete and edit ordered this way because of float right CSS */}
-									<button
-										className={clsx(tableStyles.iconButton, tableStyles.delete)}
-										onClick={() => handleDeleteClick(bankAccount.id)}
-										aria-label="Delete"
-									>
-										<FaTrash />
-									</button>
-
-									<button
-										className={clsx(tableStyles.iconButton, tableStyles.edit)}
-										onClick={() => handleEditClick(bankAccount)}
-										aria-label="Edit"
-									>
-										<FaEdit />
-									</button>
-								</td>
-							</tr>
-						))}
-
-					</tbody>
-				</table>
-			</div>
-			<BankAccountModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccountData={bankAccountData} setBankAccountData={setBankAccountData} />
+			<DataTable
+				dataRecords={bankAccounts}
+				handleDeleteClick={handleDeleteClick}
+				handleEditClick={handleEditClick}
+			/>
+			<BankAccountModal
+				isOpen={isModalOpen}
+				setIsModalOpen={setIsModalOpen}
+				bankAccountData={bankAccountData}
+				setBankAccountData={setBankAccountData}
+			/>
 		</div>
 	);
 }

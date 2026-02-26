@@ -52,3 +52,8 @@
 .edit:hover {
 	color: gray;
 }
+
+.currentRecord {
+	background-color: #dedede;
+	font-weight: 600;
+}

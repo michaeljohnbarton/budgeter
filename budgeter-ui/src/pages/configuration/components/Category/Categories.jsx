@@ -1,12 +1,10 @@
 import styles from './Categories.module.css';
-import tableStyles from '../../../../styles/DataTable.module.css';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import clsx from 'clsx';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import CategoryModal from './CategoryModal';
+import DataTable from '../../../../commonComponents/dataTable/DataTable';
 
 function Categories({ registerNewHandler }) {
 	const { bankAccounts, selectedBankAccountId, setSelectedBankAccountId } = useBankAccounts();
@@ -68,35 +66,11 @@ function Categories({ registerNewHandler }) {
 			{selectedBankAccountCategories.length === 0 ? (
 				<p className={styles.emptyMessage}>No categories were found for this bank account. Create one.</p>
 			) : (
-				<div className={tableStyles.tableWrapper}>
-					<table className={tableStyles.table}>
-						<tbody>
-							{selectedBankAccountCategories.map((category) => (
-								<tr key={category.id}>
-									<td>{category.name}</td>
-									<td>
-										{/* Delete and edit ordered this way because of float right CSS */}
-										<button
-											className={clsx(tableStyles.iconButton, tableStyles.delete)}
-											onClick={() => handleDeleteClick(category.id)}
-											aria-label="Delete"
-										>
-											<FaTrash />
-										</button>
-
-										<button
-											className={clsx(tableStyles.iconButton, tableStyles.edit)}
-											onClick={() => handleEditClick(category)}
-											aria-label="Edit"
-										>
-											<FaEdit />
-										</button>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
+				<DataTable
+					dataRecords={selectedBankAccountCategories}
+					handleDeleteClick={handleDeleteClick}
+					handleEditClick={handleEditClick}
+				/>
 			)}
 
 			<CategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} categoryData={categoryData} setCategoryData={setCategoryData} />
