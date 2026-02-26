@@ -1,4 +1,5 @@
 import styles from './Categories.module.css';
+import tableStyles from '../../../../styles/DataTable.module.css';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -67,8 +68,8 @@ function Categories({ registerNewHandler }) {
 			{selectedBankAccountCategories.length === 0 ? (
 				<p className={styles.emptyMessage}>No categories were found for this bank account. Create one.</p>
 			) : (
-				<div className={styles.tableWrapper}>
-					<table className={styles.categoriesTable}>
+				<div className={tableStyles.tableWrapper}>
+					<table className={tableStyles.table}>
 						<tbody>
 							{selectedBankAccountCategories.map((category) => (
 								<tr key={category.id}>
@@ -76,7 +77,7 @@ function Categories({ registerNewHandler }) {
 									<td>
 										{/* Delete and edit ordered this way because of float right CSS */}
 										<button
-											className={clsx(styles.iconButton, styles.delete)}
+											className={clsx(tableStyles.iconButton, tableStyles.delete)}
 											onClick={() => handleDeleteClick(category.id)}
 											aria-label="Delete"
 										>
@@ -84,7 +85,7 @@ function Categories({ registerNewHandler }) {
 										</button>
 
 										<button
-											className={clsx(styles.iconButton, styles.edit)}
+											className={clsx(tableStyles.iconButton, tableStyles.edit)}
 											onClick={() => handleEditClick(category)}
 											aria-label="Edit"
 										>

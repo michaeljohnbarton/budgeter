@@ -1,4 +1,5 @@
 import styles from './BankAccounts.module.css';
+import tableStyles from '../../../../styles/DataTable.module.css';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -51,8 +52,8 @@ function BankAccounts({ registerNewHandler }) {
 
 	return (
 		<div className={styles.bankAccountsConfiguration}>
-			<div className={styles.tableWrapper}>
-				<table className={styles.bankAccountsTable}>
+			<div className={tableStyles.tableWrapper}>
+				<table className={tableStyles.table}>
 					<tbody>
 						{bankAccounts.map((bankAccount) => (
 							<tr key={bankAccount.id}>
@@ -60,7 +61,7 @@ function BankAccounts({ registerNewHandler }) {
 								<td>
 									{/* Delete and edit ordered this way because of float right CSS */}
 									<button
-										className={clsx(styles.iconButton, styles.delete)}
+										className={clsx(tableStyles.iconButton, tableStyles.delete)}
 										onClick={() => handleDeleteClick(bankAccount.id)}
 										aria-label="Delete"
 									>
@@ -68,7 +69,7 @@ function BankAccounts({ registerNewHandler }) {
 									</button>
 
 									<button
-										className={clsx(styles.iconButton, styles.edit)}
+										className={clsx(tableStyles.iconButton, tableStyles.edit)}
 										onClick={() => handleEditClick(bankAccount)}
 										aria-label="Edit"
 									>

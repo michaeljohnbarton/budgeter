@@ -1,4 +1,5 @@
 import styles from './Months.module.css';
+import tableStyles from '../../../../styles/DataTable.module.css';
 import { useEffect, useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -66,8 +67,8 @@ function Months({ registerNewHandler }) {
 
 	return (
 		<div className={styles.monthsConfiguration}>
-			<div className={styles.tableWrapper}>
-				<table className={styles.monthsTable}>
+			<div className={tableStyles.tableWrapper}>
+				<table className={tableStyles.table}>
 					<tbody>
 						{months.map((month) => {
 							const isCurrent =
@@ -84,7 +85,7 @@ function Months({ registerNewHandler }) {
 									<td>
 										{/* Delete and edit ordered this way because of float right CSS */}
 										<button
-											className={clsx(styles.iconButton, styles.delete)}
+											className={clsx(tableStyles.iconButton, tableStyles.delete)}
 											onClick={() => handleDeleteClick(month.id)}
 											aria-label="Delete"
 										>
@@ -92,7 +93,7 @@ function Months({ registerNewHandler }) {
 										</button>
 
 										<button
-											className={clsx(styles.iconButton, styles.edit)}
+											className={clsx(tableStyles.iconButton, tableStyles.edit)}
 											onClick={() => handleEditClick(month)}
 											aria-label="Edit"
 										>
