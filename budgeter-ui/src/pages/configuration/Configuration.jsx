@@ -6,6 +6,7 @@ import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import Months from './components/Month/Months';
 import BankAccounts from './components/BankAccount/BankAccounts';
 import Categories from './components/Category/Categories';
+import Subcategories from './components/Subcategories/Subcategories';
 
 function Configuration() {
 	const { loading, LoadingType } = useLoading();
@@ -17,7 +18,7 @@ function Configuration() {
 		{ key: 1, value: 1, display: 'Months', component: Months, props: { registerNewHandler: setNewButtonHandler } },
 		{ key: 2, value: 2, display: 'Bank Accounts', component: BankAccounts, props: { registerNewHandler: setNewButtonHandler } },
 		{ key: 3, value: 3, display: 'Categories', component: Categories, props: { registerNewHandler: setNewButtonHandler } },
-		{ key: 4, value: 4, display: 'Subcategories' }
+		{ key: 4, value: 4, display: 'Subcategories', component: Subcategories, props: { registerNewHandler: setNewButtonHandler } }
 	]
 
 	const selected = options.find(o => o.key === selectedOption);

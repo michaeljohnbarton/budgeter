@@ -1,0 +1,36 @@
+/* Contributes to scrollability for table */
+.subcategoriesConfiguration {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.bankAccountWrapper, .categoryWrapper {
+	max-width: fit-content;
+	margin: 1rem auto;
+}
+
+.bankAccountWrapper label, .categoryWrapper label {
+	margin-right: 1rem;
+}
+
+.bankAccountDropdown, .categoryDropdown {
+	min-width: fit-content;
+	max-width: fit-content;
+	padding: 0.5rem 0.65rem;
+	font-size: 0.95rem;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background-color: #fff;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bankAccountDropdown:focus, .categoryDropdown:focus {
+	outline: none;
+	border-color: #4f46e5;
+	box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+}
+
+.bankAccountDropdown:hover, .categoryDropdown:hover {
+	border-color: #999;
+}

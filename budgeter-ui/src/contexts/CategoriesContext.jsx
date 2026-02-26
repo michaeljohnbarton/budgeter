@@ -9,6 +9,14 @@ export function CategoriesProvider({ children }) {
 	const [categories, setCategories] = useState([]);
 	const [error, setError] = useState(null);
 
+	const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+	useEffect(() => {
+		if (categories?.length && !selectedCategoryId) {
+			setSelectedCategoryId(categories[0].id);
+		}
+	}, [categories, selectedCategoryId]);
+
 	const hasFetched = useRef(false);
 
 	async function createCategory(payload) {
@@ -105,7 +113,7 @@ export function CategoriesProvider({ children }) {
 	}, []);
 
 	return (
-		<CategoriesContext.Provider value={{ categories, error, createCategory, updateCategory, deleteCategory }}>
+		<CategoriesContext.Provider value={{ categories, error, createCategory, updateCategory, deleteCategory, selectedCategoryId, setSelectedCategoryId}}>
 			{children}
 		</CategoriesContext.Provider>
 	);
