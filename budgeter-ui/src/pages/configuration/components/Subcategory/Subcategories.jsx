@@ -2,19 +2,25 @@ import styles from './Subcategories.module.css';
 import { useState, useEffect } from 'react';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import { useCategories } from '../../../../contexts/CategoriesContext';
+import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import SubcategoryModal from './SubcategoryModal';
+import DataTable from '../../../../commonComponents/dataTable/DataTable';
 
 function Subcategories({ registerNewHandler }) {
 	const { bankAccounts, selectedBankAccountId, setSelectedBankAccountId } = useBankAccounts();
 	const { categories, selectedCategoryId, setSelectedCategoryId } = useCategories();
+	const { subcategories } = useSubcategories();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const hasBankAccounts = bankAccounts && bankAccounts.length > 0;
 	const selectedBankAccount = bankAccounts?.find(ba => ba.id === selectedBankAccountId) ?? null;
 
-	const selectedBankAccountCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
-	const hasCategories = selectedBankAccountCategories && selectedBankAccountCategories.length > 0;
-	const selectedCategory = selectedBankAccountCategories?.find(c => c.id === selectedCategoryId) ?? null;
+	const filteredCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
+	const hasCategories = filteredCategories && filteredCategories.length > 0;
+	const selectedCategory = filteredCategories?.find(c => c.id === selectedCategoryId) ?? null;
+
+	const filteredSubcategories = subcategories?.filter(sc => sc.categoryId === selectedCategoryId) ?? [];
+	const hasSubcategories = filteredSubcategories && filteredSubcategories.length > 0;
 
 	useEffect(() => {
 		if(hasBankAccounts && hasCategories) {
@@ -25,12 +31,20 @@ function Subcategories({ registerNewHandler }) {
 
 	useEffect(() => {
 		if (hasCategories && selectedCategory === null) {
-			setSelectedCategoryId(selectedBankAccountCategories[0].id);
+			setSelectedCategoryId(filteredCategories[0].id);
 		}
 	}, [hasCategories, selectedCategory]);
 
 	const handleNewClick = () => {
 		setIsModalOpen(true);
+	};
+
+	const handleEditClick = (subcategory) => {
+		// nothing for now since edit isn't implemented
+	};
+	
+	const handleDeleteClick = async (subcategoryId) => {
+		// nothing for now since delete isn't implemented
 	};
 
 	if(!hasBankAccounts) {
@@ -51,7 +65,7 @@ function Subcategories({ registerNewHandler }) {
 			</div>
 
 			{ !hasCategories && (
-				<p className={styles.emptyMessage}>No categories were found for this bank account. Create one.</p>
+				<p>No categories were found for this bank account. Create one.</p>
 			)}
 
 			{ hasCategories && (
@@ -59,12 +73,24 @@ function Subcategories({ registerNewHandler }) {
 					<label htmlFor="categoryDropdown">Category:</label>
 					<select id="categoryDropdown" className={styles.categoryDropdown} value={selectedCategoryId} onChange={(e) => setSelectedCategoryId(Number(e.target.value))}>
 						{
-							selectedBankAccountCategories.map((category) => (
+							filteredCategories.map((category) => (
 								<option key={category.id} value={category.id}>{category.name}</option>
 							))
 						}
 					</select>
 				</div>
+			)}
+
+			{ hasCategories && !hasSubcategories && (
+				<p>No subcategories were found for this category. Create one.</p>
+			)}
+
+			{ hasCategories && hasSubcategories && (
+				<DataTable
+					dataRecords={filteredSubcategories}
+					handleDeleteClick={handleDeleteClick}
+					handleEditClick={handleEditClick}
+				/>
 			)}
 
 			<SubcategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} category={selectedCategory} />

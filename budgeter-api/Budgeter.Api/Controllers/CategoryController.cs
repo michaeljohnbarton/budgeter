@@ -43,6 +43,7 @@ namespace Budgeter.Api.Controllers
 		}
 
 		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public IEnumerable<Category> Get()
 		{
 			return _categoryService.Get();

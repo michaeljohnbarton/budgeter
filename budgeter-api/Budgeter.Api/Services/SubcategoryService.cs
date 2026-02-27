@@ -23,5 +23,18 @@ namespace Budgeter.Api.Services
 				HasTransactions = subcategoryToCreate.HasTransactions!.Value
 			});
 		}
+
+		public IEnumerable<Subcategory> Get()
+		{
+			IEnumerable<SubcategoryRepositoryModel> results = _subcategoryRepository.Get();
+			return results.Select(x => new Subcategory
+			{
+				ID = x.ID,
+				Name = x.Name,
+				CategoryId = x.CategoryId,
+				RecalculateFutureBalances = x.RecalculateFutureBalances,
+				HasTransactions = x.HasTransactions
+			});
+		}
 	}
 }

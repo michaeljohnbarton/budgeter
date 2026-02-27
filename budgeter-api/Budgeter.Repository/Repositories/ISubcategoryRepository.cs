@@ -2,8 +2,9 @@
 
 namespace Budgeter.Repository.Repositories
 {
-    public interface ISubcategoryRepository
+	public interface ISubcategoryRepository
 	{
 		void Create(Subcategory subcategoryToCreate);
+		IEnumerable<Subcategory> Get();
 	}
 }

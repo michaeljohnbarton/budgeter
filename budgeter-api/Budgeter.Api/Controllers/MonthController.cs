@@ -47,6 +47,7 @@ namespace Budgeter.Api.Controllers
 		}
 
 		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public IEnumerable<Month> Get()
 		{
 			return _monthService.Get();

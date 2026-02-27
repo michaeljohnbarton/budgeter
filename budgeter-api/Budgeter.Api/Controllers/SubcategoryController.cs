@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Budgeter.Api.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
 	public class SubcategoryController : Controller
 	{
 		private readonly ISubcategoryService _subcategoryService;
@@ -38,6 +38,13 @@ namespace Budgeter.Api.Controllers
 				}
 				throw;
 			}
+		}
+
+		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public IEnumerable<Subcategory> Get()
+		{
+			return _subcategoryService.Get();
 		}
 	}
 }

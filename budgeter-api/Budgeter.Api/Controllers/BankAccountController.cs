@@ -31,6 +31,7 @@ namespace Budgeter.Api.Controllers
 		}
 
 		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public IEnumerable<BankAccount> Get()
 		{
 			return _bankAccountService.Get();

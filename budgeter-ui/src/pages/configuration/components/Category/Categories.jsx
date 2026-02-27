@@ -13,7 +13,7 @@ function Categories({ registerNewHandler }) {
 	const [categoryData, setCategoryData] = useState(null);
 	
 	const selectedBankAccount = bankAccounts?.find(ba => ba.id === selectedBankAccountId) ?? null;
-	const selectedBankAccountCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
+	const filteredCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
 
 	useEffect(() => {
 		if(bankAccounts && bankAccounts.length > 0) {
@@ -63,11 +63,11 @@ function Categories({ registerNewHandler }) {
 				</select>
 			</div>
 
-			{selectedBankAccountCategories.length === 0 ? (
-				<p className={styles.emptyMessage}>No categories were found for this bank account. Create one.</p>
+			{filteredCategories.length === 0 ? (
+				<p>No categories were found for this bank account. Create one.</p>
 			) : (
 				<DataTable
-					dataRecords={selectedBankAccountCategories}
+					dataRecords={filteredCategories}
 					handleDeleteClick={handleDeleteClick}
 					handleEditClick={handleEditClick}
 				/>
