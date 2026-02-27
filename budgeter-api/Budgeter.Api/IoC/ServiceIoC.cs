@@ -10,6 +10,7 @@ namespace Budgeter.Api.IoC
 			services.AddScoped<IMonthService, MonthService>();
 			services.AddScoped<IBankAccountService, BankAccountService>();
 			services.AddScoped<ICategoryService, CategoryService>();
+			services.AddScoped<ISubcategoryService, SubcategoryService>();
 		}
 	}
 }

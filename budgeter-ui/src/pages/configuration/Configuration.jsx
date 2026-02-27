@@ -6,7 +6,7 @@ import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import Months from './components/Month/Months';
 import BankAccounts from './components/BankAccount/BankAccounts';
 import Categories from './components/Category/Categories';
-import Subcategories from './components/Subcategories/Subcategories';
+import Subcategories from './components/Subcategory/Subcategories';
 
 function Configuration() {
 	const { loading, LoadingType } = useLoading();

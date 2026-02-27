@@ -10,6 +10,7 @@ import LoadingIndicator from './commonComponents/loadingIndicator/LoadingIndicat
 import ScrollPage from './commonComponents/scrollPage/ScrollPage';
 import Home from './pages/home/Home';
 import Configuration from './pages/configuration/Configuration';
+import { SubcategoriesProvider } from './contexts/SubcategoriesContext';
 
 function App() {
 	return (
@@ -18,19 +19,21 @@ function App() {
 				<MonthsProvider>
 					<BankAccountsProvider>
 						<CategoriesProvider>
-							<Router>
-								<div id="app-layout">
-									<Navbar />
-									<LoadingIndicator />
+							<SubcategoriesProvider>
+								<Router>
+									<div id="app-layout">
+										<Navbar />
+										<LoadingIndicator />
 
-									<div id="app-content">
-										<Routes>
-											<Route path="/" element={<ScrollPage><Home /></ScrollPage>} />
-											<Route path="/configuration" element={<Configuration />} />
-										</Routes>
+										<div id="app-content">
+											<Routes>
+												<Route path="/" element={<ScrollPage><Home /></ScrollPage>} />
+												<Route path="/configuration" element={<Configuration />} />
+											</Routes>
+										</div>
 									</div>
-								</div>
-							</Router>
+								</Router>
+							</SubcategoriesProvider>
 						</CategoriesProvider>
 					</BankAccountsProvider>
 				</MonthsProvider>

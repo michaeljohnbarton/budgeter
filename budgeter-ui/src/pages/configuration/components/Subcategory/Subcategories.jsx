@@ -10,16 +10,24 @@ function Subcategories({ registerNewHandler }) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const hasBankAccounts = bankAccounts && bankAccounts.length > 0;
+	const selectedBankAccount = bankAccounts?.find(ba => ba.id === selectedBankAccountId) ?? null;
 
 	const selectedBankAccountCategories = categories?.filter(c => c.bankAccountId === selectedBankAccountId) ?? [];
 	const hasCategories = selectedBankAccountCategories && selectedBankAccountCategories.length > 0;
+	const selectedCategory = selectedBankAccountCategories?.find(c => c.id === selectedCategoryId) ?? null;
 
 	useEffect(() => {
 		if(hasBankAccounts && hasCategories) {
 			registerNewHandler(() => handleNewClick);
 			return () => registerNewHandler(null); // Cleanup on unmount
 		}
-	}, [registerNewHandler, bankAccounts, selectedBankAccountCategories]);
+	}, [registerNewHandler, hasBankAccounts, hasCategories]);
+
+	useEffect(() => {
+		if (hasCategories && selectedCategory === null) {
+			setSelectedCategoryId(selectedBankAccountCategories[0].id);
+		}
+	}, [hasCategories, selectedCategory]);
 
 	const handleNewClick = () => {
 		setIsModalOpen(true);
@@ -59,7 +67,7 @@ function Subcategories({ registerNewHandler }) {
 				</div>
 			)}
 
-			<SubcategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+			<SubcategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} category={selectedCategory} />
 		</div>
 	)
 }
