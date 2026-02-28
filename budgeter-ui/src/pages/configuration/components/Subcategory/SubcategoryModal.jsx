@@ -1,13 +1,13 @@
 import styles from '../../../../styles/ModalForm.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import Modal from '../../../../commonComponents/modal/Modal';
 
-function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category}) {
-	const { createSubcategory } = useSubcategories();
+function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcategoryData, setSubcategoryData}) {
+	const { createSubcategory, updateSubcategory } = useSubcategories();
 
-	const isEditMode = false;
+	const isEditMode = subcategoryData !== null && subcategoryData !== undefined;
 	const title = isEditMode ? "Edit Subcategory" : "Add Subcategory";
 
 	const [name, setName] = useState("");
@@ -17,16 +17,29 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category}) {
 		name: false
 	});
 
+	useEffect(() => {
+		if (isEditMode && subcategoryData) {
+			setName(subcategoryData.name);
+			setRecalculateFutureBalances(subcategoryData.recalculateFutureBalances);
+			setHasTransactions(subcategoryData.hasTransactions);
+		}
+	}, [isOpen]);
+
 	const isNameSet = name !== "";
 	const isFormValid = isNameSet;
 	const hasUnsavedChanges = isEditMode
-		? false
+		? name !== subcategoryData.name || recalculateFutureBalances !== subcategoryData.recalculateFutureBalances || hasTransactions !== subcategoryData.hasTransactions
 		: isNameSet || recalculateFutureBalances || hasTransactions;
 	
 	const handleSave = async () => {
 		try {
 			if(isEditMode) {
-				// nothing for now
+				if(name !== subcategoryData.name || recalculateFutureBalances !== subcategoryData.recalculateFutureBalances || hasTransactions !== subcategoryData.hasTransactions) {
+					await updateSubcategory(subcategoryData.id, { name: name, recalculateFutureBalances: recalculateFutureBalances, hasTransactions: hasTransactions });
+					toast.success("Subcategory updated successfully");
+				} else {
+					toast.info("No changes to save");
+				}
 			}
 			else {
 				await createSubcategory({
@@ -46,6 +59,7 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category}) {
 	};
 
 	const handleClose = () => {
+		setSubcategoryData(null);
 		setName("");
 		setRecalculateFutureBalances(false);
 		setHasTransactions(false);

@@ -11,6 +11,7 @@ function Subcategories({ registerNewHandler }) {
 	const { categories, selectedCategoryId, setSelectedCategoryId } = useCategories();
 	const { subcategories } = useSubcategories();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [subcategoryData, setSubcategoryData] = useState(null);
 
 	const hasBankAccounts = bankAccounts && bankAccounts.length > 0;
 	const selectedBankAccount = bankAccounts?.find(ba => ba.id === selectedBankAccountId) ?? null;
@@ -40,7 +41,8 @@ function Subcategories({ registerNewHandler }) {
 	};
 
 	const handleEditClick = (subcategory) => {
-		// nothing for now since edit isn't implemented
+		setSubcategoryData(subcategory);
+		setIsModalOpen(true);
 	};
 	
 	const handleDeleteClick = async (subcategoryId) => {
@@ -93,7 +95,14 @@ function Subcategories({ registerNewHandler }) {
 				/>
 			)}
 
-			<SubcategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} category={selectedCategory} />
+			<SubcategoryModal
+				isOpen={isModalOpen}
+				setIsModalOpen={setIsModalOpen}
+				bankAccount={selectedBankAccount}
+				category={selectedCategory}
+				subcategoryData={subcategoryData}
+				setSubcategoryData={setSubcategoryData}
+			/>
 		</div>
 	)
 }

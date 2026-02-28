@@ -36,5 +36,16 @@ namespace Budgeter.Api.Services
 				HasTransactions = x.HasTransactions
 			});
 		}
+
+		public void Update(int subcategoryId, UpdateSubcategory subcategoryToUpdate)
+		{
+			_subcategoryRepository.Update(new SubcategoryRepositoryModel
+			{
+				ID = subcategoryId,
+				Name = subcategoryToUpdate.Name,
+				RecalculateFutureBalances = subcategoryToUpdate.RecalculateFutureBalances!.Value,
+				HasTransactions = subcategoryToUpdate.HasTransactions!.Value
+			});
+		}
 	}
 }

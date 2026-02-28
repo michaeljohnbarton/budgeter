@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
@@ -28,6 +29,23 @@ VALUES (@Name, @CategoryId, @RecalculateFutureBalances, @HasTransactions)";
 			using (var connection = new SqlConnection(connectionString))
 			{
 				return connection.Query<Subcategory>(sql);
+			}
+		}
+
+		public void Update(Subcategory subcategoryToUpdate)
+		{
+			string sql =
+@"UPDATE Subcategory
+SET [Name] = @Name, RecalculateFutureBalances = @RecalculateFutureBalances, HasTransactions = @HasTransactions
+WHERE ID = @ID";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				int rowsAffected = connection.Execute(sql, subcategoryToUpdate);
+				if (rowsAffected == 0)
+				{
+					throw new NotFoundException("Subcategory does not exist");
+				}
 			}
 		}
 	}

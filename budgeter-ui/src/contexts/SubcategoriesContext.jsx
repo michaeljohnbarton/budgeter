@@ -7,6 +7,7 @@ export function SubcategoriesProvider({ children }) {
 	const { setLoading, LoadingType } = useContext(LoadingContext);
 
 	const [subcategories, setSubcategories] = useState([]);
+	const [error, setError] = useState(null);
 
 	const hasFetched = useRef(false);
 
@@ -53,12 +54,36 @@ export function SubcategoriesProvider({ children }) {
 		}
 	}
 
+	async function updateSubcategory(subcategoryId, payload) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/Subcategory/${subcategoryId}`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to update subcategory");
+			}
+
+			await fetchSubcategories({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchSubcategories();
 	}, []);
 
 	return (
-		<SubcategoriesContext.Provider value={{ subcategories, createSubcategory }}>
+		<SubcategoriesContext.Provider value={{ subcategories, error, createSubcategory, updateSubcategory }}>
 			{children}
 		</SubcategoriesContext.Provider>
 	);
