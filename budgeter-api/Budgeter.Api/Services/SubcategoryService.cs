@@ -47,5 +47,10 @@ namespace Budgeter.Api.Services
 				HasTransactions = subcategoryToUpdate.HasTransactions!.Value
 			});
 		}
+
+		public void Delete(int subcategoryId)
+		{
+			_subcategoryRepository.Delete(subcategoryId);
+		}
 	}
 }

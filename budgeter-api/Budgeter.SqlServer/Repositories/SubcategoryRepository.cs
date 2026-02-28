@@ -48,5 +48,19 @@ WHERE ID = @ID";
 				}
 			}
 		}
+
+		public void Delete(int subcategoryId)
+		{
+			string sql = "DELETE FROM Subcategory WHERE ID = @ID";
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				int rowsAffected = connection.Execute(sql, new { id = subcategoryId });
+				if (rowsAffected == 0)
+				{
+					throw new NotFoundException("Subcategory does not exist");
+				}
+			}
+		}
 	}
 }

@@ -78,12 +78,34 @@ export function SubcategoriesProvider({ children }) {
 		}
 	}
 
+	async function deleteSubcategory(subcategoryId) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+
+			const response = await fetch(`http://localhost:60060/api/Subcategory/${subcategoryId}`, {
+				method: "DELETE"
+			});
+
+			if (!response.ok)
+			{
+				const responseData = await response.text();
+				throw new Error(responseData || "Failed to delete subcategory");
+			}
+
+			await fetchSubcategories({ force: true });
+		} catch (err) {
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchSubcategories();
 	}, []);
 
 	return (
-		<SubcategoriesContext.Provider value={{ subcategories, error, createSubcategory, updateSubcategory }}>
+		<SubcategoriesContext.Provider value={{ subcategories, error, createSubcategory, updateSubcategory, deleteSubcategory }}>
 			{children}
 		</SubcategoriesContext.Provider>
 	);

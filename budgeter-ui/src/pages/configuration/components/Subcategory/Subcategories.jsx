@@ -1,5 +1,6 @@
 import styles from './Subcategories.module.css';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
@@ -9,7 +10,7 @@ import DataTable from '../../../../commonComponents/dataTable/DataTable';
 function Subcategories({ registerNewHandler }) {
 	const { bankAccounts, selectedBankAccountId, setSelectedBankAccountId } = useBankAccounts();
 	const { categories, selectedCategoryId, setSelectedCategoryId } = useCategories();
-	const { subcategories } = useSubcategories();
+	const { subcategories, deleteSubcategory } = useSubcategories();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [subcategoryData, setSubcategoryData] = useState(null);
 
@@ -46,7 +47,18 @@ function Subcategories({ registerNewHandler }) {
 	};
 	
 	const handleDeleteClick = async (subcategoryId) => {
-		// nothing for now since delete isn't implemented
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete this subcategory? This action cannot be undone."
+		);
+		if (!confirmDelete) return;
+
+		try {
+			await deleteSubcategory(subcategoryId);
+			toast.success("Subcategory deleted successfully");
+		}
+		catch (error) {
+			toast.error(error.message || "Failed to delete subcategory");
+		}
 	};
 
 	if(!hasBankAccounts) {

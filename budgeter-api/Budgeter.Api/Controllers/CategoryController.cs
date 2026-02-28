@@ -85,6 +85,14 @@ namespace Budgeter.Api.Controllers
 			{
 				return NotFound(e.Message);
 			}
+			catch (SqlException e)
+			{
+				if (e.Number == 547)
+				{
+					return BadRequest("Category still has linked subcategories");
+				}
+				throw;
+			}
 		}
 	}
 }
