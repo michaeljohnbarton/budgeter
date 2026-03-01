@@ -1,6 +1,5 @@
 import styles from './Months.module.css';
 import { useEffect, useState, useRef } from 'react';
-import { toast } from 'react-toastify';
 import { useMonths } from '../../../../contexts/MonthsContext';
 import MonthModal from './MonthModal';
 import DataTable from '../../../../commonComponents/dataTable/DataTable';
@@ -18,26 +17,6 @@ function Months({ registerNewHandler }) {
 	const handleNewClick = () => {
 		setIsModalOpen(true);
 	};
-
-	const handleEditClick = (month) => {
-		setMonthData(month);
-		setIsModalOpen(true);
-	};
-
-	const handleDeleteClick = async (monthId) => {
-		const confirmDelete = window.confirm(
-			"Are you sure you want to delete this month? This action cannot be undone."
-		);
-		if (!confirmDelete) return;
-
-		try {
-			await deleteMonth(monthId);
-			toast.success("Month deleted successfully");
-		}
-		catch (error) {
-			toast.error(error.message || "Failed to delete month");
-		}
-	}
 
 	const currentRowRef = useRef(null);
 
@@ -74,8 +53,10 @@ function Months({ registerNewHandler }) {
 			 <DataTable
 			 	dataRecords={monthDataRecords}
 				currentRowRef={currentRowRef}
-				handleDeleteClick={handleDeleteClick}
-				handleEditClick={handleEditClick}
+				dataRecordName="month"
+				setDataRecord={setMonthData}
+				setIsModalOpen={setIsModalOpen}
+				deleteDataRecord={deleteMonth}
 			/>
 			<MonthModal
 				isOpen={isModalOpen}

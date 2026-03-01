@@ -1,6 +1,5 @@
 import styles from './Subcategories.module.css';
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
@@ -39,26 +38,6 @@ function Subcategories({ registerNewHandler }) {
 
 	const handleNewClick = () => {
 		setIsModalOpen(true);
-	};
-
-	const handleEditClick = (subcategory) => {
-		setSubcategoryData(subcategory);
-		setIsModalOpen(true);
-	};
-	
-	const handleDeleteClick = async (subcategoryId) => {
-		const confirmDelete = window.confirm(
-			"Are you sure you want to delete this subcategory? This action cannot be undone."
-		);
-		if (!confirmDelete) return;
-
-		try {
-			await deleteSubcategory(subcategoryId);
-			toast.success("Subcategory deleted successfully");
-		}
-		catch (error) {
-			toast.error(error.message || "Failed to delete subcategory");
-		}
 	};
 
 	if(!hasBankAccounts) {
@@ -102,8 +81,10 @@ function Subcategories({ registerNewHandler }) {
 			{ hasCategories && hasSubcategories && (
 				<DataTable
 					dataRecords={filteredSubcategories}
-					handleDeleteClick={handleDeleteClick}
-					handleEditClick={handleEditClick}
+					dataRecordName="subcategory"
+					setDataRecord={setSubcategoryData}
+					setIsModalOpen={setIsModalOpen}
+					deleteDataRecord={deleteSubcategory}
 				/>
 			)}
 

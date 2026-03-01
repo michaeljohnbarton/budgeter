@@ -1,6 +1,5 @@
 import styles from './Categories.module.css';
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import CategoryModal from './CategoryModal';
@@ -26,26 +25,6 @@ function Categories({ registerNewHandler }) {
 		setIsModalOpen(true);
 	};
 
-	const handleEditClick = (category) => {
-		setCategoryData(category);
-		setIsModalOpen(true);
-	};
-
-	const handleDeleteClick = async (categoryId) => {
-		const confirmDelete = window.confirm(
-			"Are you sure you want to delete this category? This action cannot be undone."
-		);
-		if (!confirmDelete) return;
-
-		try {
-			await deleteCategory(categoryId);
-			toast.success("Category deleted successfully");
-		}
-		catch (error) {
-			toast.error(error.message || "Failed to delete category");
-		}
-	};
-
 	if(!bankAccounts || bankAccounts.length === 0) {
 		return <p>No bank accounts were found. Create one.</p>
 	}
@@ -68,12 +47,20 @@ function Categories({ registerNewHandler }) {
 			) : (
 				<DataTable
 					dataRecords={filteredCategories}
-					handleDeleteClick={handleDeleteClick}
-					handleEditClick={handleEditClick}
+					dataRecordName="category"
+					setDataRecord={setCategoryData}
+					setIsModalOpen={setIsModalOpen}
+					deleteDataRecord={deleteCategory}
 				/>
 			)}
 
-			<CategoryModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} bankAccount={selectedBankAccount} categoryData={categoryData} setCategoryData={setCategoryData} />
+			<CategoryModal
+				isOpen={isModalOpen}
+				setIsModalOpen={setIsModalOpen}
+				bankAccount={selectedBankAccount}
+				categoryData={categoryData}
+				setCategoryData={setCategoryData}
+			/>
 		</div>
 	)
 }

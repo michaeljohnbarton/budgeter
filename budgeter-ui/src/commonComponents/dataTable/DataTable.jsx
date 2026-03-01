@@ -1,8 +1,33 @@
 import tableStyles from './DataTable.module.css';
+import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import clsx from 'clsx';
 
-function DataTable({ dataRecords, currentRowRef, handleDeleteClick, handleEditClick }) {
+function DataTable({ dataRecords, currentRowRef, dataRecordName, setDataRecord, setIsModalOpen, deleteDataRecord }) {
+	function capitalizeFirstLetter(string) {
+		return !string ? "" : string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
+	const handleEditClick = (dataRecord) => {
+		setDataRecord(dataRecord);
+		setIsModalOpen(true);
+	};
+
+	const handleDeleteClick = async (dataRecordId) => {
+		const confirmDelete = window.confirm(
+			`Are you sure you want to delete this ${dataRecordName}? This action cannot be undone.`
+		);
+		if (!confirmDelete) return;
+
+		try {
+			await deleteDataRecord(dataRecordId);
+			toast.success(`${capitalizeFirstLetter(dataRecordName)} deleted successfully`);
+		}
+		catch (error) {
+			toast.error(error.message || `Failed to delete ${dataRecordName}`);
+		}
+	};
+
 	return (
 		<div className={tableStyles.tableWrapper}>
 			<table className={tableStyles.table}>
