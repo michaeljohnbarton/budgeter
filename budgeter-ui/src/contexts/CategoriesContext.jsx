@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
+import { categoryService } from "../services/categoryService";
+import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const CategoriesContext = createContext();
 
@@ -22,21 +24,12 @@ export function CategoriesProvider({ children }) {
 	async function createCategory(payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch("http://localhost:60060/api/Category", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to create category");
-			}
-
+			await categoryService.create(payload);
 			await fetchCategories({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -48,15 +41,12 @@ export function CategoriesProvider({ children }) {
 
 		try {
 			setLoading(LoadingType.FULLSCREEN);
-
-			const response = await fetch("http://localhost:60060/api/Category");
-			if (!response.ok) throw new Error("Failed to fetch categories");
-
-			const data = await response.json();
+			setError(null);
+			const data = await categoryService.getAll();
 			setCategories(data);
 			hasFetched.current = true;
 		} catch (err) {
-			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
+			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);
 		} finally {
 			setLoading(LoadingType.NONE);
 		}
@@ -65,21 +55,12 @@ export function CategoriesProvider({ children }) {
 	async function updateCategory(categoryId, payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/Category/${categoryId}`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to update category");
-			}
-
+			await categoryService.update(categoryId, payload);
 			await fetchCategories({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -89,19 +70,12 @@ export function CategoriesProvider({ children }) {
 	async function deleteCategory(categoryId) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/Category/${categoryId}`, {
-				method: "DELETE"
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to delete category");
-			}
-
+			await categoryService.delete(categoryId);
 			await fetchCategories({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);

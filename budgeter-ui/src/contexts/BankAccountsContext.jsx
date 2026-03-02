@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
+import { bankAccountService } from "../services/bankAccountService";
+import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const BankAccountsContext = createContext();
 
@@ -21,21 +23,12 @@ export function BankAccountsProvider({ children }) {
 	async function createBankAccount(payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch("http://localhost:60060/api/BankAccount", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to create bank account");
-			}
-
+			await bankAccountService.create(payload);
 			await fetchBankAccounts({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -47,15 +40,12 @@ export function BankAccountsProvider({ children }) {
 
 		try {
 			setLoading(LoadingType.FULLSCREEN);
-
-			const response = await fetch("http://localhost:60060/api/BankAccount");
-			if (!response.ok) throw new Error("Failed to fetch bank accounts");
-
-			const data = await response.json();
+			setError(null);
+			const data = await bankAccountService.getAll();
 			setBankAccounts(data);
 			hasFetched.current = true;
 		} catch (err) {
-			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
+			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);
 		} finally {
 			setLoading(LoadingType.NONE);
 		}
@@ -64,21 +54,12 @@ export function BankAccountsProvider({ children }) {
 	async function updateBankAccount(bankAccountId, payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/BankAccount/${bankAccountId}`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to update bank account");
-			}
-
+			await bankAccountService.update(bankAccountId, payload);
 			await fetchBankAccounts({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -88,19 +69,12 @@ export function BankAccountsProvider({ children }) {
 	async function deleteBankAccount(bankAccountId) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/BankAccount/${bankAccountId}`, {
-				method: "DELETE"
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to delete bank account");
-			}
-
+			await bankAccountService.delete(bankAccountId);
 			await fetchBankAccounts({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);

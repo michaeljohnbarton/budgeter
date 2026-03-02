@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
+import { subcategoryService } from "../services/subcategoryService";
+import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const SubcategoriesContext = createContext();
 
@@ -14,21 +16,12 @@ export function SubcategoriesProvider({ children }) {
 	async function createSubcategory(payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch("http://localhost:60060/api/Subcategory", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to create subcategory");
-			}
-
+			await subcategoryService.create(payload);
 			await fetchSubcategories({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -40,15 +33,12 @@ export function SubcategoriesProvider({ children }) {
 
 		try {
 			setLoading(LoadingType.FULLSCREEN);
-
-			const response = await fetch("http://localhost:60060/api/Subcategory");
-			if (!response.ok) throw new Error("Failed to fetch subcategories");
-
-			const data = await response.json();
+			setError(null);
+			const data = await subcategoryService.getAll();
 			setSubcategories(data);
 			hasFetched.current = true;
 		} catch (err) {
-			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
+			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);
 		} finally {
 			setLoading(LoadingType.NONE);
 		}
@@ -57,21 +47,12 @@ export function SubcategoriesProvider({ children }) {
 	async function updateSubcategory(subcategoryId, payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/Subcategory/${subcategoryId}`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to update subcategory");
-			}
-
+			await subcategoryService.update(subcategoryId, payload);
 			await fetchSubcategories({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -81,19 +62,12 @@ export function SubcategoriesProvider({ children }) {
 	async function deleteSubcategory(subcategoryId) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/Subcategory/${subcategoryId}`, {
-				method: "DELETE"
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to delete subcategory");
-			}
-
+			await subcategoryService.delete(subcategoryId);
 			await fetchSubcategories({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);

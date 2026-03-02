@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { LoadingContext } from "./LoadingContext";
+import { monthService } from "../services/monthService";
+import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const MonthsContext = createContext();
 
@@ -29,21 +31,12 @@ export function MonthsProvider({ children }) {
 	async function createMonth(payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch("http://localhost:60060/api/Month", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to create month");
-			}
-
+			await monthService.create(payload);
 			await fetchMonths({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -56,15 +49,11 @@ export function MonthsProvider({ children }) {
 		try {
 			setLoading(LoadingType.FULLSCREEN);
 			setError(null);
-
-			const response = await fetch("http://localhost:60060/api/Month");
-			if (!response.ok) throw new Error("Failed to fetch months");
-
-			const data = await response.json();
+			const data = await monthService.getAll();
 			setMonths(data);
 			hasFetched.current = true;
 		} catch (err) {
-			setError(err.message === "Failed to fetch" ? "Could not connect to the API." : err.message);
+			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);
 		} finally {
 			setLoading(LoadingType.NONE);
 		}
@@ -73,21 +62,12 @@ export function MonthsProvider({ children }) {
 	async function updateMonth(monthId, payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/Month/${monthId}`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to update month");
-			}
-
+			await monthService.update(monthId, payload);
 			await fetchMonths({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
@@ -97,19 +77,12 @@ export function MonthsProvider({ children }) {
 	async function deleteMonth(monthId) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-
-			const response = await fetch(`http://localhost:60060/api/Month/${monthId}`, {
-				method: "DELETE"
-			});
-
-			if (!response.ok)
-			{
-				const responseData = await response.text();
-				throw new Error(responseData || "Failed to delete month");
-			}
-
+			await monthService.delete(monthId);
 			await fetchMonths({ force: true });
 		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
 			throw err;
 		} finally {
 			setLoading(LoadingType.NONE);
