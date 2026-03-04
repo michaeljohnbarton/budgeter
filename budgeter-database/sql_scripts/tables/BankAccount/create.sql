@@ -7,5 +7,5 @@ CREATE TABLE BankAccount
     MonthlyBalancePropagationType VARCHAR(11) NOT NULL
         CONSTRAINT CHK_BankAccount_MonthlyBalancePropagationType
         CHECK (MonthlyBalancePropagationType IN ('BankAccount', 'Subcategory')),
-    HasBudgetedAmounts BIT NOT NULL
+    ShowBudgetedAmounts BIT NOT NULL
 );

@@ -12,7 +12,7 @@ namespace Budgeter.Api.Models
 		[Required, JsonConverter(typeof(JsonStringEnumConverter))]
 		public MonthlyBalancePropagationType? MonthlyBalancePropagationType { get; set; }
 		[Required]
-		public bool? HasBudgetedAmounts { get; set; }
+		public bool? ShowBudgetedAmounts { get; set; }
 	}
 }
 

@@ -31,6 +31,6 @@ namespace Budgeter.Repository.Models
 			set => _monthlyBalancePropagationTypeString = value;
 		}
 
-		public bool HasBudgetedAmounts { get; set; }
+		public bool ShowBudgetedAmounts { get; set; }
 	}
 }

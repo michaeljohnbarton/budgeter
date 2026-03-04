@@ -8,7 +8,7 @@ BEGIN
         [Name] VARCHAR(100) NOT NULL,
         MonthlyBalancePropagationType VARCHAR(11) NOT NULL
             CONSTRAINT CHK_BankAccount_MonthlyBalancePropagationType
-            CHECK (MonthlyBalancePrapogationType IN ('BankAccount', 'Subcategory')),
-        HasBudgetedAmounts BIT NOT NULL
+            CHECK (MonthlyBalancePropagationType IN ('BankAccount', 'Subcategory')),
+        ShowBudgetedAmounts BIT NOT NULL
     );
 END;

@@ -13,8 +13,8 @@ namespace Budgeter.SqlServer.Repositories
 		public void Create(BankAccount bankAccountToCreate)
 		{
 			string sql =
-@"INSERT INTO BankAccount ([Name], MonthlyBalancePropagationType, HasBudgetedAmounts)
-VALUES (@Name, @MonthlyBalancePropagationTypeString, @HasBudgetedAmounts)";
+@"INSERT INTO BankAccount ([Name], MonthlyBalancePropagationType, ShowBudgetedAmounts)
+VALUES (@Name, @MonthlyBalancePropagationTypeString, @ShowBudgetedAmounts)";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
@@ -25,7 +25,7 @@ VALUES (@Name, @MonthlyBalancePropagationTypeString, @HasBudgetedAmounts)";
 		public IEnumerable<BankAccount> Get()
 		{
 			string sql =
-@"SELECT ID, [Name], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, HasBudgetedAmounts
+@"SELECT ID, [Name], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, ShowBudgetedAmounts
 FROM BankAccount ORDER BY [Name]";
 
 			using (var connection = new SqlConnection(connectionString))
@@ -38,7 +38,7 @@ FROM BankAccount ORDER BY [Name]";
 		{
 			string sql =
 @"UPDATE BankAccount
-SET [Name] = @Name, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, HasBudgetedAmounts = @HasBudgetedAmounts
+SET [Name] = @Name, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, ShowBudgetedAmounts = @ShowBudgetedAmounts
 WHERE ID = @ID";
 
 			using (var connection = new SqlConnection(connectionString))

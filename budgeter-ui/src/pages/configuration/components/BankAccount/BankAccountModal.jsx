@@ -12,7 +12,7 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 
 	const [name, setName] = useState("");
 	const [monthlyBalancePropagationType, setMonthlyBalancePropagationType] = useState("");
-	const [hasBudgetedAmounts, setHasBudgetedAmounts] = useState(false);
+	const [showBudgetedAmounts, setShowBudgetedAmounts] = useState(false);
 	const [touched, setTouched] = useState({
 		name: false,
 		monthlyBalancePropagationType: false
@@ -22,7 +22,7 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 		if (isEditMode && bankAccountData) {
 			setName(bankAccountData.name);
 			setMonthlyBalancePropagationType(bankAccountData.monthlyBalancePropagationType);
-			setHasBudgetedAmounts(bankAccountData.hasBudgetedAmounts);
+			setShowBudgetedAmounts(bankAccountData.showBudgetedAmounts);
 		}
 	}, [isOpen]);
 
@@ -30,14 +30,14 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 	const isMonthlyBalancePropagationTypeSet = monthlyBalancePropagationType !== "";
 	const isFormValid = isNameSet && isMonthlyBalancePropagationTypeSet;
 	const hasUnsavedChanges = isEditMode
-	 	? name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || hasBudgetedAmounts !== bankAccountData.hasBudgetedAmounts
+	 	? name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts
 	 	: isNameSet || isMonthlyBalancePropagationTypeSet;
 
 	const handleSave = async () => {
 		try {
 			if (isEditMode) {
-				if(name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || hasBudgetedAmounts !== bankAccountData.hasBudgetedAmounts) {
-					await updateBankAccount(bankAccountData.id, { name: name, monthlyBalancePropagationType: monthlyBalancePropagationType, hasBudgetedAmounts: hasBudgetedAmounts });
+				if(name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts) {
+					await updateBankAccount(bankAccountData.id, { name: name, monthlyBalancePropagationType: monthlyBalancePropagationType, showBudgetedAmounts: showBudgetedAmounts });
 					toast.success("Bank account updated successfully");
 				} else {
 					toast.info("No changes to save");
@@ -46,7 +46,7 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 				await createBankAccount({
 					name: name,
 					monthlyBalancePropagationType: monthlyBalancePropagationType,
-					hasBudgetedAmounts: hasBudgetedAmounts
+					showBudgetedAmounts: showBudgetedAmounts
 				});
 				toast.success("Bank account created successfully");
 			}
@@ -62,7 +62,7 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 		setBankAccountData(null);
 		setName("");
 		setMonthlyBalancePropagationType("");
-		setHasBudgetedAmounts(false);
+		setShowBudgetedAmounts(false);
 		setTouched({
 			name: false,
 			monthlyBalancePropagationType: false
@@ -105,11 +105,11 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 				</div>
 				<div className={styles.formGroup}>
 					<label className={styles.checkboxLabel}>
-						Has Budgeted Amounts
+						Show Budgeted Amounts
 						<input
 							type="checkbox"
-							checked={hasBudgetedAmounts}
-							onChange={(e) => { setHasBudgetedAmounts(e.target.checked);}}
+							checked={showBudgetedAmounts}
+							onChange={(e) => { setShowBudgetedAmounts(e.target.checked);}}
 						/>
 					</label>
 				</div>
