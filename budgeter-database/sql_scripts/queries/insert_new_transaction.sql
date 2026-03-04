@@ -20,7 +20,7 @@ FROM Subcategory WHERE ID = @SubcategoryID;
 
 IF @RecalculateFutureBalances = 1 -- would do this over all future months
 BEGIN
-    UPDATE MonthlyBalance
-    SET Balance = Balance + CASE WHEN @IsCredit = 1 THEN @Amount ELSE -@Amount END
-    WHERE MonthID = @MonthID + 1 AND SubcategoryID = @SubcategoryID
+	UPDATE MonthlyBalance
+	SET Balance = Balance + CASE WHEN @IsCredit = 1 THEN @Amount ELSE -@Amount END
+	WHERE MonthID = @MonthID + 1 AND SubcategoryID = @SubcategoryID
 END;
