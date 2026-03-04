@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Budgeter.Api.Models;
+﻿using Budgeter.Api.Models;
 using Budgeter.Api.Services;
 using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace Budgeter.Api.Controllers
 {

@@ -1,5 +1,6 @@
 # Custom entries
 generated/
+.vscode
 
 # globs
 Makefile.in

@@ -1,8 +1,8 @@
-﻿using System.Data.SqlClient;
-using Budgeter.Repository.Infrastructure;
+﻿using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
+using Microsoft.Data.SqlClient;
 
 namespace Budgeter.SqlServer.Repositories
 {
@@ -16,20 +16,16 @@ namespace Budgeter.SqlServer.Repositories
 @"INSERT INTO Subcategory ([Name], CategoryId, RecalculateFutureBalances, HasTransactions)
 VALUES (@Name, @CategoryId, @RecalculateFutureBalances, @HasTransactions)";
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Execute(sql, subcategoryToCreate);
-			}
+			using var connection = new SqlConnection(connectionString);
+			connection.Execute(sql, subcategoryToCreate);
 		}
 
 		public IEnumerable<Subcategory> Get()
 		{
 			string sql = "SELECT ID, [Name], CategoryId, RecalculateFutureBalances, HasTransactions FROM Subcategory ORDER BY [Name]";
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				return connection.Query<Subcategory>(sql);
-			}
+			using var connection = new SqlConnection(connectionString);
+			return connection.Query<Subcategory>(sql);
 		}
 
 		public void Update(Subcategory subcategoryToUpdate)
@@ -39,13 +35,11 @@ VALUES (@Name, @CategoryId, @RecalculateFutureBalances, @HasTransactions)";
 SET [Name] = @Name, RecalculateFutureBalances = @RecalculateFutureBalances, HasTransactions = @HasTransactions
 WHERE ID = @ID";
 
-			using (var connection = new SqlConnection(connectionString))
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, subcategoryToUpdate);
+			if (rowsAffected == 0)
 			{
-				int rowsAffected = connection.Execute(sql, subcategoryToUpdate);
-				if (rowsAffected == 0)
-				{
-					throw new NotFoundException("Subcategory does not exist");
-				}
+				throw new NotFoundException("Subcategory does not exist");
 			}
 		}
 
@@ -53,13 +47,11 @@ WHERE ID = @ID";
 		{
 			string sql = "DELETE FROM Subcategory WHERE ID = @ID";
 
-			using (var connection = new SqlConnection(connectionString))
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, new { id = subcategoryId });
+			if (rowsAffected == 0)
 			{
-				int rowsAffected = connection.Execute(sql, new { id = subcategoryId });
-				if (rowsAffected == 0)
-				{
-					throw new NotFoundException("Subcategory does not exist");
-				}
+				throw new NotFoundException("Subcategory does not exist");
 			}
 		}
 	}

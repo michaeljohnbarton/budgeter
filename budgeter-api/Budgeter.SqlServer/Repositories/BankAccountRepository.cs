@@ -1,8 +1,8 @@
-﻿using System.Data.SqlClient;
-using Budgeter.Repository.Infrastructure;
+﻿using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
+using Microsoft.Data.SqlClient;
 
 namespace Budgeter.SqlServer.Repositories
 {
@@ -16,10 +16,8 @@ namespace Budgeter.SqlServer.Repositories
 @"INSERT INTO BankAccount ([Name], MonthlyBalancePropagationType, ShowBudgetedAmounts)
 VALUES (@Name, @MonthlyBalancePropagationTypeString, @ShowBudgetedAmounts)";
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Execute(sql, bankAccountToCreate);
-			}
+			using var connection = new SqlConnection(connectionString);
+			connection.Execute(sql, bankAccountToCreate);
 		}
 
 		public IEnumerable<BankAccount> Get()
@@ -28,10 +26,8 @@ VALUES (@Name, @MonthlyBalancePropagationTypeString, @ShowBudgetedAmounts)";
 @"SELECT ID, [Name], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, ShowBudgetedAmounts
 FROM BankAccount ORDER BY [Name]";
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				return connection.Query<BankAccount>(sql);
-			}
+			using var connection = new SqlConnection(connectionString);
+			return connection.Query<BankAccount>(sql);
 		}
 
 		public void Update(BankAccount bankAccountToUpdate)
@@ -41,13 +37,11 @@ FROM BankAccount ORDER BY [Name]";
 SET [Name] = @Name, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, ShowBudgetedAmounts = @ShowBudgetedAmounts
 WHERE ID = @ID";
 
-			using (var connection = new SqlConnection(connectionString))
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, bankAccountToUpdate);
+			if (rowsAffected == 0)
 			{
-				int rowsAffected = connection.Execute(sql, bankAccountToUpdate);
-				if (rowsAffected == 0)
-				{
-					throw new NotFoundException("Bank account does not exist");
-				}
+				throw new NotFoundException("Bank account does not exist");
 			}
 		}
 
@@ -55,13 +49,11 @@ WHERE ID = @ID";
 		{
 			string sql = "DELETE FROM BankAccount WHERE ID = @ID";
 
-			using (var connection = new SqlConnection(connectionString))
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, new { id = bankAccountId });
+			if (rowsAffected == 0)
 			{
-				int rowsAffected = connection.Execute(sql, new { id = bankAccountId });
-				if (rowsAffected == 0)
-				{
-					throw new NotFoundException("Bank account does not exist");
-				}
+				throw new NotFoundException("Bank account does not exist");
 			}
 		}
 	}

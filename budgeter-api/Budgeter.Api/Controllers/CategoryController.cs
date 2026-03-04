@@ -1,9 +1,8 @@
-﻿using System;
-using System.Data.SqlClient;
-using Budgeter.Api.Models;
+﻿using Budgeter.Api.Models;
 using Budgeter.Api.Services;
 using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace Budgeter.Api.Controllers
 {

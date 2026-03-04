@@ -1,9 +1,8 @@
-﻿using System;
-using System.Data.SqlClient;
-using Budgeter.Repository.Infrastructure;
+﻿using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
+using Microsoft.Data.SqlClient;
 
 namespace Budgeter.SqlServer.Repositories
 {
@@ -15,10 +14,8 @@ namespace Budgeter.SqlServer.Repositories
 		{
 			string sql = "INSERT INTO [Month] ([Month], [Year]) VALUES (@MonthNumber, @Year)";
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Execute(sql, monthToCreate);
-			}
+			using var connection = new SqlConnection(connectionString);
+			connection.Execute(sql, monthToCreate);
 		}
 
 		public IEnumerable<Month> Get()
@@ -26,23 +23,19 @@ namespace Budgeter.SqlServer.Repositories
 			// Month with ID 0 is the Default month which is only used for Configuration and setting default budgeted values, etc.
 			string sql = "SELECT ID, [Month] as MonthNumber, [Year] FROM [Month] WHERE ID > 0 ORDER BY [Year], [Month]";
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				return connection.Query<Month>(sql);
-			}
+			using var connection = new SqlConnection(connectionString);
+			return connection.Query<Month>(sql);
 		}
 
 		public void Update(Month monthToUpdate)
 		{
 			string sql = "UPDATE [Month] SET [Month] = @MonthNumber, [Year] = @Year WHERE ID = @ID";
 
-			using (var connection = new SqlConnection(connectionString))
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, monthToUpdate);
+			if (rowsAffected == 0)
 			{
-				int rowsAffected = connection.Execute(sql, monthToUpdate);
-				if (rowsAffected == 0)
-				{
-					throw new NotFoundException("Month does not exist");
-				}
+				throw new NotFoundException("Month does not exist");
 			}
 		}
 
@@ -50,13 +43,11 @@ namespace Budgeter.SqlServer.Repositories
 		{
 			string sql = "DELETE FROM [Month] WHERE ID = @Id";
 
-			using (var connection = new SqlConnection(connectionString))
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, new { id = monthId });
+			if (rowsAffected == 0)
 			{
-				int rowsAffected = connection.Execute(sql, new { id = monthId });
-				if (rowsAffected == 0)
-				{
-					throw new NotFoundException("Month does not exist");
-				}
+				throw new NotFoundException("Month does not exist");
 			}
 		}
 	}
