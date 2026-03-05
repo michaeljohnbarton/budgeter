@@ -1,4 +1,5 @@
-﻿using Budgeter.Api.IoC;
+﻿using Budgeter.Api.Infrastructure;
+using Budgeter.Api.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddCors(options =>
 		});
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 ServiceIoC.AddServices(builder.Services);
 SqlServerRepositoryIoC.AddServices(builder.Services);
@@ -34,6 +37,8 @@ app.UseCors("MyAllowSpecificOrigins");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseExceptionHandler();
 
 app.MapControllers();
 

@@ -10,6 +10,15 @@ async function request(endpoint, options = {}) {
 		});
 
 		if (!response.ok) {
+			if(response.status === 500) {
+				var message = await response.json().then(data => data.message).catch(() => null);
+				var displayMessage = "An unexpected error occurred";
+				if (message) {
+					displayMessage += ": " + message;
+				}
+				throw new Error(displayMessage);
+			}
+
 			const errorText = await response.text();
 			throw new Error(errorText || "Request failed");
 		}
