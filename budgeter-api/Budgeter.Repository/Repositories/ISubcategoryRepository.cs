@@ -4,7 +4,7 @@ namespace Budgeter.Repository.Repositories
 {
 	public interface ISubcategoryRepository
 	{
-		void Create(Subcategory subcategoryToCreate);
+		Subcategory Create(Subcategory subcategoryToCreate);
 		IEnumerable<Subcategory> Get();
 		void Update(Subcategory subcategoryToUpdate);
 		void Delete(int subcategoryId);

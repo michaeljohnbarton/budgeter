@@ -16,7 +16,7 @@ export function SubcategoriesProvider({ children }) {
 	async function createSubcategory(payload) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-			await subcategoryService.create(payload);
+			const data = await subcategoryService.create(payload);
 			await fetchSubcategories({ force: true });
 		} catch (err) {
 			if (err.message === API_CONNECTION_FAILED_MESSAGE) {

@@ -2,7 +2,7 @@ import { API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const BASE_URL = "http://localhost:60060/api";
 
-async function request(endpoint, options = {}) {
+async function request({endpoint, returnResponseJson = false, options = {}}) {
 	try {
 		const response = await fetch(`${BASE_URL}${endpoint}`, {
 			headers: { "Content-Type": "application/json" },
@@ -23,8 +23,14 @@ async function request(endpoint, options = {}) {
 			throw new Error(errorText || "Request failed");
 		}
 
-		if (options?.method === undefined) { // Only GET returns data currently
-			return response.json();
+		if (returnResponseJson) {
+			const contentType = response.headers.get("content-type");
+			if(contentType && contentType.includes("application/json")) {
+				return response.json();
+			}
+			else {
+				throw new Error("JSON response expected but not received");
+			}
 		}
 	} catch (err) {
 		if (err instanceof TypeError) {
@@ -35,19 +41,24 @@ async function request(endpoint, options = {}) {
 }
 
 export const apiService = {
-	get: (endpoint) => request(endpoint),
+	get: (endpoint) => request({endpoint, returnResponseJson: true}),
 	post: (endpoint, body) =>
-		request(endpoint, {
+		request({endpoint, options: {
 			method: "POST",
 			body: JSON.stringify(body)
-		}),
+		}}),
+	postWithResponse: (endpoint, body) =>
+		request({endpoint, returnResponseJson: true, options: {
+			method: "POST",
+			body: JSON.stringify(body)
+		}}),
 	put: (endpoint, body) =>
-		request(endpoint, {
+		request({endpoint, options: {
 			method: "PUT",
 			body: JSON.stringify(body)
-		}),
+		}}),
 	delete: (endpoint) =>
-		request(endpoint, {
+		request({endpoint, options: {
 			method: "DELETE"
-		})
+		}})
 };

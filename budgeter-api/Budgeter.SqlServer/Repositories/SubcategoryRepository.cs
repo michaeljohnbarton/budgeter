@@ -10,14 +10,25 @@ namespace Budgeter.SqlServer.Repositories
 	{
 		private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
 
-		public void Create(Subcategory subcategoryToCreate)
+		public Subcategory Create(Subcategory subcategoryToCreate)
 		{
 			string sql =
 @"INSERT INTO Subcategory ([Name], CategoryId, RecalculateFutureBalances, HasTransactions)
-VALUES (@Name, @CategoryId, @RecalculateFutureBalances, @HasTransactions)";
+VALUES (@Name, @CategoryId, @RecalculateFutureBalances, @HasTransactions);
+
+SELECT SCOPE_IDENTITY() AS NewID";
 
 			using var connection = new SqlConnection(connectionString);
-			connection.Execute(sql, subcategoryToCreate);
+			int newId = connection.QuerySingle<int>(sql, subcategoryToCreate);
+
+			return new Subcategory
+			{
+				ID = newId,
+				Name = subcategoryToCreate.Name,
+				CategoryId = subcategoryToCreate.CategoryId,
+				RecalculateFutureBalances = subcategoryToCreate.RecalculateFutureBalances,
+				HasTransactions = subcategoryToCreate.HasTransactions
+			};
 		}
 
 		public IEnumerable<Subcategory> Get()

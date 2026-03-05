@@ -13,15 +13,24 @@ namespace Budgeter.Api.Services
 			_subcategoryRepository = subcategoryRepository;
 		}
 
-		public void Create(CreateSubcategory subcategoryToCreate)
+		public Subcategory Create(CreateSubcategory subcategoryToCreate)
 		{
-			_subcategoryRepository.Create(new SubcategoryRepositoryModel
+			SubcategoryRepositoryModel result = _subcategoryRepository.Create(new SubcategoryRepositoryModel
 			{
 				Name = subcategoryToCreate.Name,
 				CategoryId = subcategoryToCreate.CategoryId!.Value,
 				RecalculateFutureBalances = subcategoryToCreate.RecalculateFutureBalances!.Value,
 				HasTransactions = subcategoryToCreate.HasTransactions!.Value
 			});
+
+			return new Subcategory
+			{
+				ID = result.ID,
+				Name = result.Name,
+				CategoryId = result.CategoryId,
+				RecalculateFutureBalances = result.RecalculateFutureBalances,
+				HasTransactions = result.HasTransactions
+			};
 		}
 
 		public IEnumerable<Subcategory> Get()

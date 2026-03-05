@@ -2,9 +2,9 @@
 
 namespace Budgeter.Api.Services
 {
-    public interface ISubcategoryService
+	public interface ISubcategoryService
 	{
-		void Create(CreateSubcategory subcategoryToCreate);
+		Subcategory Create(CreateSubcategory subcategoryToCreate);
 		IEnumerable<Subcategory> Get();
 		void Update(int subcategoryId, UpdateSubcategory subcategoryToUpdate);
 		void Delete(int subcategoryId);

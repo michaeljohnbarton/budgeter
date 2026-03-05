@@ -17,7 +17,7 @@ namespace Budgeter.Api.Controllers
 		}
 
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status200OK, Type=typeof(Subcategory))]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public IActionResult Create([FromBody] CreateSubcategory subcategoryToCreate)
 		{
@@ -28,8 +28,8 @@ namespace Budgeter.Api.Controllers
 					return BadRequest(ModelState);
 				}
 
-				_subcategoryService.Create(subcategoryToCreate);
-				return Ok();
+				Subcategory result = _subcategoryService.Create(subcategoryToCreate);
+				return Ok(result);
 			}
 			catch (SqlException e)
 			{
