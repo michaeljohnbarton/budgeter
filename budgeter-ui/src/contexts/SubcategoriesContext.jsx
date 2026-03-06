@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
 import { subcategoryService } from "../services/subcategoryService";
+import { monthlyBalanceService } from "../services/monthlyBalanceService";
 import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const SubcategoriesContext = createContext();
@@ -13,11 +14,27 @@ export function SubcategoriesProvider({ children }) {
 
 	const hasFetched = useRef(false);
 
-	async function createSubcategory(payload) {
+	async function createSubcategory(payload, defaultBudgetedAmountCents) {
 		try {
 			setLoading(LoadingType.OVERLAY);
 			const data = await subcategoryService.create(payload);
-			await fetchSubcategories({ force: true });
+
+			try {
+				if(defaultBudgetedAmountCents !== null && defaultBudgetedAmountCents !== undefined) {
+					await monthlyBalanceService.create({
+						monthId: 0, // Represents default balance
+						subcategoryId: data.id,
+						budgetedAmountCents: defaultBudgetedAmountCents || null,
+						actualAmountCents: 0
+					});
+				}
+			}
+			catch (err) {
+				throw new Error(`Subcategory created but failed to set default budgeted amount\nMessage: ${err.message}`);
+			}
+			finally {
+				await fetchSubcategories({ force: true });
+			}
 		} catch (err) {
 			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
 				setError(API_CONNECTION_ERROR_MESSAGE);

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import Modal from '../../../../commonComponents/modal/Modal';
+import CurrencyField from "../../../../commonComponents/currencyField/CurrencyField";
 
 function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcategoryData, setSubcategoryData}) {
 	const { createSubcategory, updateSubcategory } = useSubcategories();
@@ -13,6 +14,7 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 	const [name, setName] = useState("");
 	const [recalculateFutureBalances, setRecalculateFutureBalances] = useState(false);
 	const [hasTransactions, setHasTransactions] = useState(false);
+	const [defaultBudgetedAmountCents, setDefaultBudgetedAmountCents] = useState(null);
 	const [touched, setTouched] = useState({
 		name: false
 	});
@@ -42,12 +44,15 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 				}
 			}
 			else {
-				await createSubcategory({
-					name: name,
-					categoryId: category.id,
-					recalculateFutureBalances: recalculateFutureBalances,
-					hasTransactions: hasTransactions
-				});
+				await createSubcategory(
+					{
+						name: name,
+						categoryId: category.id,
+						recalculateFutureBalances: recalculateFutureBalances,
+						hasTransactions: hasTransactions
+					},
+					defaultBudgetedAmountCents
+				);
 				toast.success("Subcategory created successfully");
 			}
 			handleClose();
@@ -63,6 +68,7 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 		setName("");
 		setRecalculateFutureBalances(false);
 		setHasTransactions(false);
+		setDefaultBudgetedAmountCents(null);
 		setTouched({
 			name: false
 		});
@@ -114,6 +120,16 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 						/>
 					</label>
 				</div>
+				{ bankAccount.showBudgetedAmounts && (
+					<div className={styles.formGroup}>
+						<CurrencyField
+							id="defaultBudgetedAmount"
+							label="Default Budgeted Amount"
+							centsValue={defaultBudgetedAmountCents}
+							onChangeCents={setDefaultBudgetedAmountCents}
+						/>
+					</div>
+				)}
 			</div>
 		</Modal>
 	)

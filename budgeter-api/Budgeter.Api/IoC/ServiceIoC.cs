@@ -1,5 +1,4 @@
-﻿using System;
-using Budgeter.Api.Services;
+﻿using Budgeter.Api.Services;
 
 namespace Budgeter.Api.IoC
 {
@@ -11,6 +10,7 @@ namespace Budgeter.Api.IoC
 			services.AddScoped<IBankAccountService, BankAccountService>();
 			services.AddScoped<ICategoryService, CategoryService>();
 			services.AddScoped<ISubcategoryService, SubcategoryService>();
+			services.AddScoped<IMonthlyBalanceService, MonthlyBalanceService>();
 		}
 	}
 }

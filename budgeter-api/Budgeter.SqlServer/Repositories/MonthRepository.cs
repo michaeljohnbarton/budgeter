@@ -18,6 +18,20 @@ namespace Budgeter.SqlServer.Repositories
 			connection.Execute(sql, monthToCreate);
 		}
 
+		public void CreateDefaultMonth()
+		{
+			string sql = 
+@"SET IDENTITY_INSERT [Month] ON;
+
+INSERT INTO [Month] (ID, [Month], [Year]) VALUES (0, 0, 0);
+
+SET IDENTITY_INSERT [Month] OFF;
+";
+
+			using var connection = new SqlConnection(connectionString);
+			connection.Execute(sql);
+		}
+
 		public IEnumerable<Month> Get()
 		{
 			// Month with ID 0 is the Default month which is only used for Configuration and setting default budgeted values, etc.

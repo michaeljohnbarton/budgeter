@@ -1,5 +1,4 @@
-﻿using System;
-using Budgeter.Repository.Repositories;
+﻿using Budgeter.Repository.Repositories;
 using Budgeter.SqlServer.Repositories;
 
 namespace Budgeter.Api.IoC
@@ -12,6 +11,7 @@ namespace Budgeter.Api.IoC
 			services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 			services.AddScoped<ICategoryRepository, CategoryRepository>();
 			services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
+			services.AddScoped<IMonthlyBalanceRepository, MonthlyBalanceRepository>();
 		}
 	}
 }
