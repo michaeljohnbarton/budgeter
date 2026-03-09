@@ -7,7 +7,7 @@ import Modal from "../../../../commonComponents/modal/Modal";
 function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAccountData }) {
 	const { createBankAccount, updateBankAccount } = useBankAccounts();
 
-	const isEditMode = bankAccountData !== null && bankAccountData !== undefined;
+	const isEditMode = bankAccountData != null;
 	const title = isEditMode ? "Edit Bank Account" : "Add Bank Account";
 
 	const [name, setName] = useState("");

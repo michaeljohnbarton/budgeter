@@ -8,7 +8,7 @@ function CurrencyField({ id, label, centsValue, onChangeCents }) {
 	// Convert cents to dollars for UI
 	useEffect(() => {
 		if(!isEditingRef.current) {
-			if (centsValue !== null && centsValue !== undefined) {
+			if (centsValue != null) {
 				setDisplayValue((centsValue / 100).toFixed(2));
 			} else {
 				setDisplayValue("");

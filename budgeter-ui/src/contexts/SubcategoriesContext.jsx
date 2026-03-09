@@ -22,7 +22,7 @@ export function SubcategoriesProvider({ children }) {
 			const data = await subcategoryService.create(payload);
 
 			try {
-				if(defaultBudgetedAmountCents !== null && defaultBudgetedAmountCents !== undefined) {
+				if(defaultBudgetedAmountCents != null) {
 					await monthlyBalanceService.create({
 						monthId: 0, // Represents default balance
 						subcategoryId: data.id,
@@ -70,7 +70,7 @@ export function SubcategoriesProvider({ children }) {
 			await subcategoryService.update(subcategoryId, payload);
 
 			try {
-				if(defaultBudgetedAmountCents !== null && defaultBudgetedAmountCents !== undefined) {
+				if(defaultBudgetedAmountCents != null) {
 					if(defaultMonthlyBalance) {
 						await monthlyBalanceService.update(defaultMonthlyBalance.id, {
 							budgetedAmountCents: defaultBudgetedAmountCents,

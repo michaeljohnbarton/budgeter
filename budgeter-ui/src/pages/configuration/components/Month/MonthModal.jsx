@@ -7,7 +7,7 @@ import Modal from "../../../../commonComponents/modal/Modal";
 function MonthModal({ isOpen, setIsModalOpen, monthData, setMonthData }) {
 	const { months, monthMap, createMonth, updateMonth } = useMonths();
 
-	const isEditMode = monthData !== null && monthData !== undefined;
+	const isEditMode = monthData != null;
 	const title = isEditMode ? "Edit Month" : "Add Month";
 
 	const [month, setMonth] = useState(0);

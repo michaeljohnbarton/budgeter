@@ -10,7 +10,7 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 	const { createSubcategory, updateSubcategory } = useSubcategories();
 	const { monthlyBalances } = useMonthlyBalances();
 
-	const isEditMode = subcategoryData !== null && subcategoryData !== undefined;
+	const isEditMode = subcategoryData != null;
 	const title = isEditMode ? "Edit Subcategory" : "Add Subcategory";
 
 	const [name, setName] = useState("");

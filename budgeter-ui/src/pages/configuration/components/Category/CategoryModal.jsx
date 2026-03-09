@@ -7,7 +7,7 @@ import Modal from '../../../../commonComponents/modal/Modal';
 function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCategoryData}) {
 	const { createCategory, updateCategory } = useCategories();
 
-	const isEditMode = categoryData !== null && categoryData !== undefined;
+	const isEditMode = categoryData != null;
 	const title = isEditMode ? "Edit Category" : "Add Category";
 
 	const [name, setName] = useState("");
