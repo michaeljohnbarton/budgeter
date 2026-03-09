@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Budgeter.Api.Models
+namespace Budgeter.Api.Models.MonthlyBalance
 {
 	public class CreateMonthlyBalance
 	{

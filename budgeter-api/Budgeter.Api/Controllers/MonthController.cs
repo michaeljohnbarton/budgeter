@@ -1,4 +1,4 @@
-﻿using Budgeter.Api.Models;
+﻿using Budgeter.Api.Models.Month;
 using Budgeter.Api.Services;
 using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;

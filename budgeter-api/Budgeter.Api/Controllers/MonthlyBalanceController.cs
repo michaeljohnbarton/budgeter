@@ -1,4 +1,4 @@
-using Budgeter.Api.Models;
+using Budgeter.Api.Models.MonthlyBalance;
 using Budgeter.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;

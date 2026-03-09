@@ -1,10 +1,18 @@
-﻿using Budgeter.Api.Models;
+﻿using Budgeter.Api.Models.Subcategory;
 using Budgeter.Repository.Repositories;
 using SubcategoryRepositoryModel = Budgeter.Repository.Models.Subcategory;
 
 namespace Budgeter.Api.Services
 {
-    public class SubcategoryService : ISubcategoryService
+	public interface ISubcategoryService
+	{
+		Subcategory Create(CreateSubcategory subcategoryToCreate);
+		IEnumerable<Subcategory> Get();
+		void Update(int subcategoryId, UpdateSubcategory subcategoryToUpdate);
+		void Delete(int subcategoryId);
+	}
+
+	public class SubcategoryService : ISubcategoryService
 	{
 		private readonly ISubcategoryRepository _subcategoryRepository;
 

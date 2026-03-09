@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Budgeter.Api.Models
+namespace Budgeter.Api.Models.Category
 {
 	public class UpdateCategory
 	{

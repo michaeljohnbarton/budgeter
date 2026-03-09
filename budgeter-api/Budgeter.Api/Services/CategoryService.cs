@@ -1,10 +1,17 @@
-﻿using System;
-using Budgeter.Api.Models;
+﻿using Budgeter.Api.Models.Category;
 using CategoryRepositoryModel = Budgeter.Repository.Models.Category;
 using Budgeter.Repository.Repositories;
 
 namespace Budgeter.Api.Services
 {
+	public interface ICategoryService
+	{
+		void Create(CreateCategory categoryToCreate);
+		IEnumerable<Category> Get();
+		void Update(int categoryId, UpdateCategory categoryToUpdate);
+		void Delete(int categoryId);
+	}
+
 	public class CategoryService : ICategoryService
 	{
 		private readonly ICategoryRepository _categoryRepository;

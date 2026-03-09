@@ -1,11 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Budgeter.Api.Enums;
 
-namespace Budgeter.Api.Models
+namespace Budgeter.Api.Models.BankAccount
 {
-	public class CreateBankAccount
+	public class UpdateBankAccount
 	{
 		[Required, MaxLength(100)]
 		public string Name { get; set; } = string.Empty;

@@ -1,5 +1,4 @@
-﻿using System;
-namespace Budgeter.Api.Models
+﻿namespace Budgeter.Api.Models.Subcategory
 {
 	public class Subcategory
 	{

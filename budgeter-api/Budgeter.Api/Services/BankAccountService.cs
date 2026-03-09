@@ -1,11 +1,19 @@
 ﻿using Budgeter.Api.Enums;
-using Budgeter.Api.Models;
+using Budgeter.Api.Models.BankAccount;
 using Budgeter.Repository.Repositories;
 using BankAccountRepositoryModel = Budgeter.Repository.Models.BankAccount;
 using MonthlyBalancePropagationTypeRepositoryEnum = Budgeter.Repository.Enums.MonthlyBalancePropagationType;
 
 namespace Budgeter.Api.Services
 {
+	public interface IBankAccountService
+	{
+		void Create(CreateBankAccount bankAccountToCreate);
+		IEnumerable<BankAccount> Get();
+		void Update(int bankAccountId, UpdateBankAccount bankAccountToUpdate);
+		void Delete(int bankAccountId);
+	}
+
 	public class BankAccountService : IBankAccountService
 	{
 		private readonly IBankAccountRepository _bankAccountRepository;

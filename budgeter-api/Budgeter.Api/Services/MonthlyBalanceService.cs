@@ -1,10 +1,15 @@
-using Budgeter.Api.Models;
+using Budgeter.Api.Models.MonthlyBalance;
 using Budgeter.Repository.Repositories;
 using Microsoft.Data.SqlClient;
 using MonthlyBalanceRepositoryModel = Budgeter.Repository.Models.MonthlyBalance;
 
 namespace Budgeter.Api.Services
 {
+	public interface IMonthlyBalanceService
+	{
+		void Create(CreateMonthlyBalance monthlyBalanceToCreate);
+	}
+
 	public class MonthlyBalanceService : IMonthlyBalanceService
 	{
 		private readonly IMonthlyBalanceRepository _monthlyBalanceRepository;

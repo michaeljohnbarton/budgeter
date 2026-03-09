@@ -1,7 +1,6 @@
-﻿using System;
-using Budgeter.Api.Enums;
+﻿using Budgeter.Api.Enums;
 
-namespace Budgeter.Api.Models
+namespace Budgeter.Api.Models.BankAccount
 {
 	public class BankAccount
 	{

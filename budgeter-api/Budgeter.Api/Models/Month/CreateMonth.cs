@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Budgeter.Api.Models
+namespace Budgeter.Api.Models.Month
 {
 	public class CreateMonth
 	{
