@@ -18,5 +18,13 @@ VALUES (@MonthId, @SubcategoryId, @BudgetedAmountCents, @ActualAmountCents)";
 			using var connection = new SqlConnection(connectionString);
 			connection.Execute(sql, monthlyBalanceToCreate);
 		}
+
+		public IEnumerable<MonthlyBalance> Get()
+		{
+			string sql = "SELECT ID, MonthId, SubcategoryId, BudgetedAmountCents, ActualAmountCents FROM MonthlyBalance";
+
+			using var connection = new SqlConnection(connectionString);
+			return connection.Query<MonthlyBalance>(sql);
+		}
 	}
 }

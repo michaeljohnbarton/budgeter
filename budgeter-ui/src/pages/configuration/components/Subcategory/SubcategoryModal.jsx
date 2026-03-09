@@ -2,11 +2,13 @@ import styles from '../../../../styles/ModalForm.module.css';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
+import { useMonthlyBalances } from '../../../../contexts/MonthlyBalancesContext';
 import Modal from '../../../../commonComponents/modal/Modal';
 import CurrencyField from "../../../../commonComponents/currencyField/CurrencyField";
 
 function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcategoryData, setSubcategoryData}) {
 	const { createSubcategory, updateSubcategory } = useSubcategories();
+	const { monthlyBalances } = useMonthlyBalances();
 
 	const isEditMode = subcategoryData !== null && subcategoryData !== undefined;
 	const title = isEditMode ? "Edit Subcategory" : "Add Subcategory";
@@ -24,6 +26,9 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 			setName(subcategoryData.name);
 			setRecalculateFutureBalances(subcategoryData.recalculateFutureBalances);
 			setHasTransactions(subcategoryData.hasTransactions);
+
+			const defaultMonthlyBalance = monthlyBalances.find(mb => mb.subcategoryId === subcategoryData.id && mb.monthId === 0);
+			setDefaultBudgetedAmountCents(defaultMonthlyBalance ? defaultMonthlyBalance.budgetedAmountCents : null);
 		}
 	}, [isOpen]);
 

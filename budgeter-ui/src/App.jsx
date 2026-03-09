@@ -5,12 +5,13 @@ import { LoadingProvider } from "./contexts/LoadingContext";
 import { MonthsProvider } from './contexts/MonthsContext';
 import { BankAccountsProvider } from './contexts/BankAccountsContext';
 import { CategoriesProvider } from './contexts/CategoriesContext';
+import { SubcategoriesProvider } from './contexts/SubcategoriesContext';
+import { MonthlyBalancesProvider } from './contexts/MonthlyBalancesContext';
 import Navbar from './commonComponents/navbar/Navbar';
 import LoadingIndicator from './commonComponents/loadingIndicator/LoadingIndicator';
 import ScrollPage from './commonComponents/scrollPage/ScrollPage';
 import Home from './pages/home/Home';
 import Configuration from './pages/configuration/Configuration';
-import { SubcategoriesProvider } from './contexts/SubcategoriesContext';
 
 function App() {
 	return (
@@ -19,21 +20,23 @@ function App() {
 				<MonthsProvider>
 					<BankAccountsProvider>
 						<CategoriesProvider>
-							<SubcategoriesProvider>
-								<Router>
-									<div id="app-layout">
-										<Navbar />
-										<LoadingIndicator />
+							<MonthlyBalancesProvider>
+								<SubcategoriesProvider>
+									<Router>
+										<div id="app-layout">
+											<Navbar />
+											<LoadingIndicator />
 
-										<div id="app-content">
-											<Routes>
-												<Route path="/" element={<ScrollPage><Home /></ScrollPage>} />
-												<Route path="/configuration" element={<Configuration />} />
-											</Routes>
+											<div id="app-content">
+												<Routes>
+													<Route path="/" element={<ScrollPage><Home /></ScrollPage>} />
+													<Route path="/configuration" element={<Configuration />} />
+												</Routes>
+											</div>
 										</div>
-									</div>
-								</Router>
-							</SubcategoriesProvider>
+									</Router>
+								</SubcategoriesProvider>
+							</MonthlyBalancesProvider>
 						</CategoriesProvider>
 					</BankAccountsProvider>
 				</MonthsProvider>

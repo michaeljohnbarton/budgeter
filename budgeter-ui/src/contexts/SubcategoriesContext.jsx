@@ -3,11 +3,13 @@ import { LoadingContext } from "./LoadingContext";
 import { subcategoryService } from "../services/subcategoryService";
 import { monthlyBalanceService } from "../services/monthlyBalanceService";
 import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
+import { useMonthlyBalances } from "./MonthlyBalancesContext";
 
 const SubcategoriesContext = createContext();
 
 export function SubcategoriesProvider({ children }) {
 	const { setLoading, LoadingType } = useContext(LoadingContext);
+	const { fetchMonthlyBalances } = useMonthlyBalances();
 
 	const [subcategories, setSubcategories] = useState([]);
 	const [error, setError] = useState(null);
@@ -34,6 +36,7 @@ export function SubcategoriesProvider({ children }) {
 			}
 			finally {
 				await fetchSubcategories({ force: true });
+				await fetchMonthlyBalances({ force: true });
 			}
 		} catch (err) {
 			if (err.message === API_CONNECTION_FAILED_MESSAGE) {

@@ -39,5 +39,12 @@ namespace Budgeter.Api.Controllers
 				throw;
 			}
 		}
+
+		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public IEnumerable<MonthlyBalance> Get()
+		{
+			return _monthlyBalanceService.Get();
+		}
 	}
 }

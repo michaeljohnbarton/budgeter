@@ -8,6 +8,7 @@ namespace Budgeter.Api.Services
 	public interface IMonthlyBalanceService
 	{
 		void Create(CreateMonthlyBalance monthlyBalanceToCreate);
+		IEnumerable<MonthlyBalance> Get();
 	}
 
 	public class MonthlyBalanceService : IMonthlyBalanceService
@@ -39,6 +40,19 @@ namespace Budgeter.Api.Services
 				_monthRepository.CreateDefaultMonth();
 				_monthlyBalanceRepository.Create(repositoryModel);
 			}
+		}
+
+		public IEnumerable<MonthlyBalance> Get()
+		{
+			IEnumerable<MonthlyBalanceRepositoryModel> results = _monthlyBalanceRepository.Get();
+			return results.Select(x => new MonthlyBalance
+			{
+				ID = x.ID,
+				MonthId = x.MonthId,
+				SubcategoryId = x.SubcategoryId,
+				BudgetedAmountCents = x.BudgetedAmountCents,
+				ActualAmountCents = x.ActualAmountCents
+			});
 		}
 	}
 }
