@@ -1,3 +1,4 @@
+using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
@@ -25,6 +26,21 @@ VALUES (@MonthId, @SubcategoryId, @BudgetedAmountCents, @ActualAmountCents)";
 
 			using var connection = new SqlConnection(connectionString);
 			return connection.Query<MonthlyBalance>(sql);
+		}
+
+		public void Update(MonthlyBalance monthlyBalanceToUpdate)
+		{
+			string sql =
+@"UPDATE MonthlyBalance
+SET BudgetedAmountCents = @BudgetedAmountCents, ActualAmountCents = @ActualAmountCents
+WHERE ID = @ID";
+
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, monthlyBalanceToUpdate);
+			if (rowsAffected == 0)
+			{
+				throw new NotFoundException("Monthly balance does not exist");
+			}
 		}
 	}
 }

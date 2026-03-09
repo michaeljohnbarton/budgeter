@@ -17,6 +17,7 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 	const [recalculateFutureBalances, setRecalculateFutureBalances] = useState(false);
 	const [hasTransactions, setHasTransactions] = useState(false);
 	const [defaultBudgetedAmountCents, setDefaultBudgetedAmountCents] = useState(null);
+	const [defaultMonthlyBalance, setDefaultMonthlyBalance] = useState(null);
 	const [touched, setTouched] = useState({
 		name: false
 	});
@@ -27,22 +28,32 @@ function SubcategoryModal({isOpen, setIsModalOpen, bankAccount, category, subcat
 			setRecalculateFutureBalances(subcategoryData.recalculateFutureBalances);
 			setHasTransactions(subcategoryData.hasTransactions);
 
-			const defaultMonthlyBalance = monthlyBalances.find(mb => mb.subcategoryId === subcategoryData.id && mb.monthId === 0);
-			setDefaultBudgetedAmountCents(defaultMonthlyBalance ? defaultMonthlyBalance.budgetedAmountCents : null);
+			const foundBalance = monthlyBalances.find(mb => mb.subcategoryId === subcategoryData.id && mb.monthId === 0);
+			setDefaultBudgetedAmountCents(foundBalance ? foundBalance.budgetedAmountCents : null);
+			setDefaultMonthlyBalance(foundBalance ?? null);
 		}
 	}, [isOpen]);
 
 	const isNameSet = name !== "";
 	const isFormValid = isNameSet;
 	const hasUnsavedChanges = isEditMode
-		? name !== subcategoryData.name || recalculateFutureBalances !== subcategoryData.recalculateFutureBalances || hasTransactions !== subcategoryData.hasTransactions
+		? name !== subcategoryData.name || recalculateFutureBalances !== subcategoryData.recalculateFutureBalances || hasTransactions !== subcategoryData.hasTransactions || defaultBudgetedAmountCents !== (defaultMonthlyBalance?.budgetedAmountCents ?? null)
 		: isNameSet || recalculateFutureBalances || hasTransactions;
 	
 	const handleSave = async () => {
 		try {
 			if(isEditMode) {
-				if(name !== subcategoryData.name || recalculateFutureBalances !== subcategoryData.recalculateFutureBalances || hasTransactions !== subcategoryData.hasTransactions) {
-					await updateSubcategory(subcategoryData.id, { name: name, recalculateFutureBalances: recalculateFutureBalances, hasTransactions: hasTransactions });
+				if(hasUnsavedChanges) {
+					await updateSubcategory(
+						subcategoryData.id,
+						{
+							name: name,
+							recalculateFutureBalances: recalculateFutureBalances,
+							hasTransactions: hasTransactions
+						},
+						defaultMonthlyBalance,
+						defaultBudgetedAmountCents
+					);
 					toast.success("Subcategory updated successfully");
 				} else {
 					toast.info("No changes to save");

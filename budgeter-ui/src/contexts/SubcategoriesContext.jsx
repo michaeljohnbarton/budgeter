@@ -64,11 +64,36 @@ export function SubcategoriesProvider({ children }) {
 		}
 	}
 
-	async function updateSubcategory(subcategoryId, payload) {
+	async function updateSubcategory(subcategoryId, payload, defaultMonthlyBalance, defaultBudgetedAmountCents) {
 		try {
 			setLoading(LoadingType.OVERLAY);
 			await subcategoryService.update(subcategoryId, payload);
-			await fetchSubcategories({ force: true });
+
+			try {
+				if(defaultBudgetedAmountCents !== null && defaultBudgetedAmountCents !== undefined) {
+					if(defaultMonthlyBalance) {
+						await monthlyBalanceService.update(defaultMonthlyBalance.id, {
+							budgetedAmountCents: defaultBudgetedAmountCents,
+							actualAmountCents: defaultMonthlyBalance.actualAmountCents || 0
+						});
+					}
+					else {
+						await monthlyBalanceService.create({
+							monthId: 0, // Represents default balance
+							subcategoryId: subcategoryId,
+							budgetedAmountCents: defaultBudgetedAmountCents,
+							actualAmountCents: 0
+						});
+					}
+				}
+			}
+			catch (err) {
+				throw new Error(`Subcategory updated but failed to update default budgeted amount\nMessage: ${err.message}`);
+			}
+			finally {
+				await fetchSubcategories({ force: true });
+				await fetchMonthlyBalances({ force: true });
+			}
 		} catch (err) {
 			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
 				setError(API_CONNECTION_ERROR_MESSAGE);

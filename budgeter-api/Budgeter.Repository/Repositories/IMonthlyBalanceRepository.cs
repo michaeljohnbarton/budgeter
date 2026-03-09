@@ -6,5 +6,6 @@ namespace Budgeter.Repository.Repositories
 	{
 		void Create(MonthlyBalance monthlyBalanceToCreate);
 		IEnumerable<MonthlyBalance> Get();
+		void Update(MonthlyBalance monthlyBalanceToUpdate);
 	}
 }

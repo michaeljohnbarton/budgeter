@@ -9,6 +9,7 @@ namespace Budgeter.Api.Services
 	{
 		void Create(CreateMonthlyBalance monthlyBalanceToCreate);
 		IEnumerable<MonthlyBalance> Get();
+		void Update(int monthlyBalanceId, UpdateMonthlyBalance monthlyBalanceToUpdate);
 	}
 
 	public class MonthlyBalanceService : IMonthlyBalanceService
@@ -52,6 +53,16 @@ namespace Budgeter.Api.Services
 				SubcategoryId = x.SubcategoryId,
 				BudgetedAmountCents = x.BudgetedAmountCents,
 				ActualAmountCents = x.ActualAmountCents
+			});
+		}
+
+		public void Update(int monthlyBalanceId, UpdateMonthlyBalance monthlyBalanceToUpdate)
+		{
+			_monthlyBalanceRepository.Update(new MonthlyBalanceRepositoryModel
+			{
+				ID = monthlyBalanceId,
+				BudgetedAmountCents = monthlyBalanceToUpdate.BudgetedAmountCents,
+				ActualAmountCents = monthlyBalanceToUpdate.ActualAmountCents!.Value
 			});
 		}
 	}

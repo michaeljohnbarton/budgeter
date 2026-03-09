@@ -1,5 +1,6 @@
 using Budgeter.Api.Models.MonthlyBalance;
 using Budgeter.Api.Services;
+using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -45,6 +46,28 @@ namespace Budgeter.Api.Controllers
 		public IEnumerable<MonthlyBalance> Get()
 		{
 			return _monthlyBalanceService.Get();
+		}
+
+		[HttpPut("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public IActionResult Update([FromRoute] int id, [FromBody] UpdateMonthlyBalance monthlyBalanceToUpdate)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				_monthlyBalanceService.Update(id, monthlyBalanceToUpdate);
+				return Ok();
+			}
+			catch (NotFoundException e)
+			{
+				return NotFound(e.Message);
+			}
 		}
 	}
 }
