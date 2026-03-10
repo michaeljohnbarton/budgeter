@@ -1,4 +1,23 @@
-.text {
-	margin-top: 1rem;
-	text-align: center;
+.bankAccountsWrapper {
+	padding: 20px;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
+}
+
+.bankAccountsWrapper > :last-child:nth-child(odd) {
+	grid-column: span 2;
+	width: 600px;
+	margin: 0 auto;
+}
+
+.bankAccountCard {
+	border: 2px solid #333;
+	border-radius: 8px;
+	padding: 16px;
+}
+
+.bankAccountName {
+	font-weight: bold;
+	padding: 0 8px;
 }

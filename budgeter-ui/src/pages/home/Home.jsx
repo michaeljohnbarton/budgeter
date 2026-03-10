@@ -2,11 +2,13 @@ import styles from './Home.module.css';
 import { useState, useEffect } from 'react';
 import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
+import { useBankAccounts } from '../../contexts/BankAccountsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 
 function Home() {
 	const { loading, LoadingType } = useLoading();
-	const { months, monthMap, error } = useMonths();
+	const { months, monthMap, error: monthsError } = useMonths();
+	const { bankAccounts, error: bankAccountsError } = useBankAccounts();
 	const [selectedMonth, setSelectedMonth] = useState('');
 
 	const currentDate = new Date();
@@ -20,7 +22,8 @@ function Home() {
 	}, [months, currentMonthNumber, currentYear]);
 
 	if (loading == LoadingType.FULLSCREEN) return null;
-	if (error) return <p>Error: {error}</p>;
+	if (monthsError) return <p>Error: {monthsError}</p>;
+	if (bankAccountsError) return <p>Error: {bankAccountsError}</p>;
 	if (months.length === 0) return <p>No months available. Add months in Configuration.</p>;
 
 	var monthsForDropdown = months.map((month) => ({
@@ -29,13 +32,27 @@ function Home() {
 		display: `${monthMap.find(x => x.number === month.monthNumber).name} ${month.year}`
 	}));
 
-	// TODO: Probably temporary for the <p> tag to display for now as we build this
-	var selectedMonthObject = months.find(m => m.id === selectedMonth);
-
 	return (
 		<div id="home-page">
 			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth} />
-			<p className={styles.text}>{monthMap.find(x => x.number === selectedMonthObject?.monthNumber)?.name} {selectedMonthObject?.year} is selected</p>
+
+			{ bankAccounts.length === 0 && <p>No bank accounts available. Add bank accounts in Configuration.</p>}
+
+			{ bankAccounts.length > 0 && (
+				<div className={styles.bankAccountsWrapper}>
+					{bankAccounts.map(bankAccount => {
+						return (
+							<fieldset key={bankAccount.id} className={styles.bankAccountCard}>
+								<legend className={styles.bankAccountName}>{bankAccount.name}</legend>
+
+								<div>
+									<p>Insert categories here</p>
+								</div>
+							</fieldset>
+						);
+					})}
+				</div>
+			)}
 		</div>
 	)
 }
