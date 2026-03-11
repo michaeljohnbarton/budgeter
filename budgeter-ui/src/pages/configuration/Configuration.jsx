@@ -43,7 +43,7 @@ function Configuration() {
 				{SelectedComponent && <SelectedComponent {...selected.props} />}
 			</div>
 		</div>
-	)
+	);
 }
 
 export default Configuration;

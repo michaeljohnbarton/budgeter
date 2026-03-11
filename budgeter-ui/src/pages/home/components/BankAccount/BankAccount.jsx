@@ -20,8 +20,7 @@ function BankAccount({ bankAccount }) {
 				: <p>No categories available for this bank account. Add categories in Configuration.</p>
 			}
 		</fieldset>
-		
-	)
+	);
 }
 
 export default BankAccount;

@@ -1,11 +1,19 @@
-.categoryBlock {
-	/* Evaluate whether these are needed after subcategory implementation */
-	/* display: grid; */
-	/* grid-template-rows: auto 1fr; */
+.categoryTable {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+	margin-bottom: 32px;
 }
 
-.categoryTitle {
+.categoryTable td,
+.categoryTable th {
+	border: 1px solid #333;
+	padding: 4px 6px;
+}
+
+.categoryHeader {
+	background: gray;
+	text-align: center;
+	font-size: 1.1rem;
 	font-weight: bold;
-	padding: 6px 0;
-	border-bottom: 1px solid #ddd;
 }
