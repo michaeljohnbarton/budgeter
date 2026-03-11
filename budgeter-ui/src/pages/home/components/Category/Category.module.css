@@ -1,0 +1,11 @@
+.categoryBlock {
+	/* Evaluate whether these are needed after subcategory implementation */
+	/* display: grid; */
+	/* grid-template-rows: auto 1fr; */
+}
+
+.categoryTitle {
+	font-weight: bold;
+	padding: 6px 0;
+	border-bottom: 1px solid #ddd;
+}
