@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
 import { bankAccountService } from "../services/bankAccountService";
+import { sortByRankThenName } from "../utils/sortUtils";
 import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
 
 const BankAccountsContext = createContext();
@@ -42,7 +43,8 @@ export function BankAccountsProvider({ children }) {
 			setLoading(LoadingType.FULLSCREEN);
 			setError(null);
 			const data = await bankAccountService.getAll();
-			setBankAccounts(data);
+			const sortedData = sortByRankThenName(data);
+			setBankAccounts(sortedData);
 			hasFetched.current = true;
 		} catch (err) {
 			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);

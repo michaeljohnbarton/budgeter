@@ -28,6 +28,7 @@ namespace Budgeter.Api.Services
 			_bankAccountRepository.Create(new BankAccountRepositoryModel
 			{
 				Name = bankAccountToCreate.Name,
+				Rank = bankAccountToCreate.Rank,
 				MonthlyBalancePropagationType = ConvertToRepositoryEnum(bankAccountToCreate.MonthlyBalancePropagationType),
 				ShowBudgetedAmounts = bankAccountToCreate.ShowBudgetedAmounts!.Value
 			});
@@ -49,6 +50,7 @@ namespace Budgeter.Api.Services
 				{
 					ID = result.ID,
 					Name = result.Name,
+					Rank = result.Rank,
 					MonthlyBalancePropagationType = monthlyBalancePropagationType,
 					ShowBudgetedAmounts = result.ShowBudgetedAmounts
 				};
@@ -61,6 +63,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = bankAccountId,
 				Name = bankAccountToUpdate.Name,
+				Rank = bankAccountToUpdate.Rank,
 				MonthlyBalancePropagationType = ConvertToRepositoryEnum(bankAccountToUpdate.MonthlyBalancePropagationType),
 				ShowBudgetedAmounts = bankAccountToUpdate.ShowBudgetedAmounts!.Value
 			});

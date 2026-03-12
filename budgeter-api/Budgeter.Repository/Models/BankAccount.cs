@@ -1,5 +1,4 @@
-﻿using System;
-using Budgeter.Repository.Enums;
+﻿using Budgeter.Repository.Enums;
 
 namespace Budgeter.Repository.Models
 {
@@ -7,6 +6,7 @@ namespace Budgeter.Repository.Models
 	{
 		public int ID { get; set; }
 		public string Name { get; set; } = string.Empty;
+		public int? Rank { get; set; }
  
 		public MonthlyBalancePropagationType MonthlyBalancePropagationType {
 			get

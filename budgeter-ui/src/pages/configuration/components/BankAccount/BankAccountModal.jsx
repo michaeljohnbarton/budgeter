@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import Modal from "../../../../commonComponents/modal/Modal";
+import { MAX_RANK } from '../../../../utils/constants';
 
 function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAccountData }) {
 	const { createBankAccount, updateBankAccount } = useBankAccounts();
@@ -11,16 +12,19 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 	const title = isEditMode ? "Edit Bank Account" : "Add Bank Account";
 
 	const [name, setName] = useState("");
+	const [rank, setRank] = useState("");
 	const [monthlyBalancePropagationType, setMonthlyBalancePropagationType] = useState("");
 	const [showBudgetedAmounts, setShowBudgetedAmounts] = useState(false);
 	const [touched, setTouched] = useState({
 		name: false,
+		rank: false,
 		monthlyBalancePropagationType: false
 	});
 
 	useEffect(() => {
 		if (isEditMode && bankAccountData) {
 			setName(bankAccountData.name);
+			setRank(bankAccountData.rank ?? "");
 			setMonthlyBalancePropagationType(bankAccountData.monthlyBalancePropagationType);
 			setShowBudgetedAmounts(bankAccountData.showBudgetedAmounts);
 		}
@@ -28,16 +32,25 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 
 	const isNameSet = name !== "";
 	const isMonthlyBalancePropagationTypeSet = monthlyBalancePropagationType !== "";
-	const isFormValid = isNameSet && isMonthlyBalancePropagationTypeSet;
+	const isRankValid = rank === "" || (rank >= 1 && rank <= MAX_RANK);
+	const isFormValid = isNameSet && isMonthlyBalancePropagationTypeSet && isRankValid;
 	const hasUnsavedChanges = isEditMode
-	 	? name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts
+	 	? name !== bankAccountData.name || rank !== (bankAccountData?.rank ?? "") || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts
 	 	: isNameSet || isMonthlyBalancePropagationTypeSet;
 
 	const handleSave = async () => {
 		try {
 			if (isEditMode) {
-				if(name !== bankAccountData.name || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts) {
-					await updateBankAccount(bankAccountData.id, { name: name, monthlyBalancePropagationType: monthlyBalancePropagationType, showBudgetedAmounts: showBudgetedAmounts });
+				if(hasUnsavedChanges) {
+					await updateBankAccount(
+						bankAccountData.id,
+						{
+							name: name,
+							rank: rank === "" ? null : rank,
+							monthlyBalancePropagationType: monthlyBalancePropagationType,
+							showBudgetedAmounts: showBudgetedAmounts
+						}
+					);
 					toast.success("Bank account updated successfully");
 				} else {
 					toast.info("No changes to save");
@@ -45,6 +58,7 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 			} else {
 				await createBankAccount({
 					name: name,
+					rank: rank === "" ? null : rank,
 					monthlyBalancePropagationType: monthlyBalancePropagationType,
 					showBudgetedAmounts: showBudgetedAmounts
 				});
@@ -61,10 +75,12 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 	const handleClose = () => {
 		setBankAccountData(null);
 		setName("");
+		setRank("");
 		setMonthlyBalancePropagationType("");
 		setShowBudgetedAmounts(false);
 		setTouched({
 			name: false,
+			rank: false,
 			monthlyBalancePropagationType: false
 		});
 		setIsModalOpen(false);
@@ -85,6 +101,20 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 						required />
 					{touched.name && !isNameSet && (
 						<span className={styles.errorText}>This field is required</span>
+					)}
+				</div>
+				<div className={styles.formGroup}>
+					<label htmlFor="rank">Rank</label>
+					<input
+						type="number"
+						id="rank"
+						min="1"
+						max={MAX_RANK}
+						value={rank}
+						onChange={(e) => e.target.value ? setRank(Number(e.target.value)) : setRank("")}
+						onBlur={() => setTouched((t) => ({ ...t, rank: true }))} />
+					{touched.rank && !isRankValid && (
+						<span className={styles.errorText}>Rank must be between 1 and {MAX_RANK} (inclusive)</span>
 					)}
 				</div>
 				<div className={styles.formGroup}>

@@ -13,8 +13,8 @@ namespace Budgeter.SqlServer.Repositories
 		public void Create(BankAccount bankAccountToCreate)
 		{
 			string sql =
-@"INSERT INTO BankAccount ([Name], MonthlyBalancePropagationType, ShowBudgetedAmounts)
-VALUES (@Name, @MonthlyBalancePropagationTypeString, @ShowBudgetedAmounts)";
+@"INSERT INTO BankAccount ([Name], [Rank], MonthlyBalancePropagationType, ShowBudgetedAmounts)
+VALUES (@Name, @Rank, @MonthlyBalancePropagationTypeString, @ShowBudgetedAmounts)";
 
 			using var connection = new SqlConnection(connectionString);
 			connection.Execute(sql, bankAccountToCreate);
@@ -23,8 +23,8 @@ VALUES (@Name, @MonthlyBalancePropagationTypeString, @ShowBudgetedAmounts)";
 		public IEnumerable<BankAccount> Get()
 		{
 			string sql =
-@"SELECT ID, [Name], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, ShowBudgetedAmounts
-FROM BankAccount ORDER BY [Name]";
+@"SELECT ID, [Name], [Rank], MonthlyBalancePropagationType AS MonthlyBalancePropagationTypeString, ShowBudgetedAmounts
+FROM BankAccount ORDER BY [Rank], [Name]";
 
 			using var connection = new SqlConnection(connectionString);
 			return connection.Query<BankAccount>(sql);
@@ -34,7 +34,7 @@ FROM BankAccount ORDER BY [Name]";
 		{
 			string sql =
 @"UPDATE BankAccount
-SET [Name] = @Name, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, ShowBudgetedAmounts = @ShowBudgetedAmounts
+SET [Name] = @Name, [Rank] = @Rank, MonthlyBalancePropagationType = @MonthlyBalancePropagationTypeString, ShowBudgetedAmounts = @ShowBudgetedAmounts
 WHERE ID = @ID";
 
 			using var connection = new SqlConnection(connectionString);
