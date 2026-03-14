@@ -12,7 +12,7 @@ namespace Budgeter.SqlServer.Repositories
 
 		public void Create(Category categoryToCreate)
 		{
-			string sql = "INSERT INTO Category ([Name], BankAccountId, IsCredit) VALUES (@Name, @BankAccountId, @IsCredit)";
+			string sql = "INSERT INTO Category ([Name], [Rank], BankAccountId, IsCredit) VALUES (@Name, @Rank, @BankAccountId, @IsCredit)";
 
 			using var connection = new SqlConnection(connectionString);
 			connection.Execute(sql, categoryToCreate);
@@ -20,7 +20,7 @@ namespace Budgeter.SqlServer.Repositories
 
 		public IEnumerable<Category> Get()
 		{
-			string sql = "SELECT ID, [Name], BankAccountId, IsCredit FROM Category ORDER BY [Name]";
+			string sql = "SELECT ID, [Name], [Rank], BankAccountId, IsCredit FROM Category ORDER BY [Rank], [Name]";
 
 			using var connection = new SqlConnection(connectionString);
 			return connection.Query<Category>(sql);
@@ -28,7 +28,7 @@ namespace Budgeter.SqlServer.Repositories
 
 		public void Update(Category categoryToUpdate)
 		{
-			string sql = "UPDATE Category SET [Name] = @Name, IsCredit = @IsCredit WHERE ID = @ID";
+			string sql = "UPDATE Category SET [Name] = @Name, [Rank] = @Rank, IsCredit = @IsCredit WHERE ID = @ID";
 
 			using var connection = new SqlConnection(connectionString);
 			int rowsAffected = connection.Execute(sql, categoryToUpdate);

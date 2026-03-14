@@ -35,8 +35,8 @@ function BankAccountModal({ isOpen, setIsModalOpen, bankAccountData, setBankAcco
 	const isRankValid = rank === "" || (rank >= 1 && rank <= MAX_RANK);
 	const isFormValid = isNameSet && isMonthlyBalancePropagationTypeSet && isRankValid;
 	const hasUnsavedChanges = isEditMode
-	 	? name !== bankAccountData.name || rank !== (bankAccountData?.rank ?? "") || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts
-	 	: isNameSet || isMonthlyBalancePropagationTypeSet;
+	 	? name !== bankAccountData.name || rank !== (bankAccountData.rank ?? "") || monthlyBalancePropagationType !== bankAccountData.monthlyBalancePropagationType || showBudgetedAmounts !== bankAccountData.showBudgetedAmounts
+	 	: isNameSet || isMonthlyBalancePropagationTypeSet || rank !== "";
 
 	const handleSave = async () => {
 		try {

@@ -26,6 +26,7 @@ namespace Budgeter.Api.Services
 			_categoryRepository.Create(new CategoryRepositoryModel
 			{
 				Name = categoryToCreate.Name,
+				Rank = categoryToCreate.Rank,
 				BankAccountId = categoryToCreate.BankAccountId!.Value,
 				IsCredit = categoryToCreate.IsCredit!.Value
 			});
@@ -38,6 +39,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = x.ID,
 				Name = x.Name,
+				Rank = x.Rank,
 				BankAccountId = x.BankAccountId,
 				IsCredit = x.IsCredit
 			});
@@ -49,6 +51,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = categoryId,
 				Name = categoryToUpdate.Name,
+				Rank = categoryToUpdate.Rank,
 				IsCredit = categoryToUpdate.IsCredit!.Value
 			});
 		}

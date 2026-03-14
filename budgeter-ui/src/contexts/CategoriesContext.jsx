@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
 import { categoryService } from "../services/categoryService";
 import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
+import { sortByRankThenName } from "../utils/sortUtils";
 
 const CategoriesContext = createContext();
 
@@ -43,7 +44,8 @@ export function CategoriesProvider({ children }) {
 			setLoading(LoadingType.FULLSCREEN);
 			setError(null);
 			const data = await categoryService.getAll();
-			setCategories(data);
+			const sortedData = sortByRankThenName(data);
+			setCategories(sortedData);
 			hasFetched.current = true;
 		} catch (err) {
 			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);

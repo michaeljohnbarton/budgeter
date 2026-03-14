@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import Modal from '../../../../commonComponents/modal/Modal';
+import { MAX_RANK } from '../../../../utils/constants';
 
 function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCategoryData}) {
 	const { createCategory, updateCategory } = useCategories();
@@ -11,29 +12,33 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCa
 	const title = isEditMode ? "Edit Category" : "Add Category";
 
 	const [name, setName] = useState("");
+	const [rank, setRank] = useState("");
 	const [isCredit, setIsCredit] = useState(false);
 	const [touched, setTouched] = useState({
-		name: false
+		name: false,
+		rank: false
 	});
 
 	useEffect(() => {
 		if (isEditMode && categoryData) {
 			setName(categoryData.name);
+			setRank(categoryData.rank ?? "");
 			setIsCredit(categoryData.isCredit);
 		}
 	}, [isOpen]);
 
 	const isNameSet = name !== "";
-	const isFormValid = isNameSet;
+	const isRankValid = rank === "" || (rank >= 1 && rank <= MAX_RANK);
+	const isFormValid = isNameSet && isRankValid;
 	const hasUnsavedChanges = isEditMode
-		? name !== categoryData.name || isCredit !== categoryData.isCredit
-		: isNameSet || isCredit;
+		? name !== categoryData.name || rank !== (categoryData.rank ?? "") || isCredit !== categoryData.isCredit
+		: isNameSet || isCredit || rank !== "";
 
 	const handleSave = async () => {
 		try {
 			if(isEditMode) {
-				if(name !== categoryData.name || isCredit !== categoryData.isCredit) {
-					await updateCategory(categoryData.id, { name: name, isCredit: isCredit });
+				if(name !== categoryData.name || rank !== (categoryData.rank ?? "") || isCredit !== categoryData.isCredit) {
+					await updateCategory(categoryData.id, { name: name, rank: rank === "" ? null : rank, isCredit: isCredit });
 					toast.success("Category updated successfully");
 				} else {
 					toast.info("No changes to save");
@@ -42,6 +47,7 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCa
 			else {
 				await createCategory({
 					name: name,
+					rank: rank === "" ? null : rank,
 					bankAccountId: bankAccount.id,
 					isCredit: isCredit
 				});
@@ -58,9 +64,11 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCa
 	const handleClose = () => {
 		setCategoryData(null);
 		setName("");
+		setRank("");
 		setIsCredit(false);
 		setTouched({
-			name: false
+			name: false,
+			rank: false
 		});
 		setIsModalOpen(false);
 	};
@@ -84,6 +92,20 @@ function CategoryModal({isOpen, setIsModalOpen, bankAccount, categoryData, setCa
 							required />
 						{touched.name && !isNameSet && (
 							<span className={styles.errorText}>This field is required</span>
+						)}
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="rank">Rank</label>
+						<input
+							type="number"
+							id="rank"
+							min="1"
+							max={MAX_RANK}
+							value={rank}
+							onChange={(e) => e.target.value ? setRank(Number(e.target.value)) : setRank("")}
+							onBlur={() => setTouched((t) => ({ ...t, rank: true }))} />
+						{touched.rank && !isRankValid && (
+							<span className={styles.errorText}>Rank must be between 1 and {MAX_RANK} (inclusive)</span>
 						)}
 					</div>
 					<div className={styles.formGroup}>
