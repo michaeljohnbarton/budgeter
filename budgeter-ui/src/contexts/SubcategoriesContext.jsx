@@ -3,6 +3,7 @@ import { LoadingContext } from "./LoadingContext";
 import { subcategoryService } from "../services/subcategoryService";
 import { monthlyBalanceService } from "../services/monthlyBalanceService";
 import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
+import { sortByRankThenName } from "../utils/sortUtils";
 import { useMonthlyBalances } from "./MonthlyBalancesContext";
 
 const SubcategoriesContext = createContext();
@@ -55,7 +56,8 @@ export function SubcategoriesProvider({ children }) {
 			setLoading(LoadingType.FULLSCREEN);
 			setError(null);
 			const data = await subcategoryService.getAll();
-			setSubcategories(data);
+			const sortedData = sortByRankThenName(data);
+			setSubcategories(sortedData);
 			hasFetched.current = true;
 		} catch (err) {
 			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);

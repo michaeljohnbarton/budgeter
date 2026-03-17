@@ -26,6 +26,7 @@ namespace Budgeter.Api.Services
 			SubcategoryRepositoryModel result = _subcategoryRepository.Create(new SubcategoryRepositoryModel
 			{
 				Name = subcategoryToCreate.Name,
+				Rank = subcategoryToCreate.Rank,
 				CategoryId = subcategoryToCreate.CategoryId!.Value,
 				RecalculateFutureBalances = subcategoryToCreate.RecalculateFutureBalances!.Value,
 				HasTransactions = subcategoryToCreate.HasTransactions!.Value
@@ -35,6 +36,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = result.ID,
 				Name = result.Name,
+				Rank = result.Rank,
 				CategoryId = result.CategoryId,
 				RecalculateFutureBalances = result.RecalculateFutureBalances,
 				HasTransactions = result.HasTransactions
@@ -48,6 +50,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = x.ID,
 				Name = x.Name,
+				Rank = x.Rank,
 				CategoryId = x.CategoryId,
 				RecalculateFutureBalances = x.RecalculateFutureBalances,
 				HasTransactions = x.HasTransactions
@@ -60,6 +63,7 @@ namespace Budgeter.Api.Services
 			{
 				ID = subcategoryId,
 				Name = subcategoryToUpdate.Name,
+				Rank = subcategoryToUpdate.Rank,
 				RecalculateFutureBalances = subcategoryToUpdate.RecalculateFutureBalances!.Value,
 				HasTransactions = subcategoryToUpdate.HasTransactions!.Value
 			});

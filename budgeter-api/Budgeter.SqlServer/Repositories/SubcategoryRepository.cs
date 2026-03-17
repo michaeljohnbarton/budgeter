@@ -13,8 +13,8 @@ namespace Budgeter.SqlServer.Repositories
 		public Subcategory Create(Subcategory subcategoryToCreate)
 		{
 			string sql =
-@"INSERT INTO Subcategory ([Name], CategoryId, RecalculateFutureBalances, HasTransactions)
-VALUES (@Name, @CategoryId, @RecalculateFutureBalances, @HasTransactions);
+@"INSERT INTO Subcategory ([Name], [Rank], CategoryId, RecalculateFutureBalances, HasTransactions)
+VALUES (@Name, @Rank, @CategoryId, @RecalculateFutureBalances, @HasTransactions);
 
 SELECT SCOPE_IDENTITY() AS NewID";
 
@@ -25,6 +25,7 @@ SELECT SCOPE_IDENTITY() AS NewID";
 			{
 				ID = newId,
 				Name = subcategoryToCreate.Name,
+				Rank = subcategoryToCreate.Rank,
 				CategoryId = subcategoryToCreate.CategoryId,
 				RecalculateFutureBalances = subcategoryToCreate.RecalculateFutureBalances,
 				HasTransactions = subcategoryToCreate.HasTransactions
@@ -33,7 +34,7 @@ SELECT SCOPE_IDENTITY() AS NewID";
 
 		public IEnumerable<Subcategory> Get()
 		{
-			string sql = "SELECT ID, [Name], CategoryId, RecalculateFutureBalances, HasTransactions FROM Subcategory ORDER BY [Name]";
+			string sql = "SELECT ID, [Name], [Rank], CategoryId, RecalculateFutureBalances, HasTransactions FROM Subcategory ORDER BY [Rank], [Name]";
 
 			using var connection = new SqlConnection(connectionString);
 			return connection.Query<Subcategory>(sql);
@@ -43,7 +44,7 @@ SELECT SCOPE_IDENTITY() AS NewID";
 		{
 			string sql =
 @"UPDATE Subcategory
-SET [Name] = @Name, RecalculateFutureBalances = @RecalculateFutureBalances, HasTransactions = @HasTransactions
+SET [Name] = @Name, [Rank] = @Rank, RecalculateFutureBalances = @RecalculateFutureBalances, HasTransactions = @HasTransactions
 WHERE ID = @ID";
 
 			using var connection = new SqlConnection(connectionString);
