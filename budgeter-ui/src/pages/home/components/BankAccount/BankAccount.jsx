@@ -14,7 +14,13 @@ function BankAccount({ bankAccount }) {
 			{ categoriesForBankAccount.length > 0
 				? (
 					<div className={styles.categoriesWrapper}>
-						{categoriesForBankAccount.map(category => <Category key={category.id} category={category} /> )}
+						{categoriesForBankAccount.map(category =>
+							<Category
+								key={category.id}
+								category={category}
+								showBudgetedAmounts={bankAccount.showBudgetedAmounts}
+							/>
+						)}
 					</div>
 				)
 				: <p>No categories available for this bank account. Add categories in Configuration.</p>

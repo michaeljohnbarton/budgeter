@@ -7,7 +7,6 @@
 
 .categoryTable td,
 .categoryTable th {
-	border: 1px solid #333;
 	padding: 4px 6px;
 }
 
@@ -16,4 +15,9 @@
 	text-align: center;
 	font-size: 1.1rem;
 	font-weight: bold;
+	border: 1px solid black;
+}
+
+.headerRow td {
+	border-bottom: 1px solid black;
 }

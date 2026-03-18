@@ -3,4 +3,26 @@
 	text-align: center;
 	font-weight: bold;
 	text-decoration: underline;
+	border: 1px solid black;
+}
+
+td:first-child {
+	border-left: 1px solid black;
+}
+
+td:last-child {
+	border-right: 1px solid black;
+}
+
+.first td {
+	border-top: 1px solid black;
+}
+
+.last td {
+	border-bottom: 1px solid black;
+}
+
+td {
+	border-right: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
 }
