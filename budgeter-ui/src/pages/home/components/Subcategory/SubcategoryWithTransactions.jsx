@@ -1,4 +1,5 @@
 import styles from './Subcategory.module.css';
+import { CURRENCY_FORMATTER } from '../../../../utils/constants';
 
 function SubcategoryWithTransactions({ subcategory, showBudgetedAmounts }) {
 	const transactions = [
@@ -17,12 +18,12 @@ function SubcategoryWithTransactions({ subcategory, showBudgetedAmounts }) {
 			{ showBudgetedAmounts && (
 				<tr className={styles.first}>
 					<td colSpan="2">Budgeted</td>
-					<td>$100</td>
+					<td className={styles.amountDisplay}>$100.00</td>
 				</tr>
 			)}
 			<tr className={styles.last}>
 				<td colSpan="2">Actual</td>
-				<td>$65</td>
+				<td className={styles.amountDisplay}>$65.00</td>
 			</tr>
 			{
 				transactions.map((t, i) => {
@@ -33,11 +34,11 @@ function SubcategoryWithTransactions({ subcategory, showBudgetedAmounts }) {
 
 					if (isFirst) rowClass += `${styles.first}`;
 					if (isLast) rowClass += `${styles.last}`;
-					
+
 					return (
 						<tr key={t.id} className={rowClass}>
 							<td colSpan="2">{t.name}</td>
-							<td>${t.amount}</td>
+							<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(t.amount)}</td>
 						</tr>
 					)
 				})

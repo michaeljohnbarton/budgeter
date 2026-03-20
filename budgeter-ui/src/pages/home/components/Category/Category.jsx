@@ -20,7 +20,7 @@ function Category({ category, showBudgetedAmounts }) {
 			<tbody>
 				{ !anySubcategoryHasTransactions && (
 					<tr className={styles.headerRow}>
-						<td>Item</td>
+						<td>Name</td>
 						{showBudgetedAmounts && <td>Budgeted</td>}
 						<td>Actual</td>
 					</tr>

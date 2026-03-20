@@ -12,12 +12,12 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 				{ showBudgetedAmounts && (
 					<tr className={styles.first}>
 						<td colSpan="2">Budgeted</td>
-						<td>$100</td>
+						<td className={styles.amountDisplay}>$100.00</td>
 					</tr>
 				)}
 				<tr className={styles.last}>
 					<td colSpan="2">Actual</td>
-					<td>$65</td>
+					<td className={styles.amountDisplay}>$65.00</td>
 				</tr>
 			</>
 		)
@@ -26,8 +26,8 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 			<>
 				<tr className={isLast ? styles.last : ''}>
 					<td>{subcategory.name}</td>
-					{ showBudgetedAmounts && <td>$50</td>}
-					<td>$30</td>
+					{ showBudgetedAmounts && <td className={styles.amountDisplay}>$50.00</td>}
+					<td className={styles.amountDisplay}>$30.00</td>
 				</tr>
 			</>
 		);

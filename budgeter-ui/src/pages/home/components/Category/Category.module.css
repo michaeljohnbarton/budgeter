@@ -18,6 +18,11 @@
 	border: 1px solid black;
 }
 
+.headerRow {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
 .headerRow td {
 	border-bottom: 1px solid black;
 }
