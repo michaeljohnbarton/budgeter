@@ -3,7 +3,7 @@ import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import SubcategoryWithTransactions from '../Subcategory/SubcategoryWithTransactions';
 import SubcategoryWithoutTransactions from '../Subcategory/SubcategoryWithoutTransactions';
 
-function Category({ category, showBudgetedAmounts }) {
+function Category({ category, showBudgetedAmounts, monthlyBalancePropagationType }) {
 	const { subcategories } = useSubcategories();
 	const subcategoriesForCategory = subcategories.filter(sc => sc.categoryId === category.id);
 	const anySubcategoryHasTransactions = subcategoriesForCategory.some(s => s.hasTransactions);
@@ -33,6 +33,7 @@ function Category({ category, showBudgetedAmounts }) {
 									key={subcategory.id}
 									subcategory={subcategory}
 									showBudgetedAmounts={showBudgetedAmounts}
+									monthlyBalancePropagationType={monthlyBalancePropagationType}
 								/>
 							);
 						} else {

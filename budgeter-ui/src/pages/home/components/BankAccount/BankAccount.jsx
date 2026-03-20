@@ -20,6 +20,7 @@ function BankAccount({ bankAccount }) {
 								key={category.id}
 								category={category}
 								showBudgetedAmounts={bankAccount.showBudgetedAmounts}
+								monthlyBalancePropagationType={bankAccount.monthlyBalancePropagationType}
 							/>
 						)}
 					</div>

@@ -25,7 +25,7 @@ function BankAccountSummary({ bankAccount, categoriesForBankAccount }) {
 							if (isLast) rowClass += `${styles.last}`;
 
 							return (
-								<tr className={rowClass}>
+								<tr key={category.id} className={rowClass}>
 									<td>Budgeted {category.name}</td>
 									<td className={styles.amountDisplay}>$100.00</td>
 								</tr>
@@ -43,7 +43,7 @@ function BankAccountSummary({ bankAccount, categoriesForBankAccount }) {
 							if (isLast) rowClass += `${styles.last}`;
 
 							return (
-								<tr className={rowClass}>
+								<tr key={category.id} className={rowClass}>
 									<td>Actual {category.name}</td>
 									<td className={styles.amountDisplay}>$100.00</td>
 								</tr>
