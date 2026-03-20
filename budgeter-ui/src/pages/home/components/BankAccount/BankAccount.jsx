@@ -1,6 +1,7 @@
 import styles from './BankAccount.module.css';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import Category from '../Category/Category';
+import BankAccountSummary from './BankAccountSummary';
 
 function BankAccount({ bankAccount }) {
 	const { categories } = useCategories();
@@ -25,6 +26,8 @@ function BankAccount({ bankAccount }) {
 				)
 				: <p>No categories available for this bank account. Add categories in Configuration.</p>
 			}
+
+			<BankAccountSummary bankAccount={bankAccount} categoriesForBankAccount={categoriesForBankAccount} />
 		</fieldset>
 	);
 }

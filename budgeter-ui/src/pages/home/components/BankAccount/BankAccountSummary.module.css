@@ -1,0 +1,48 @@
+.summaryTable {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+	margin-bottom: 32px;
+}
+
+.summaryTable td,
+.summaryTable th {
+	padding: 4px 6px;
+}
+
+.summaryHeader {
+	background: gray;
+	text-align: center;
+	font-size: 1.1rem;
+	font-weight: bold;
+	border: 1px solid black;
+}
+
+td:first-child {
+	border-left: 1px solid black;
+}
+
+td:last-child {
+	border-right: 1px solid black;
+}
+
+.first td {
+	border-top: 1px solid black;
+}
+
+.last td {
+	border-bottom: 1px solid black;
+}
+
+td {
+	border-right: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+}
+
+.amountDisplay {
+	text-align: right;
+}
+
+.totalBalance {
+	font-weight: bold;
+}
