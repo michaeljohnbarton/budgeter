@@ -22,7 +22,7 @@ function Category({ category, showBudgetedAmounts }) {
 					<tr className={styles.headerRow}>
 						<td>Name</td>
 						{showBudgetedAmounts && <td>Budgeted</td>}
-						<td>Actual</td>
+						<td>{showBudgetedAmounts ? "Actual" : "Current Balance"}</td>
 					</tr>
 				)}
 				{ subcategoriesForCategory.length > 0

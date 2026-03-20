@@ -22,7 +22,7 @@ function SubcategoryWithTransactions({ subcategory, showBudgetedAmounts }) {
 				</tr>
 			)}
 			<tr className={styles.last}>
-				<td colSpan="2">Actual</td>
+				<td colSpan="2">{showBudgetedAmounts ? "Actual" : "Current Balance"}</td>
 				<td className={styles.amountDisplay}>$65.00</td>
 			</tr>
 			{
