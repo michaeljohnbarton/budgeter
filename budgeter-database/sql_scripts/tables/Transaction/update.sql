@@ -8,7 +8,7 @@ BEGIN
 		[Description] VARCHAR(255) NOT NULL,
 		IsCredit BIT NOT NULL,
 		AmountCents INT NOT NULL,
-		EnteredDateUtc DATETIME2 NOT NULL,
+		EnteredDateUtc DATETIME NOT NULL,
 		MonthID INT NOT NULL FOREIGN KEY REFERENCES [Month](ID),
 		SubcategoryID INT NOT NULL FOREIGN KEY REFERENCES Subcategory(ID)
 	);

@@ -1,0 +1,5 @@
+.requiredLabel::after {
+	content: " *";
+	color: #dc2626;
+	font-weight: 600;
+}

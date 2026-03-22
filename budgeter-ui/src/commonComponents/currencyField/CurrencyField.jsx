@@ -1,7 +1,8 @@
+import styles from "./CurrencyField.module.css"
 import CurrencyInput from "react-currency-input-field";
 import { useEffect, useState, useRef } from "react";
 
-function CurrencyField({ id, label, centsValue, onChangeCents }) {
+function CurrencyField({ id, label, centsValue, onChangeCents, required = false, setTouched = null }) {
 	const [displayValue, setDisplayValue] = useState("");
 	const isEditingRef = useRef(false);
 
@@ -36,11 +37,13 @@ function CurrencyField({ id, label, centsValue, onChangeCents }) {
 			setDisplayValue(formatted);
 			onChangeCents(Math.round(parseFloat(formatted) * 100));
 		}
+
+		setTouched?.();
 	}
 
 	return (
 		<>
-			{label && <label htmlFor={id}>{label}</label>}
+			{label && <label htmlFor={id} className={required ? styles.requiredLabel : ""}>{label}</label>}
 
 			<CurrencyInput
 				id={id}

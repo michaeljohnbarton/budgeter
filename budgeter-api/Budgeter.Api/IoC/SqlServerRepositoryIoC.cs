@@ -12,6 +12,7 @@ namespace Budgeter.Api.IoC
 			services.AddScoped<ICategoryRepository, CategoryRepository>();
 			services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
 			services.AddScoped<IMonthlyBalanceRepository, MonthlyBalanceRepository>();
+			services.AddScoped<ITransactionRepository, TransactionRepository>();
 		}
 	}
 }

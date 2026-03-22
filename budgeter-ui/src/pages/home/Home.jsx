@@ -7,6 +7,7 @@ import { useCategories } from '../../contexts/CategoriesContext';
 import { useSubcategories } from '../../contexts/SubcategoriesContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import BankAccount from './components/BankAccount/BankAccount';
+import TransactionModal from './components/Transaction/TransactionModal';
 
 function Home() {
 	const { loading, LoadingType } = useLoading();
@@ -15,6 +16,7 @@ function Home() {
 	const { error: categoriesError } = useCategories();
 	const { error: subcategoriesError } = useSubcategories();
 	const [selectedMonth, setSelectedMonth] = useState('');
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const currentDate = new Date();
 	const currentYear = currentDate.getFullYear();
@@ -39,9 +41,18 @@ function Home() {
 		display: `${monthMap.find(x => x.number === month.monthNumber).name} ${month.year}`
 	}));
 
+	const handleNewClick = () => {
+		setIsModalOpen(true);
+	};
+
 	return (
 		<div id="home-page">
-			<TitleDropdown items={monthsForDropdown} selectedValue={selectedMonth} setSelectedValue={setSelectedMonth} />
+			<TitleDropdown
+				items={monthsForDropdown}
+				selectedValue={selectedMonth}
+				setSelectedValue={setSelectedMonth}
+				onNewButtonClick={handleNewClick}
+			/>
 
 			{ bankAccounts.length > 0
 				? (
@@ -51,6 +62,8 @@ function Home() {
 				)
 				: <p>No bank accounts available. Add bank accounts in Configuration.</p>
 			}
+
+			<TransactionModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} monthId={selectedMonth} />
 		</div>
 	);
 }

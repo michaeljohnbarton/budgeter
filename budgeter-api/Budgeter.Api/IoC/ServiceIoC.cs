@@ -11,6 +11,7 @@ namespace Budgeter.Api.IoC
 			services.AddScoped<ICategoryService, CategoryService>();
 			services.AddScoped<ISubcategoryService, SubcategoryService>();
 			services.AddScoped<IMonthlyBalanceService, MonthlyBalanceService>();
+			services.AddScoped<ITransactionService, TransactionService>();
 		}
 	}
 }
