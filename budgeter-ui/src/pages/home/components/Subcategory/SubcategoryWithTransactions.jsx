@@ -1,12 +1,13 @@
 import styles from './Subcategory.module.css';
+import clsx from 'clsx';
 import { CURRENCY_FORMATTER, MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../../utils/constants';
+import { useMonths} from '../../../../contexts/MonthsContext';
+import { useTransactions } from '../../../../contexts/TransactionsContext';
 
 function SubcategoryWithTransactions({ subcategory, showBudgetedAmounts, monthlyBalancePropagationType }) {
-	const transactions = [
-		{id: 1, name: "Transaction 1", amount: 50},
-		{id: 2, name: "Transaction 2", amount: 15},
-		{id: 3, name: "Transaction 3", amount: 10}
-	];
+	const { selectedMonthId } = useMonths();
+	const { transactions } = useTransactions();
+	const transactionsForSubcategoryAndMonth = transactions.filter(t => t.subcategoryId === subcategory.id && t.monthId === selectedMonthId);
 
 	return (
 		<>
@@ -31,23 +32,27 @@ function SubcategoryWithTransactions({ subcategory, showBudgetedAmounts, monthly
 					<td className={styles.amountDisplay}>$100.00</td>
 				</tr>
 			)}
-			{
-				transactions.map((t, i) => {
-					const isFirst = i === 0;
-					const isLast = i === transactions.length - 1;
-
+			{	transactionsForSubcategoryAndMonth.length > 0 &&
+				transactionsForSubcategoryAndMonth.map((t, i) => {
+					const isLast = i === transactionsForSubcategoryAndMonth.length - 1;
 					let rowClass = '';
-
-					if (isFirst) rowClass += `${styles.first}`;
 					if (isLast) rowClass += `${styles.last}`;
 
 					return (
 						<tr key={t.id} className={rowClass}>
-							<td colSpan="2">{t.name}</td>
-							<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(t.amount)}</td>
+							<td colSpan="2">{t.description}</td>
+							<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(t.amountCents / 100)}</td>
 						</tr>
 					)
 				})
+			}
+			{
+				transactionsForSubcategoryAndMonth.length === 0 && (
+					<tr className={clsx(styles.last, styles.emptyTransaction)}>
+						<td colSpan="2">None</td>
+						<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(0)}</td>
+					</tr>
+				)
 			}
 		</>
 	);

@@ -30,3 +30,8 @@ td {
 .amountDisplay {
 	text-align: right;
 }
+
+.emptyTransaction {
+	color: gray;
+	font-style: italic;
+}

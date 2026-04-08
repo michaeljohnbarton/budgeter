@@ -10,6 +10,17 @@ export function MonthsProvider({ children }) {
 
 	const [months, setMonths] = useState([]);
 	const [error, setError] = useState(null);
+	const [selectedMonthId, setSelectedMonthId] = useState('');
+
+	const currentDate = new Date();
+	const currentYear = currentDate.getFullYear();
+	const currentMonthNumber = currentDate.getMonth() + 1;
+
+	useEffect(() => {
+		if (months.length === 0 || selectedMonthId !== '') return;
+		const current = months.find(m => m.monthNumber === currentMonthNumber && m.year === currentYear);
+		setSelectedMonthId(current?.id || months[0].id);
+	}, [months, selectedMonthId, currentMonthNumber, currentYear]);
 
 	const monthMap = [
 		{ number: 1, name: "January" },
@@ -94,7 +105,7 @@ export function MonthsProvider({ children }) {
 	}, []);
 
 	return (
-		<MonthsContext.Provider value={{ months, error, monthMap, createMonth, updateMonth, deleteMonth }}>
+		<MonthsContext.Provider value={{ months, error, monthMap, createMonth, updateMonth, deleteMonth, selectedMonthId, setSelectedMonthId }}>
 			{children}
 		</MonthsContext.Provider>
 	);

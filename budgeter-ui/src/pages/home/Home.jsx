@@ -1,38 +1,30 @@
 import styles from './Home.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
 import { useBankAccounts } from '../../contexts/BankAccountsContext';
 import { useCategories } from '../../contexts/CategoriesContext';
 import { useSubcategories } from '../../contexts/SubcategoriesContext';
+import { useTransactions } from '../../contexts/TransactionsContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import BankAccount from './components/BankAccount/BankAccount';
 import TransactionModal from './components/Transaction/TransactionModal';
 
 function Home() {
 	const { loading, LoadingType } = useLoading();
-	const { months, monthMap, error: monthsError } = useMonths();
+	const { months, monthMap, error: monthsError, selectedMonthId, setSelectedMonthId } = useMonths();
 	const { bankAccounts, error: bankAccountsError } = useBankAccounts();
 	const { error: categoriesError } = useCategories();
 	const { error: subcategoriesError } = useSubcategories();
-	const [selectedMonth, setSelectedMonth] = useState('');
+	const { error: transactionsError } = useTransactions();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
-	const currentDate = new Date();
-	const currentYear = currentDate.getFullYear();
-	const currentMonthNumber = currentDate.getMonth() + 1;
-
-	useEffect(() => {
-		if (months.length === 0) return;
-		const current = months.find(m => m.monthNumber === currentMonthNumber && m.year === currentYear);
-		setSelectedMonth(current?.id || months[0].id);
-	}, [months, currentMonthNumber, currentYear]);
 
 	if (loading == LoadingType.FULLSCREEN) return null;
 	if (monthsError) return <p>Error: {monthsError}</p>;
 	if (bankAccountsError) return <p>Error: {bankAccountsError}</p>;
 	if (categoriesError) return <p>Error: {categoriesError}</p>;
 	if (subcategoriesError) return <p>Error: {subcategoriesError}</p>;
+	if (transactionsError) return <p>Error: {transactionsError}</p>;
 	if (months.length === 0) return <p>No months available. Add months in Configuration.</p>;
 
 	var monthsForDropdown = months.map((month) => ({
@@ -49,8 +41,8 @@ function Home() {
 		<div id="home-page">
 			<TitleDropdown
 				items={monthsForDropdown}
-				selectedValue={selectedMonth}
-				setSelectedValue={setSelectedMonth}
+				selectedValue={selectedMonthId}
+				setSelectedValue={setSelectedMonthId}
 				onNewButtonClick={handleNewClick}
 			/>
 
@@ -63,7 +55,7 @@ function Home() {
 				: <p>No bank accounts available. Add bank accounts in Configuration.</p>
 			}
 
-			<TransactionModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} monthId={selectedMonth} />
+			<TransactionModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} monthId={selectedMonthId} />
 		</div>
 	);
 }

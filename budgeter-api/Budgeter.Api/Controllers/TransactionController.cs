@@ -40,5 +40,12 @@ namespace Budgeter.Api.Controllers
 				throw;
 			}
 		}
+
+		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public IEnumerable<Transaction> Get()
+		{
+			return _transactionService.Get();
+		}
 	}
 }

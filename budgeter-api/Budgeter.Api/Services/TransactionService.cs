@@ -7,6 +7,7 @@ namespace Budgeter.Api.Services
 	public interface ITransactionService
 	{
 		void Create(CreateTransaction transactionToCreate);
+		IEnumerable<Transaction> Get();
 	}
 
 	public class TransactionService : ITransactionService
@@ -27,6 +28,21 @@ namespace Budgeter.Api.Services
 				AmountCents = transactionToCreate.AmountCents!.Value,
 				MonthId = transactionToCreate.MonthId!.Value,
 				SubcategoryId = transactionToCreate.SubcategoryId!.Value
+			});
+		}
+
+		public IEnumerable<Transaction> Get()
+		{
+			IEnumerable<TransactionRepositoryModel> results = _transactionRepository.Get();
+			return results.Select(x => new Transaction
+			{
+				ID = x.ID,
+				Description = x.Description,
+				IsCredit = x.IsCredit,
+				AmountCents = x.AmountCents,
+				EnteredDateUtc = x.EnteredDateUtc,
+				MonthId = x.MonthId,
+				SubcategoryId = x.SubcategoryId
 			});
 		}
 	}

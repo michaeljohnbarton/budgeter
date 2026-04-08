@@ -19,5 +19,16 @@ VALUES (@Description, @IsCredit, @AmountCents, @EnteredDateUtc, @MonthId, @Subca
 			using var connection = new SqlConnection(connectionString);
 			connection.Execute(sql, transactionToCreate);
 		}
+
+		public IEnumerable<Transaction> Get()
+		{
+			string sql =
+@"SELECT ID, Description, IsCredit, AmountCents, EnteredDateUtc, MonthId, SubcategoryId
+FROM [Transaction]
+ORDER BY EnteredDateUtc, ID";
+
+			using var connection = new SqlConnection(connectionString);
+			return connection.Query<Transaction>(sql);
+		}
 	}
 }
