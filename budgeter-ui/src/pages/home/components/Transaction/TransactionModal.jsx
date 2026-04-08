@@ -21,7 +21,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 	var categoriesForSelectedBankAccount = categories.filter(c => c.bankAccountId === selectedBankAccountId);
 	const [selectedCategoryId, setSelectedCategoryId] = useState(0);
 
-	var subcategoriesForSelectedCategory = subcategories.filter(c => c.categoryId === selectedCategoryId);
+	var subcategoriesForSelectedCategory = subcategories.filter(sc => sc.categoryId === selectedCategoryId && sc.hasTransactions);
 	const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(0);
 
 	useEffect(() => {
@@ -34,7 +34,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 
 	useEffect(() => {
 		if(selectedCategoryId !== 0) {
-			subcategoriesForSelectedCategory = subcategories.filter(c => c.categoryId === selectedCategoryId);
+			subcategoriesForSelectedCategory = subcategories.filter(sc => sc.categoryId === selectedCategoryId && sc.hasTransactions);
 			setSelectedSubcategoryId(0);
 			setTouched((t) => ({ ...t, subcategory: false }));
 		}
@@ -167,7 +167,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 								)}
 							</div>
 						) : (
-							<p>{bankAccounts.length > 0 && categoriesForSelectedBankAccount.length > 0 && isCategorySelected && "No subcategories were found for the selected category. Create one."}</p>
+							<p>{bankAccounts.length > 0 && categoriesForSelectedBankAccount.length > 0 && isCategorySelected && "No subcategories (or subcategories allowing transactions) were found for the selected category. Create one."}</p>
 						)
 				}
 				{
