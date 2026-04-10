@@ -1,11 +1,11 @@
 import styles from './Home.module.css';
-import { useState } from 'react';
 import { useLoading } from '../../contexts/LoadingContext';
 import { useMonths } from '../../contexts/MonthsContext';
 import { useBankAccounts } from '../../contexts/BankAccountsContext';
 import { useCategories } from '../../contexts/CategoriesContext';
 import { useSubcategories } from '../../contexts/SubcategoriesContext';
 import { useTransactions } from '../../contexts/TransactionsContext';
+import { useTransactionModal } from '../../contexts/TransactionModalContext';
 import TitleDropdown from '../../commonComponents/titleDropdown/TitleDropdown';
 import BankAccount from './components/BankAccount/BankAccount';
 import TransactionModal from './components/Transaction/TransactionModal';
@@ -17,7 +17,7 @@ function Home() {
 	const { error: categoriesError } = useCategories();
 	const { error: subcategoriesError } = useSubcategories();
 	const { error: transactionsError } = useTransactions();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const { openModal } = useTransactionModal();
 
 	if (loading == LoadingType.FULLSCREEN) return null;
 	if (monthsError) return <p>Error: {monthsError}</p>;
@@ -34,7 +34,7 @@ function Home() {
 	}));
 
 	const handleNewClick = () => {
-		setIsModalOpen(true);
+		openModal();
 	};
 
 	return (
@@ -55,7 +55,7 @@ function Home() {
 				: <p>No bank accounts available. Add bank accounts in Configuration.</p>
 			}
 
-			<TransactionModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} monthId={selectedMonthId} />
+			<TransactionModal />
 		</div>
 	);
 }

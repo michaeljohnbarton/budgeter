@@ -4,6 +4,28 @@
 	font-weight: bold;
 	text-decoration: underline;
 	border: 1px solid black;
+	position: relative;
+}
+
+.subcategoryAddButton {
+	position: absolute;
+	right: 8px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: lightgreen;
+	border: 1px solid #999;
+	padding: 2px 6px;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+.subcategoryAddButton:hover {
+	background-color: palegreen;
+	transform: translateY(-50%) translateY(-1px);
+}
+
+.subcategoryAddButton:active {
+	transform: translateY(-50%);
 }
 
 td:first-child {

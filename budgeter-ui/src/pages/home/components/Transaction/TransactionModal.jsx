@@ -5,14 +5,18 @@ import { useBankAccounts } from '../../../../contexts/BankAccountsContext';
 import { useCategories } from '../../../../contexts/CategoriesContext';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
+import { useTransactionModal } from '../../../../contexts/TransactionModalContext';
+import { useMonths } from '../../../../contexts/MonthsContext';
 import CurrencyField from '../../../../commonComponents/currencyField/CurrencyField';
 import { toast } from 'react-toastify';
 
-function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
+function TransactionModal() {
 	const { bankAccounts } = useBankAccounts();
 	const { categories } = useCategories();
 	const { subcategories } = useSubcategories();
 	const { createTransaction } = useTransactions();
+	const { isOpen, closeModal, initialValues } = useTransactionModal();
+	const { selectedMonthId } = useMonths();
 
 	const title = "Add Transaction";
 
@@ -24,19 +28,35 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 	var subcategoriesForSelectedCategory = subcategories.filter(sc => sc.categoryId === selectedCategoryId && sc.hasTransactions);
 	const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(0);
 
+
+	// Initialize form with context values when modal opens
+	useEffect(() => {
+		if (isOpen && initialValues.bankAccountId !== 0) {
+			setSelectedBankAccountId(initialValues.bankAccountId);
+			setSelectedCategoryId(initialValues.categoryId);
+			setSelectedSubcategoryId(initialValues.subcategoryId);
+		}
+	}, [isOpen, initialValues]);
+
 	useEffect(() => {
 		if(selectedBankAccountId !== 0) {
 			categoriesForSelectedBankAccount = categories.filter(c => c.bankAccountId === selectedBankAccountId);
-			setSelectedCategoryId(0);
-			setTouched((t) => ({ ...t, category: false, subcategory: false }));
+			// Only reset category if not coming from initial values
+			if (initialValues.bankAccountId !== selectedBankAccountId) {
+				setSelectedCategoryId(0);
+				setTouched((t) => ({ ...t, category: false, subcategory: false }));
+			}
 		}
 	}, [selectedBankAccountId, bankAccounts]);
 
 	useEffect(() => {
 		if(selectedCategoryId !== 0) {
 			subcategoriesForSelectedCategory = subcategories.filter(sc => sc.categoryId === selectedCategoryId && sc.hasTransactions);
-			setSelectedSubcategoryId(0);
-			setTouched((t) => ({ ...t, subcategory: false }));
+			// Only reset subcategory if not coming from initial values
+			if (initialValues.categoryId !== selectedCategoryId) {
+				setSelectedSubcategoryId(0);
+				setTouched((t) => ({ ...t, subcategory: false }));
+			}
 		}
 	}, [selectedCategoryId, categories])
 
@@ -56,7 +76,13 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 	const isSubcategorySelected = selectedSubcategoryId !== 0;
 	const isDescriptionSet = description !== "";
 	const isAmountCentsSet = amountCents !== null;
-	const hasUnsavedChanges = isBankAccountSelected || isCategorySelected || isSubcategorySelected || isDescriptionSet || isCredit || isAmountCentsSet;
+	const hasUnsavedChanges =
+		(!initialValues.readonly.bankAccount && isBankAccountSelected)
+		|| (!initialValues.readonly.category && isCategorySelected)
+		|| (!initialValues.readonly.subcategory && isSubcategorySelected)
+		|| isDescriptionSet
+		|| isCredit
+		|| isAmountCentsSet;
 	const isFormValid = isBankAccountSelected && isCategorySelected && isSubcategorySelected && isDescriptionSet && isAmountCentsSet;
 
 	const handleSave = async () => {
@@ -66,7 +92,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 					description: description,
 					isCredit: isCredit,
 					amountCents: amountCents,
-					monthId: monthId,
+					monthId: selectedMonthId,
 					subcategoryId: selectedSubcategoryId
 				}
 			);
@@ -92,7 +118,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 			description: false,
 			amountCents: false
 		})
-		setIsModalOpen(false);
+		closeModal();
 	};
 
 	return (
@@ -108,6 +134,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 									value={selectedBankAccountId}
 									onChange={(e) => setSelectedBankAccountId(Number(e.target.value))}
 									onBlur={() => setTouched((t) => ({ ...t, bankAccount: true }))}
+									disabled={initialValues.readonly.bankAccount}
 								>
 									<option value={0}>-- Select Bank Account --</option>
 									{
@@ -132,6 +159,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 									value={selectedCategoryId}
 									onChange={(e) => setSelectedCategoryId(Number(e.target.value))}
 									onBlur={() => setTouched((t) => ({ ...t, category: true }))}
+									disabled={initialValues.readonly.category}
 								>
 									<option value={0}>-- Select Category --</option>
 									{
@@ -156,6 +184,7 @@ function TransactionModal({ isOpen, setIsModalOpen, monthId }) {
 									value={selectedSubcategoryId}
 									onChange={(e) => setSelectedSubcategoryId(Number(e.target.value))}
 									onBlur={() => setTouched((t) => ({ ...t, subcategory: true }))}
+									disabled={initialValues.readonly.subcategory}
 								>
 									<option value={0}>-- Select Subcategory --</option>
 									{

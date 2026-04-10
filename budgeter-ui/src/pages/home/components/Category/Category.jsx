@@ -32,6 +32,8 @@ function Category({ category, showBudgetedAmounts, monthlyBalancePropagationType
 								<SubcategoryWithTransactions
 									key={subcategory.id}
 									subcategory={subcategory}
+									bankAccountId={category.bankAccountId}
+									categoryId={category.id}
 									showBudgetedAmounts={showBudgetedAmounts}
 									monthlyBalancePropagationType={monthlyBalancePropagationType}
 								/>
