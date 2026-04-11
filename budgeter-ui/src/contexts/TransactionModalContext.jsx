@@ -27,6 +27,7 @@ export function TransactionModalProvider({ children }) {
 
 	const openModalForNewTransactionInSubcategory = (bankAccountId, categoryId, subcategoryId) => {
 		setInitialValues({
+			...initialValuesTemplate,
 			bankAccountId,
 			categoryId,
 			subcategoryId,

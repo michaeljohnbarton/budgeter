@@ -1,3 +1,4 @@
+using System.Data;
 using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
@@ -10,15 +11,14 @@ namespace Budgeter.SqlServer.Repositories
 	{
 		private const string connectionString = "Server=localhost;Database=budgeter;Integrated Security=False;User Id=sa;Password=Mjbarton46;TrustServerCertificate=True;";
 
-		public void Create(Transaction transactionToCreate)
+		public void Create(Transaction transactionToCreate, IDbConnection connection, IDbTransaction dbTransaction)
 		{
 			transactionToCreate.EnteredDateUtc = DateTime.UtcNow;
 			string sql =
 @"INSERT INTO [Transaction] (Description, IsCredit, AmountCents, EnteredDateUtc, MonthId, SubcategoryId)
 VALUES (@Description, @IsCredit, @AmountCents, @EnteredDateUtc, @MonthId, @SubcategoryId);";
 
-			using var connection = new SqlConnection(connectionString);
-			connection.Execute(sql, transactionToCreate);
+			connection.Execute(sql, transactionToCreate, dbTransaction);
 		}
 
 		public IEnumerable<Transaction> Get()

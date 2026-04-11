@@ -1,3 +1,4 @@
+using Budgeter.Api.Infrastructure;
 using Budgeter.Api.Models.Transaction;
 using Budgeter.Repository.Repositories;
 using TransactionRepositoryModel = Budgeter.Repository.Models.Transaction;
@@ -14,23 +15,53 @@ namespace Budgeter.Api.Services
 
 	public class TransactionService : ITransactionService
 	{
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly ITransactionRepository _transactionRepository;
+		private readonly IMonthlyBalanceRepository _monthlyBalanceRepository;
 
-		public TransactionService(ITransactionRepository transactionRepository)
+		public TransactionService(IUnitOfWork unitOfWork, ITransactionRepository transactionRepository, IMonthlyBalanceRepository monthlyBalanceRepository)
 		{
+			_unitOfWork = unitOfWork;
 			_transactionRepository = transactionRepository;
+			_monthlyBalanceRepository = monthlyBalanceRepository;
 		}
 
 		public void Create(CreateTransaction transactionToCreate)
 		{
-			_transactionRepository.Create(new TransactionRepositoryModel
+			try
 			{
-				Description = transactionToCreate.Description,
-				IsCredit = transactionToCreate.IsCredit!.Value,
-				AmountCents = transactionToCreate.AmountCents!.Value,
-				MonthId = transactionToCreate.MonthId!.Value,
-				SubcategoryId = transactionToCreate.SubcategoryId!.Value
-			});
+				_unitOfWork.Begin();
+
+				_transactionRepository.Create(
+					new TransactionRepositoryModel
+					{
+						Description = transactionToCreate.Description,
+						IsCredit = transactionToCreate.IsCredit!.Value,
+						AmountCents = transactionToCreate.AmountCents!.Value,
+						MonthId = transactionToCreate.MonthId!.Value,
+						SubcategoryId = transactionToCreate.SubcategoryId!.Value
+					},
+					_unitOfWork.Connection,
+					_unitOfWork.Transaction!
+				);
+
+				_monthlyBalanceRepository.Update(
+					transactionToCreate.MonthId!.Value,
+					transactionToCreate.SubcategoryId!.Value,
+					transactionToCreate.IsCredit!.Value ? transactionToCreate.AmountCents!.Value : -transactionToCreate.AmountCents!.Value,
+					_unitOfWork.Connection,
+					_unitOfWork.Transaction!
+				);
+
+				// TODO: Update future months depending on monthly balance propagation type
+
+				_unitOfWork.Commit();
+			}
+			catch
+			{
+				_unitOfWork.Rollback();
+				throw;
+			}
 		}
 
 		public IEnumerable<Transaction> Get()

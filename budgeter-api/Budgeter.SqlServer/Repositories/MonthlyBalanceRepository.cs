@@ -1,3 +1,4 @@
+using System.Data;
 using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
@@ -37,6 +38,21 @@ WHERE ID = @ID";
 
 			using var connection = new SqlConnection(connectionString);
 			int rowsAffected = connection.Execute(sql, monthlyBalanceToUpdate);
+			if (rowsAffected == 0)
+			{
+				throw new NotFoundException("Monthly balance does not exist");
+			}
+		}
+
+		public void Update(int monthId, int subcategoryId, int actualAmountCents, IDbConnection connection, IDbTransaction dbTransaction)
+		{
+			string sql =
+@"UPDATE MonthlyBalance
+SET ActualAmountCents = ActualAmountCents + @ActualAmountCents
+WHERE MonthId = @MonthId AND SubcategoryId = @SubcategoryId";
+
+			var parameters = new { MonthId = monthId, SubcategoryId = subcategoryId, ActualAmountCents = actualAmountCents };
+			int rowsAffected = connection.Execute(sql, parameters, dbTransaction);
 			if (rowsAffected == 0)
 			{
 				throw new NotFoundException("Monthly balance does not exist");

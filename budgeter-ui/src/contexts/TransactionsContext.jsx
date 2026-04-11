@@ -2,11 +2,13 @@ import { createContext, useContext, useState, useRef, useEffect } from "react";
 import { LoadingContext } from "./LoadingContext";
 import { transactionService } from "../services/transactionService";
 import { API_CONNECTION_ERROR_MESSAGE, API_CONNECTION_FAILED_MESSAGE } from "../constants/apiConstants";
+import { useMonthlyBalances } from "./MonthlyBalancesContext";
 
 const TransactionsContext = createContext();
 
 export function TransactionsProvider({ children }) {
 	const { setLoading, LoadingType } = useContext(LoadingContext);
+	const { fetchMonthlyBalances } = useMonthlyBalances();
 
 	const [transactions, setTransactions] = useState([]);
 	const [error, setError] = useState(null);
@@ -18,6 +20,7 @@ export function TransactionsProvider({ children }) {
 			setLoading(LoadingType.OVERLAY);
 			await transactionService.create(payload);
 			await fetchTransactions({ force: true });
+			await fetchMonthlyBalances({ force: true });
 		} catch (err) {
 			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
 				setError(API_CONNECTION_ERROR_MESSAGE);

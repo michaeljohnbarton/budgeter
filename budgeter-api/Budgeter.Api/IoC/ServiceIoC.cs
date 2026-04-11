@@ -1,4 +1,5 @@
-﻿using Budgeter.Api.Services;
+﻿using Budgeter.Api.Infrastructure;
+using Budgeter.Api.Services;
 
 namespace Budgeter.Api.IoC
 {
@@ -12,6 +13,8 @@ namespace Budgeter.Api.IoC
 			services.AddScoped<ISubcategoryService, SubcategoryService>();
 			services.AddScoped<IMonthlyBalanceService, MonthlyBalanceService>();
 			services.AddScoped<ITransactionService, TransactionService>();
+
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 		}
 	}
 }

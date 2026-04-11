@@ -6,12 +6,15 @@ import { CURRENCY_FORMATTER, MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../.
 import { useMonths} from '../../../../contexts/MonthsContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
 import { useTransactionModal } from '../../../../contexts/TransactionModalContext';
+import { useMonthlyBalances } from '../../../../contexts/MonthlyBalancesContext';
 
 function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, showBudgetedAmounts, monthlyBalancePropagationType }) {
 	const { selectedMonthId } = useMonths();
+	const { monthlyBalances } = useMonthlyBalances();
 	const { transactions, deleteTransaction } = useTransactions();
 	const { openModalForNewTransactionInSubcategory, openModalForExistingTransaction } = useTransactionModal();
 	const transactionsForSubcategoryAndMonth = transactions.filter(t => t.subcategoryId === subcategory.id && t.monthId === selectedMonthId);
+	const monthlyBalanceForSubcategoryAndMonth = monthlyBalances.find(mb => mb.monthId === selectedMonthId && mb.subcategoryId === subcategory.id) || {};
 
 	const handleAddClick = () => {
 		openModalForNewTransactionInSubcategory(bankAccountId, categoryId, subcategory.id);
@@ -49,12 +52,12 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 			{ showBudgetedAmounts && (
 				<tr className={styles.first}>
 					<td colSpan="2">Budgeted</td>
-					<td className={styles.amountDisplay}>$100.00</td>
+					<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents / 100)}</td>
 				</tr>
 			)}
 			<tr className={ monthlyBalancePropagationType === MONTHLY_BALANCE_PROPAGATION_TYPE.Subcategory ? "" : styles.last}>
 				<td colSpan="2">{showBudgetedAmounts ? "Actual" : "Current Balance"}</td>
-				<td className={styles.amountDisplay}>$65.00</td>
+				<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.actualAmountCents / 100)}</td>
 			</tr>
 			{ monthlyBalancePropagationType === MONTHLY_BALANCE_PROPAGATION_TYPE.Subcategory && (
 				<tr className={styles.last}>

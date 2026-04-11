@@ -18,7 +18,7 @@ function TransactionModal() {
 	const { isOpen, closeModal, initialValues } = useTransactionModal();
 	const { selectedMonthId } = useMonths();
 
-	const isEditMode = initialValues.description !== "";
+	const isEditMode = initialValues.transactionId !== null;
 	const title = isEditMode ? "Edit Transaction" : "Add Transaction";
 
 	const [selectedBankAccountId, setSelectedBankAccountId] = useState(0);
