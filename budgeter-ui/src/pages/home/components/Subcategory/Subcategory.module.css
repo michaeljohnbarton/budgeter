@@ -64,10 +64,30 @@ td {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	padding-right: 25px !important;
+	padding-right: 50px !important;
 }
 
 .transactionEditButton {
+	position: absolute;
+	right: 32px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: white;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #333;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.transactionEditButton:hover {
+	color: gray;
+}
+
+.transactionDeleteButton {
 	position: absolute;
 	right: 0px;
 	top: 50%;
@@ -83,6 +103,6 @@ td {
 	justify-content: center;
 }
 
-.transactionEditButton:hover {
+.transactionDeleteButton:hover {
 	color: gray;
 }

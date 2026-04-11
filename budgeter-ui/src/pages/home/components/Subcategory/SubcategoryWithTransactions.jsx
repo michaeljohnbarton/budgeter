@@ -1,6 +1,7 @@
 import styles from './Subcategory.module.css';
 import clsx from 'clsx';
-import { FaEdit } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { CURRENCY_FORMATTER, MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../../utils/constants';
 import { useMonths} from '../../../../contexts/MonthsContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
@@ -8,7 +9,7 @@ import { useTransactionModal } from '../../../../contexts/TransactionModalContex
 
 function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, showBudgetedAmounts, monthlyBalancePropagationType }) {
 	const { selectedMonthId } = useMonths();
-	const { transactions } = useTransactions();
+	const { transactions, deleteTransaction } = useTransactions();
 	const { openModalForNewTransactionInSubcategory, openModalForExistingTransaction } = useTransactionModal();
 	const transactionsForSubcategoryAndMonth = transactions.filter(t => t.subcategoryId === subcategory.id && t.monthId === selectedMonthId);
 
@@ -20,6 +21,21 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 		transaction.bankAccountId = bankAccountId;
 		transaction.categoryId = categoryId;
 		openModalForExistingTransaction(transaction);
+	};
+
+	const handleDeleteTransaction = async (transaction) => {
+		const confirmDelete = window.confirm(
+			'Are you sure you want to delete this transaction? This action cannot be undone.'
+		);
+		if (!confirmDelete) return;
+		
+		try {
+			await deleteTransaction(transaction.id);
+			toast.success("Transaction deleted successfully");
+		}
+		catch (error) {
+			toast.error(error.message || "Failed to delete transaction");
+		}
 	};
 
 	return (
@@ -56,6 +72,13 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 						<tr key={t.id} className={rowClass}>
 							<td colSpan="2" className={styles.descriptionCell} title={t.description}>
 								{t.description}
+								<button 
+									className={styles.transactionDeleteButton}
+									onClick={() => handleDeleteTransaction(t)}
+									aria-label="Delete"
+								>
+									<FaTrash />
+								</button>
 								<button 
 									className={styles.transactionEditButton}
 									onClick={() => handleEditTransaction(t)}

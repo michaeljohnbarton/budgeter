@@ -46,5 +46,17 @@ WHERE ID = @ID";
 				throw new NotFoundException("Transaction does not exist");
 			}
 		}
+
+		public void Delete(int transactionId)
+		{
+			string sql = "DELETE FROM [Transaction] WHERE ID = @ID";
+
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, new { id = transactionId });
+			if (rowsAffected == 0)
+			{
+				throw new NotFoundException("Transaction does not exist");
+			}
+		}
 	}
 }

@@ -59,12 +59,27 @@ export function TransactionsProvider({ children }) {
 		}
 	}
 
+	async function deleteTransaction(transactionId) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+			await transactionService.delete(transactionId);
+			await fetchTransactions({ force: true });
+		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchTransactions();
 	}, [])
 
 	return (
-		<TransactionsContext.Provider value={{ transactions, error, createTransaction, updateTransaction }}>
+		<TransactionsContext.Provider value={{ transactions, error, createTransaction, updateTransaction, deleteTransaction }}>
 			{children}
 		</TransactionsContext.Provider>
 	);

@@ -9,6 +9,7 @@ namespace Budgeter.Api.Services
 		void Create(CreateTransaction transactionToCreate);
 		IEnumerable<Transaction> Get();
 		void Update(int transactionId, UpdateTransaction transactionToUpdate);
+		void Delete(int transactionId);
 	}
 
 	public class TransactionService : ITransactionService
@@ -56,6 +57,11 @@ namespace Budgeter.Api.Services
 				IsCredit = transactionToUpdate.IsCredit!.Value,
 				AmountCents = transactionToUpdate.AmountCents!.Value
 			});
+		}
+
+		public void Delete(int transactionId)
+		{
+			_transactionRepository.Delete(transactionId);
 		}
 	}
 }
