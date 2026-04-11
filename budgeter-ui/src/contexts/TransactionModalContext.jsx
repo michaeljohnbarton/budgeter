@@ -3,17 +3,23 @@ import { createContext, useContext, useState } from "react";
 const TransactionModalContext = createContext();
 
 export function TransactionModalProvider({ children }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [initialValues, setInitialValues] = useState({
+	const initialValuesTemplate = {
+		transactionId: null,
 		bankAccountId: 0,
 		categoryId: 0,
 		subcategoryId: 0,
+		description: "",
+		isCredit: false,
+		amountCents: null,
 		readonly: {
 			bankAccount: false,
 			category: false,
 			subcategory: false
 		}
-	});
+	};
+
+	const [isOpen, setIsOpen] = useState(false);
+	const [initialValues, setInitialValues] = useState(initialValuesTemplate);
 
 	const openModal = () => {
 		setIsOpen(true);
@@ -33,25 +39,34 @@ export function TransactionModalProvider({ children }) {
 		setIsOpen(true);
 	};
 
+	const openModalForExistingTransaction = (transaction) => {
+		setInitialValues({
+			transactionId: transaction.id,
+			bankAccountId: transaction.bankAccountId,
+			categoryId: transaction.categoryId,
+			subcategoryId: transaction.subcategoryId,
+			description: transaction.description,
+			isCredit: transaction.isCredit,
+			amountCents: transaction.amountCents,
+			readonly: {
+				bankAccount: true,
+				category: true,
+				subcategory: true
+			}
+		});
+		setIsOpen(true);
+	};
+
 	const closeModal = () => {
 		setIsOpen(false);
 		// Reset after modal closes
 		setTimeout(() => {
-			setInitialValues({
-				bankAccountId: 0,
-				categoryId: 0,
-				subcategoryId: 0,
-				readonly: {
-					bankAccount: false,
-					category: false,
-					subcategory: false
-				}
-			});
+			setInitialValues(initialValuesTemplate);
 		}, 300); // Match modal animation duration
 	};
 
 	return (
-		<TransactionModalContext.Provider value={{ isOpen, setIsOpen, initialValues, openModal, openModalForNewTransactionInSubcategory, closeModal }}>
+		<TransactionModalContext.Provider value={{ isOpen, setIsOpen, initialValues, openModal, openModalForNewTransactionInSubcategory, openModalForExistingTransaction, closeModal }}>
 			{children}
 		</TransactionModalContext.Provider>
 	);

@@ -1,5 +1,6 @@
 import styles from './Subcategory.module.css';
 import clsx from 'clsx';
+import { FaEdit } from 'react-icons/fa';
 import { CURRENCY_FORMATTER, MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../../utils/constants';
 import { useMonths} from '../../../../contexts/MonthsContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
@@ -8,11 +9,17 @@ import { useTransactionModal } from '../../../../contexts/TransactionModalContex
 function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, showBudgetedAmounts, monthlyBalancePropagationType }) {
 	const { selectedMonthId } = useMonths();
 	const { transactions } = useTransactions();
-	const { openModalForNewTransactionInSubcategory } = useTransactionModal();
+	const { openModalForNewTransactionInSubcategory, openModalForExistingTransaction } = useTransactionModal();
 	const transactionsForSubcategoryAndMonth = transactions.filter(t => t.subcategoryId === subcategory.id && t.monthId === selectedMonthId);
 
 	const handleAddClick = () => {
 		openModalForNewTransactionInSubcategory(bankAccountId, categoryId, subcategory.id);
+	};
+
+	const handleEditTransaction = (transaction) => {
+		transaction.bankAccountId = bankAccountId;
+		transaction.categoryId = categoryId;
+		openModalForExistingTransaction(transaction);
 	};
 
 	return (
@@ -47,7 +54,16 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 
 					return (
 						<tr key={t.id} className={rowClass}>
-							<td colSpan="2">{t.description}</td>
+							<td colSpan="2" className={styles.descriptionCell} title={t.description}>
+								{t.description}
+								<button 
+									className={styles.transactionEditButton}
+									onClick={() => handleEditTransaction(t)}
+									aria-label="Edit"
+								>
+									<FaEdit />
+								</button>
+							</td>
 							<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(t.amountCents / 100)}</td>
 						</tr>
 					)

@@ -8,6 +8,7 @@ namespace Budgeter.Api.Services
 	{
 		void Create(CreateTransaction transactionToCreate);
 		IEnumerable<Transaction> Get();
+		void Update(int transactionId, UpdateTransaction transactionToUpdate);
 	}
 
 	public class TransactionService : ITransactionService
@@ -43,6 +44,17 @@ namespace Budgeter.Api.Services
 				EnteredDateUtc = x.EnteredDateUtc,
 				MonthId = x.MonthId,
 				SubcategoryId = x.SubcategoryId
+			});
+		}
+
+		public void Update(int transactionId, UpdateTransaction transactionToUpdate)
+		{
+			_transactionRepository.Update(new TransactionRepositoryModel
+			{
+				ID = transactionId,
+				Description = transactionToUpdate.Description,
+				IsCredit = transactionToUpdate.IsCredit!.Value,
+				AmountCents = transactionToUpdate.AmountCents!.Value
 			});
 		}
 	}

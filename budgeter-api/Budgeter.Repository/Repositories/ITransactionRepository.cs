@@ -6,5 +6,6 @@ namespace Budgeter.Repository.Repositories
 	{
 		void Create(Transaction transactionToCreate);
 		IEnumerable<Transaction> Get();
+		void Update(Transaction transactionToUpdate);
 	}
 }

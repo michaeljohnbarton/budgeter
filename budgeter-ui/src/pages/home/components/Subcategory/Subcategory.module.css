@@ -57,3 +57,32 @@ td {
 	color: gray;
 	font-style: italic;
 }
+
+.descriptionCell {
+	position: relative;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-right: 25px !important;
+}
+
+.transactionEditButton {
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: white;
+	border: none;
+	cursor: pointer;
+	padding: 4px 8px;
+	color: #333;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.transactionEditButton:hover {
+	color: gray;
+}

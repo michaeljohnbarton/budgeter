@@ -14,11 +14,12 @@ function TransactionModal() {
 	const { bankAccounts } = useBankAccounts();
 	const { categories } = useCategories();
 	const { subcategories } = useSubcategories();
-	const { createTransaction } = useTransactions();
+	const { createTransaction, updateTransaction } = useTransactions();
 	const { isOpen, closeModal, initialValues } = useTransactionModal();
 	const { selectedMonthId } = useMonths();
 
-	const title = "Add Transaction";
+	const isEditMode = initialValues.description !== "";
+	const title = isEditMode ? "Edit Transaction" : "Add Transaction";
 
 	const [selectedBankAccountId, setSelectedBankAccountId] = useState(0);
 
@@ -28,13 +29,15 @@ function TransactionModal() {
 	var subcategoriesForSelectedCategory = subcategories.filter(sc => sc.categoryId === selectedCategoryId && sc.hasTransactions);
 	const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(0);
 
-
 	// Initialize form with context values when modal opens
 	useEffect(() => {
 		if (isOpen && initialValues.bankAccountId !== 0) {
 			setSelectedBankAccountId(initialValues.bankAccountId);
 			setSelectedCategoryId(initialValues.categoryId);
 			setSelectedSubcategoryId(initialValues.subcategoryId);
+			setDescription(initialValues.description);
+			setIsCredit(initialValues.isCredit);
+			setAmountCents(initialValues.amountCents);
 		}
 	}, [isOpen, initialValues]);
 
@@ -80,27 +83,44 @@ function TransactionModal() {
 		(!initialValues.readonly.bankAccount && isBankAccountSelected)
 		|| (!initialValues.readonly.category && isCategorySelected)
 		|| (!initialValues.readonly.subcategory && isSubcategorySelected)
-		|| isDescriptionSet
-		|| isCredit
-		|| isAmountCentsSet;
+		|| (isEditMode ? description !== initialValues.description : isDescriptionSet)
+		|| (isEditMode ? isCredit !== initialValues.isCredit : isCredit)
+		|| (isEditMode ? amountCents !== initialValues.amountCents : isAmountCentsSet);
 	const isFormValid = isBankAccountSelected && isCategorySelected && isSubcategorySelected && isDescriptionSet && isAmountCentsSet;
 
 	const handleSave = async () => {
 		try {
-			await createTransaction(
-				{
-					description: description,
-					isCredit: isCredit,
-					amountCents: amountCents,
-					monthId: selectedMonthId,
-					subcategoryId: selectedSubcategoryId
+			if (isEditMode) {
+				if(hasUnsavedChanges) {
+					await updateTransaction(
+						initialValues.transactionId,
+						{
+							description: description,
+							isCredit: isCredit,
+							amountCents: amountCents,
+						}
+					);
+					toast.success("Transaction updated successfully");
+				} else {
+					toast.info("No changes to save");
 				}
-			);
-			toast.success("Transaction created successfully");
+			} else {
+				await createTransaction(
+					{
+						description: description,
+						isCredit: isCredit,
+						amountCents: amountCents,
+						monthId: selectedMonthId,
+						subcategoryId: selectedSubcategoryId
+					}
+				);
+				toast.success("Transaction created successfully");
+			}
 			handleClose();
 		}
 		catch (error) {
-			toast.error(error.message || `Failed to create transaction`);
+			let verb = isEditMode ? "update" : "create";
+			toast.error(error.message || `Failed to ${verb} transaction`);
 		}
 	};
 

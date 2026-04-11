@@ -1,3 +1,4 @@
+using Budgeter.Repository.Infrastructure;
 using Budgeter.Repository.Models;
 using Budgeter.Repository.Repositories;
 using Dapper;
@@ -29,6 +30,21 @@ ORDER BY EnteredDateUtc, ID";
 
 			using var connection = new SqlConnection(connectionString);
 			return connection.Query<Transaction>(sql);
+		}
+
+		public void Update(Transaction transactionToUpdate)
+		{
+			string sql =
+@"UPDATE [Transaction]
+SET Description = @Description, IsCredit = @IsCredit, AmountCents = @AmountCents
+WHERE ID = @ID";
+
+			using var connection = new SqlConnection(connectionString);
+			int rowsAffected = connection.Execute(sql, transactionToUpdate);
+			if (rowsAffected == 0)
+			{
+				throw new NotFoundException("Transaction does not exist");
+			}
 		}
 	}
 }

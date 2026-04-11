@@ -1,5 +1,6 @@
 using Budgeter.Api.Models.Transaction;
 using Budgeter.Api.Services;
+using Budgeter.Repository.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -46,6 +47,28 @@ namespace Budgeter.Api.Controllers
 		public IEnumerable<Transaction> Get()
 		{
 			return _transactionService.Get();
+		}
+
+		[HttpPut("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public IActionResult Update([FromRoute] int id, [FromBody] UpdateTransaction transactionToUpdate)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				_transactionService.Update(id, transactionToUpdate);
+				return Ok();
+			}
+			catch (NotFoundException e)
+			{
+				return NotFound(e.Message);
+			}
 		}
 	}
 }

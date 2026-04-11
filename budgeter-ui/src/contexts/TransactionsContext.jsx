@@ -29,27 +29,42 @@ export function TransactionsProvider({ children }) {
 	}
 
 	async function fetchTransactions({ force = false } = {}) {
-			if (hasFetched.current && !force) return;
-	
-			try {
-				setLoading(LoadingType.FULLSCREEN);
-				setError(null);
-				const data = await transactionService.getAll();
-				setTransactions(data);
-				hasFetched.current = true;
-			} catch (err) {
-				setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);
-			} finally {
-				setLoading(LoadingType.NONE);
-			}
+		if (hasFetched.current && !force) return;
+
+		try {
+			setLoading(LoadingType.FULLSCREEN);
+			setError(null);
+			const data = await transactionService.getAll();
+			setTransactions(data);
+			hasFetched.current = true;
+		} catch (err) {
+			setError(err.message === API_CONNECTION_FAILED_MESSAGE ? API_CONNECTION_ERROR_MESSAGE : err.message);
+		} finally {
+			setLoading(LoadingType.NONE);
 		}
+	}
+
+	async function updateTransaction(transactionId, payload) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+			await transactionService.update(transactionId, payload);
+			await fetchTransactions({ force: true });
+		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
 
 	useEffect(() => {
 		fetchTransactions();
 	}, [])
 
 	return (
-		<TransactionsContext.Provider value={{ transactions, error, createTransaction }}>
+		<TransactionsContext.Provider value={{ transactions, error, createTransaction, updateTransaction }}>
 			{children}
 		</TransactionsContext.Provider>
 	);
