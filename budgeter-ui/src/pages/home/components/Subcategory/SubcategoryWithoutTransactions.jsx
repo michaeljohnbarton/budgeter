@@ -27,7 +27,7 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 				<tr className={isLast ? styles.last : ''}>
 					<td>{subcategory.name}</td>
 					{ showBudgetedAmounts && <td className={styles.amountDisplay}>$50.00</td>}
-					<td className={styles.amountDisplay}>$30.00</td>
+					<td colSpan={showBudgetedAmounts ? "1": "2"} className={styles.amountDisplay}>$30.00</td>
 				</tr>
 			</>
 		);

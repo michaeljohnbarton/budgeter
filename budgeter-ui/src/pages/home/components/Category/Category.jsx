@@ -1,4 +1,5 @@
 import styles from './Category.module.css';
+import clsx from 'clsx';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import SubcategoryWithTransactions from '../Subcategory/SubcategoryWithTransactions';
 import SubcategoryWithoutTransactions from '../Subcategory/SubcategoryWithoutTransactions';
@@ -9,7 +10,7 @@ function Category({ category, showBudgetedAmounts, monthlyBalancePropagationType
 	const anySubcategoryHasTransactions = subcategoriesForCategory.some(s => s.hasTransactions);
 
 	return (
-		<table className={styles.categoryTable}>
+		<table className={clsx(styles.categoryTable, anySubcategoryHasTransactions ? styles.categoryTableFixed : styles.categoryTableAuto)}>
 			<thead>
 				<tr>
 					<th colSpan="3" className={styles.categoryHeader}>
@@ -22,7 +23,9 @@ function Category({ category, showBudgetedAmounts, monthlyBalancePropagationType
 					<tr className={styles.headerRow}>
 						<td>Name</td>
 						{showBudgetedAmounts && <td>Budgeted</td>}
-						<td>{showBudgetedAmounts ? "Actual" : "Current Balance"}</td>
+						<td colSpan={showBudgetedAmounts ? "1" : "2"}>
+							{showBudgetedAmounts ? "Actual" : "Current Balance"}
+						</td>
 					</tr>
 				)}
 				{ subcategoriesForCategory.length > 0
