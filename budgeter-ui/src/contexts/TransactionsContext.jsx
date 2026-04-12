@@ -67,6 +67,7 @@ export function TransactionsProvider({ children }) {
 			setLoading(LoadingType.OVERLAY);
 			await transactionService.delete(transactionId);
 			await fetchTransactions({ force: true });
+			await fetchMonthlyBalances({ force: true });
 		} catch (err) {
 			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
 				setError(API_CONNECTION_ERROR_MESSAGE);

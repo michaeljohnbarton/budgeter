@@ -92,7 +92,29 @@ namespace Budgeter.Api.Services
 
 		public void Delete(int transactionId)
 		{
-			_transactionRepository.Delete(transactionId);
+			try
+			{
+				_unitOfWork.Begin();
+
+				TransactionRepositoryModel deletedTransaction = _transactionRepository.Delete(transactionId);
+
+				_monthlyBalanceRepository.Update(
+					deletedTransaction.MonthId,
+					deletedTransaction.SubcategoryId,
+					deletedTransaction.IsCredit ? -deletedTransaction.AmountCents : deletedTransaction.AmountCents,
+					_unitOfWork.Connection,
+					_unitOfWork.Transaction!
+				);
+
+				// TODO: Update future months depending on monthly balance propagation type
+
+				_unitOfWork.Commit();
+			}
+			catch
+			{
+				_unitOfWork.Rollback();
+				throw;
+			}
 		}
 	}
 }

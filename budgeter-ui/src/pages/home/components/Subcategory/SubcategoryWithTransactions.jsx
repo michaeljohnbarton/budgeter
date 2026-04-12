@@ -90,7 +90,9 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 									<FaEdit />
 								</button>
 							</td>
-							<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(t.amountCents / 100)}</td>
+							<td className={styles.amountDisplay}>
+								{CURRENCY_FORMATTER.format(t.amountCents / 100 * (t.isCredit ? 1 : -1))}
+							</td>
 						</tr>
 					)
 				})

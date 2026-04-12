@@ -47,16 +47,24 @@ WHERE ID = @ID";
 			}
 		}
 
-		public void Delete(int transactionId)
+		public Transaction Delete(int transactionId)
 		{
-			string sql = "DELETE FROM [Transaction] WHERE ID = @ID";
+			string sql =
+@"DELETE FROM [Transaction]
+OUTPUT
+	DELETED.ID,
+	DELETED.Description,
+	DELETED.IsCredit,
+	DELETED.AmountCents,
+	DELETED.EnteredDateUtc,
+	DELETED.MonthId,
+	DELETED.SubcategoryId
+WHERE ID = @ID";
 
 			using var connection = new SqlConnection(connectionString);
-			int rowsAffected = connection.Execute(sql, new { id = transactionId });
-			if (rowsAffected == 0)
-			{
-				throw new NotFoundException("Transaction does not exist");
-			}
+			return
+				connection.QuerySingleOrDefault<Transaction>(sql, new { ID = transactionId })
+				?? throw new NotFoundException("Transaction does not exist");
 		}
 	}
 }

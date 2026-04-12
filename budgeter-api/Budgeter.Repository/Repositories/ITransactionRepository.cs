@@ -8,6 +8,6 @@ namespace Budgeter.Repository.Repositories
 		void Create(Transaction transactionToCreate, IDbConnection connection, IDbTransaction dbTransaction);
 		IEnumerable<Transaction> Get();
 		void Update(Transaction transactionToUpdate);
-		void Delete(int transactionId);
+		Transaction Delete(int transactionId);
 	}
 }
