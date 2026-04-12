@@ -81,13 +81,43 @@ namespace Budgeter.Api.Services
 
 		public void Update(int transactionId, UpdateTransaction transactionToUpdate)
 		{
-			_transactionRepository.Update(new TransactionRepositoryModel
+			try
 			{
-				ID = transactionId,
-				Description = transactionToUpdate.Description,
-				IsCredit = transactionToUpdate.IsCredit!.Value,
-				AmountCents = transactionToUpdate.AmountCents!.Value
-			});
+				_unitOfWork.Begin();
+
+				TransactionRepositoryModel oldTransaction = _transactionRepository.Update(
+					new TransactionRepositoryModel
+					{
+						ID = transactionId,
+						Description = transactionToUpdate.Description,
+						IsCredit = transactionToUpdate.IsCredit!.Value,
+						AmountCents = transactionToUpdate.AmountCents!.Value
+					},
+					_unitOfWork.Connection,
+					_unitOfWork.Transaction!
+				);
+
+				int newAmountCents = transactionToUpdate.IsCredit!.Value ? transactionToUpdate.AmountCents!.Value : -transactionToUpdate.AmountCents!.Value;
+				int oldAmountCents = oldTransaction.IsCredit ? oldTransaction.AmountCents : -oldTransaction.AmountCents;
+				int amountDifferenceCents = newAmountCents - oldAmountCents;
+
+				_monthlyBalanceRepository.Update(
+					oldTransaction.MonthId,
+					oldTransaction.SubcategoryId,
+					amountDifferenceCents,
+					_unitOfWork.Connection,
+					_unitOfWork.Transaction!
+				);
+
+				// TODO: Update future months depending on monthly balance propagation type
+
+				_unitOfWork.Commit();
+			}
+			catch
+			{
+				_unitOfWork.Rollback();
+				throw;
+			}
 		}
 
 		public void Delete(int transactionId)
@@ -96,7 +126,11 @@ namespace Budgeter.Api.Services
 			{
 				_unitOfWork.Begin();
 
-				TransactionRepositoryModel deletedTransaction = _transactionRepository.Delete(transactionId);
+				TransactionRepositoryModel deletedTransaction = _transactionRepository.Delete(
+					transactionId,
+					_unitOfWork.Connection,
+					_unitOfWork.Transaction!
+				);
 
 				_monthlyBalanceRepository.Update(
 					deletedTransaction.MonthId,

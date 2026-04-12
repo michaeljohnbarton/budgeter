@@ -32,22 +32,27 @@ ORDER BY EnteredDateUtc, ID";
 			return connection.Query<Transaction>(sql);
 		}
 
-		public void Update(Transaction transactionToUpdate)
+		public Transaction Update(Transaction transactionToUpdate, IDbConnection connection, IDbTransaction dbTransaction)
 		{
 			string sql =
 @"UPDATE [Transaction]
 SET Description = @Description, IsCredit = @IsCredit, AmountCents = @AmountCents
+OUTPUT
+	DELETED.ID,
+	DELETED.Description,
+	DELETED.IsCredit,
+	DELETED.AmountCents,
+	DELETED.EnteredDateUtc,
+	DELETED.MonthId,
+	DELETED.SubcategoryId
 WHERE ID = @ID";
 
-			using var connection = new SqlConnection(connectionString);
-			int rowsAffected = connection.Execute(sql, transactionToUpdate);
-			if (rowsAffected == 0)
-			{
-				throw new NotFoundException("Transaction does not exist");
-			}
+			return
+				connection.QuerySingleOrDefault<Transaction>(sql, transactionToUpdate, dbTransaction)
+				?? throw new NotFoundException("Transaction does not exist");
 		}
 
-		public Transaction Delete(int transactionId)
+		public Transaction Delete(int transactionId, IDbConnection connection, IDbTransaction dbTransaction)
 		{
 			string sql =
 @"DELETE FROM [Transaction]
@@ -61,9 +66,8 @@ OUTPUT
 	DELETED.SubcategoryId
 WHERE ID = @ID";
 
-			using var connection = new SqlConnection(connectionString);
 			return
-				connection.QuerySingleOrDefault<Transaction>(sql, new { ID = transactionId })
+				connection.QuerySingleOrDefault<Transaction>(sql, new { ID = transactionId }, dbTransaction)
 				?? throw new NotFoundException("Transaction does not exist");
 		}
 	}
