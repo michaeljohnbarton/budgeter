@@ -32,6 +32,20 @@ ORDER BY EnteredDateUtc, ID";
 			return connection.Query<Transaction>(sql);
 		}
 
+		public Transaction GetById(int transactionId)
+		{
+			string sql =
+@"SELECT ID, Description, IsCredit, AmountCents, EnteredDateUtc, MonthId, SubcategoryId
+FROM [Transaction]
+WHERE ID = @ID";
+
+			using var connection = new SqlConnection(connectionString);
+			
+			return
+				connection.QuerySingleOrDefault<Transaction>(sql, new { ID = transactionId })
+				?? throw new NotFoundException("Transaction does not exist");
+		}
+
 		public Transaction Update(Transaction transactionToUpdate, IDbConnection connection, IDbTransaction dbTransaction)
 		{
 			string sql =

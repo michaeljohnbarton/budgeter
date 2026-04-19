@@ -47,10 +47,10 @@ export function TransactionsProvider({ children }) {
 		}
 	}
 
-	async function updateTransaction(transactionId, payload) {
+	async function updateTransaction(transactionId, payload, patch = false) {
 		try {
 			setLoading(LoadingType.OVERLAY);
-			await transactionService.update(transactionId, payload);
+			await transactionService.update(transactionId, payload, patch);
 			await fetchTransactions({ force: true });
 			await fetchMonthlyBalances({ force: true });
 		} catch (err) {

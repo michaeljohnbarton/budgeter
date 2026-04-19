@@ -10,6 +10,7 @@ namespace Budgeter.Api.Services
 		void Create(CreateTransaction transactionToCreate);
 		IEnumerable<Transaction> Get();
 		void Update(int transactionId, UpdateTransaction transactionToUpdate);
+		void Patch(int transactionId, PatchTransaction transactionToUpdate);
 		void Delete(int transactionId);
 	}
 
@@ -101,13 +102,65 @@ namespace Budgeter.Api.Services
 				int oldAmountCents = oldTransaction.IsCredit ? oldTransaction.AmountCents : -oldTransaction.AmountCents;
 				int amountDifferenceCents = newAmountCents - oldAmountCents;
 
-				_monthlyBalanceRepository.Update(
-					oldTransaction.MonthId,
-					oldTransaction.SubcategoryId,
-					amountDifferenceCents,
+				if(amountDifferenceCents != 0)
+				{
+					_monthlyBalanceRepository.Update(
+						oldTransaction.MonthId,
+						oldTransaction.SubcategoryId,
+						amountDifferenceCents,
+						_unitOfWork.Connection,
+						_unitOfWork.Transaction!
+					);
+				}
+
+				// TODO: Update future months depending on monthly balance propagation type
+
+				_unitOfWork.Commit();
+			}
+			catch
+			{
+				_unitOfWork.Rollback();
+				throw;
+			}
+		}
+
+		public void Patch(int transactionId, PatchTransaction transactionToUpdate)
+		{
+			try
+			{
+				_unitOfWork.Begin();
+
+				TransactionRepositoryModel oldTransaction = _transactionRepository.GetById(transactionId);
+				
+				_transactionRepository.Update(
+					new TransactionRepositoryModel
+					{
+						ID = transactionId,
+						Description = string.IsNullOrEmpty(transactionToUpdate.Description) ? oldTransaction.Description : transactionToUpdate.Description,
+						IsCredit = transactionToUpdate.IsCredit ?? oldTransaction.IsCredit,
+						AmountCents = transactionToUpdate.AmountCents ?? oldTransaction.AmountCents
+					},
 					_unitOfWork.Connection,
 					_unitOfWork.Transaction!
 				);
+
+				if(transactionToUpdate.IsCredit != null && transactionToUpdate.AmountCents != null)
+				{
+					int newAmountCents = transactionToUpdate.IsCredit!.Value ? transactionToUpdate.AmountCents!.Value : -transactionToUpdate.AmountCents!.Value;
+					int oldAmountCents = oldTransaction.IsCredit ? oldTransaction.AmountCents : -oldTransaction.AmountCents;
+					int amountDifferenceCents = newAmountCents - oldAmountCents;
+
+					if(amountDifferenceCents != 0)
+					{
+						_monthlyBalanceRepository.Update(
+							oldTransaction.MonthId,
+							oldTransaction.SubcategoryId,
+							amountDifferenceCents,
+							_unitOfWork.Connection,
+							_unitOfWork.Transaction!
+						);
+					}
+				}
 
 				// TODO: Update future months depending on monthly balance propagation type
 

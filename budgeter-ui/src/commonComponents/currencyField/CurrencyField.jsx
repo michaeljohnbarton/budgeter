@@ -2,7 +2,20 @@ import styles from "./CurrencyField.module.css"
 import CurrencyInput from "react-currency-input-field";
 import { useEffect, useState, useRef } from "react";
 
-function CurrencyField({ id, label, centsValue, onChangeCents, required = false, setTouched = null }) {
+function CurrencyField({
+	id,
+	label,
+	centsValue,
+	onChangeCents,
+	required = false,
+	setTouched = null,
+	onBlur = null,
+	onKeyDown = null,
+	allowNegativeValue = false,
+	className = null,
+	textAlign = "left",
+	autoFocus = false
+}) {
 	const [displayValue, setDisplayValue] = useState("");
 	const isEditingRef = useRef(false);
 
@@ -39,6 +52,11 @@ function CurrencyField({ id, label, centsValue, onChangeCents, required = false,
 		}
 
 		setTouched?.();
+		onBlur?.();
+	}
+
+	function handleKeyDown(e) {
+		onKeyDown?.(e);
 	}
 
 	return (
@@ -47,14 +65,18 @@ function CurrencyField({ id, label, centsValue, onChangeCents, required = false,
 
 			<CurrencyInput
 				id={id}
+				className={className}
+				autoFocus={autoFocus}
+				style={{ textAlign: textAlign }}
 				prefix="$"
 				placeholder="$0.00"
 				decimalsLimit={2}
 				decimalScale={2}
-				allowNegativeValue={false}
+				allowNegativeValue={allowNegativeValue}
 				value={displayValue}
 				onValueChange={handleValueChange}
 				onBlur={handleBlur}
+				onKeyDown={handleKeyDown}
 			/>
 		</>
 	);

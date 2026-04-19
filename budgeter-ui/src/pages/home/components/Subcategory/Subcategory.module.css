@@ -58,13 +58,25 @@ td {
 	font-style: italic;
 }
 
-.descriptionCell {
-	position: relative;
+.editableCell {
+	display: inline-block;
 	min-width: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	padding-right: 50px !important;
+	width: 100%;
+	cursor: text;
+}
+
+.editableCell:hover {
+	background-color: rgba(0, 0, 0, 0.04);
+}
+
+.transactionInput {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 4px 8px;
+	font: inherit;
+	background: white;
 }
 
 .transactionEditButton {

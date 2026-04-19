@@ -18,6 +18,8 @@ function TransactionModal() {
 	const { isOpen, closeModal, initialValues } = useTransactionModal();
 	const { selectedMonthId } = useMonths();
 
+	// As of the commit this comment was added, there is no path to opening the modal in edit mode any longer
+	// but leaving for now in case we want to add that back.
 	const isEditMode = initialValues.transactionId !== null;
 	const title = isEditMode ? "Edit Transaction" : "Add Transaction";
 
