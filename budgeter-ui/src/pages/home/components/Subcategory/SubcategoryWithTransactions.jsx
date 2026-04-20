@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './Subcategory.module.css';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import { FaTrash } from 'react-icons/fa';
 import { CURRENCY_FORMATTER, MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../../utils/constants';
 import { useMonths } from '../../../../contexts/MonthsContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
@@ -12,7 +13,7 @@ import CurrencyField from '../../../../commonComponents/currencyField/CurrencyFi
 function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, showBudgetedAmounts, monthlyBalancePropagationType }) {
 	const { selectedMonthId } = useMonths();
 	const { monthlyBalances } = useMonthlyBalances();
-	const { transactions, updateTransaction } = useTransactions();
+	const { transactions, updateTransaction, deleteTransaction } = useTransactions();
 	const { openModalForNewTransactionInSubcategory } = useTransactionModal();
 	const [activeEdit, setActiveEdit] = useState({ transactionId: null, field: null });
 	const [editingDescription, setEditingDescription] = useState('');
@@ -75,6 +76,21 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 		}
 	};
 
+	const handleDeleteTransaction = async (transactionId) => {
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete this transaction? This action cannot be undone."
+		);
+		if (!confirmDelete) return;
+
+		try {
+			await deleteTransaction(transactionId);
+			toast.success("Transaction deleted successfully");
+		}
+		catch (error) {
+			toast.error(error.message || "Failed to delete transaction");
+		}
+	};
+
 	return (
 		<>
 			<tr>
@@ -126,7 +142,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 									</span>
 								)}
 							</td>
-							<td className={styles.amountDisplay}>
+							<td className={clsx(styles.amountDisplay, styles.tdLastChild)}>
 								{isEditingAmount ? (
 									<CurrencyField
 										id="editingAmountCents"
@@ -144,6 +160,15 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 										{CURRENCY_FORMATTER.format(t.amountCents / 100 * (t.isCredit ? 1 : -1))}
 									</span>
 								)}
+							</td>
+							<td className={styles.deleteCell}>
+								<button
+									className={styles.deleteButton}
+									onClick={() => handleDeleteTransaction(t.id)}
+									aria-label="Delete"
+								>
+									<FaTrash />
+								</button>
 							</td>
 						</tr>
 					)
