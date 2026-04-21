@@ -29,6 +29,19 @@ VALUES (@MonthId, @SubcategoryId, @BudgetedAmountCents, @ActualAmountCents)";
 			return connection.Query<MonthlyBalance>(sql);
 		}
 
+		public MonthlyBalance GetById(int monthlyBalanceId)
+		{
+			string sql =
+@"SELECT ID, MonthId, SubcategoryId, BudgetedAmountCents, ActualAmountCents
+FROM MonthlyBalance
+WHERE ID = @ID";
+
+			using var connection = new SqlConnection(connectionString);
+			return
+				connection.QuerySingleOrDefault<MonthlyBalance>(sql, new { ID = monthlyBalanceId })
+				?? throw new NotFoundException("Monthly balance does not exist");
+		}
+
 		public void Update(MonthlyBalance monthlyBalanceToUpdate)
 		{
 			string sql =
@@ -44,7 +57,7 @@ WHERE ID = @ID";
 			}
 		}
 
-		public void Update(int monthId, int subcategoryId, int actualAmountCents, IDbConnection connection, IDbTransaction dbTransaction)
+		public void UpdateForTransaction(int monthId, int subcategoryId, int actualAmountCents, IDbConnection connection, IDbTransaction dbTransaction)
 		{
 			string sql =
 @"UPDATE MonthlyBalance

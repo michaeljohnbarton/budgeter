@@ -7,7 +7,8 @@ namespace Budgeter.Repository.Repositories
 	{
 		void Create(MonthlyBalance monthlyBalanceToCreate);
 		IEnumerable<MonthlyBalance> Get();
+		MonthlyBalance GetById(int monthlyBalanceId);
 		void Update(MonthlyBalance monthlyBalanceToUpdate);
-		void Update(int monthId, int subcategoryId, int actualAmountCents, IDbConnection connection, IDbTransaction dbTransaction);
+		void UpdateForTransaction(int monthId, int subcategoryId, int actualAmountCents, IDbConnection connection, IDbTransaction dbTransaction);
 	}
 }

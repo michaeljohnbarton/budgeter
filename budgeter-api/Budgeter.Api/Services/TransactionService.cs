@@ -46,7 +46,7 @@ namespace Budgeter.Api.Services
 					_unitOfWork.Transaction!
 				);
 
-				_monthlyBalanceRepository.Update(
+				_monthlyBalanceRepository.UpdateForTransaction(
 					transactionToCreate.MonthId!.Value,
 					transactionToCreate.SubcategoryId!.Value,
 					transactionToCreate.IsCredit!.Value ? transactionToCreate.AmountCents!.Value : -transactionToCreate.AmountCents!.Value,
@@ -104,7 +104,7 @@ namespace Budgeter.Api.Services
 
 				if(amountDifferenceCents != 0)
 				{
-					_monthlyBalanceRepository.Update(
+					_monthlyBalanceRepository.UpdateForTransaction(
 						oldTransaction.MonthId,
 						oldTransaction.SubcategoryId,
 						amountDifferenceCents,
@@ -152,7 +152,7 @@ namespace Budgeter.Api.Services
 
 					if(amountDifferenceCents != 0)
 					{
-						_monthlyBalanceRepository.Update(
+						_monthlyBalanceRepository.UpdateForTransaction(
 							oldTransaction.MonthId,
 							oldTransaction.SubcategoryId,
 							amountDifferenceCents,
@@ -185,7 +185,7 @@ namespace Budgeter.Api.Services
 					_unitOfWork.Transaction!
 				);
 
-				_monthlyBalanceRepository.Update(
+				_monthlyBalanceRepository.UpdateForTransaction(
 					deletedTransaction.MonthId,
 					deletedTransaction.SubcategoryId,
 					deletedTransaction.IsCredit ? -deletedTransaction.AmountCents : deletedTransaction.AmountCents,

@@ -10,6 +10,7 @@ namespace Budgeter.Api.Services
 		void Create(CreateMonthlyBalance monthlyBalanceToCreate);
 		IEnumerable<MonthlyBalance> Get();
 		void Update(int monthlyBalanceId, UpdateMonthlyBalance monthlyBalanceToUpdate);
+		void Patch(int monthlyBalanceId, PatchMonthlyBalance monthlyBalanceToUpdate);
 	}
 
 	public class MonthlyBalanceService : IMonthlyBalanceService
@@ -63,6 +64,18 @@ namespace Budgeter.Api.Services
 				ID = monthlyBalanceId,
 				BudgetedAmountCents = monthlyBalanceToUpdate.BudgetedAmountCents,
 				ActualAmountCents = monthlyBalanceToUpdate.ActualAmountCents!.Value
+			});
+		}
+
+		public void Patch(int monthlyBalanceId, PatchMonthlyBalance monthlyBalanceToUpdate)
+		{
+			MonthlyBalanceRepositoryModel oldMonthlyBalance = _monthlyBalanceRepository.GetById(monthlyBalanceId);
+
+			_monthlyBalanceRepository.Update(new MonthlyBalanceRepositoryModel
+			{
+				ID = oldMonthlyBalance.ID,
+				BudgetedAmountCents = monthlyBalanceToUpdate.BudgetedAmountCents ?? oldMonthlyBalance.BudgetedAmountCents,
+				ActualAmountCents = monthlyBalanceToUpdate.ActualAmountCents ?? oldMonthlyBalance.ActualAmountCents
 			});
 		}
 	}

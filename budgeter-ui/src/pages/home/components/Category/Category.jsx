@@ -1,33 +1,34 @@
 import styles from './Category.module.css';
-import clsx from 'clsx';
+import { useMonths } from '../../../../contexts/MonthsContext';
 import { useSubcategories } from '../../../../contexts/SubcategoriesContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
 import SubcategoryWithTransactions from '../Subcategory/SubcategoryWithTransactions';
 import SubcategoryWithoutTransactions from '../Subcategory/SubcategoryWithoutTransactions';
 
 function Category({ category, showBudgetedAmounts, monthlyBalancePropagationType }) {
+	const { selectedMonthId } = useMonths();
 	const { subcategories } = useSubcategories();
 	const { transactions } = useTransactions();
 
 	const subcategoriesForCategory = subcategories.filter(sc => sc.categoryId === category.id);
 	const anySubcategoryAllowsTransactions = subcategoriesForCategory.some(s => s.hasTransactions);
-	const anySubcategoryHasTransactions = subcategoriesForCategory.some(s => transactions.some(t => t.subcategoryId === s.id));
+	const anySubcategoryHasTransactionsForSelectedMonth = subcategoriesForCategory.some(s => transactions.some(t => t.subcategoryId === s.id && t.monthId === selectedMonthId));
 
 	return (
-		<table className={clsx(styles.categoryTable, anySubcategoryAllowsTransactions ? styles.categoryTableFixed : styles.categoryTableAuto)}>
-			{anySubcategoryHasTransactions && (
+		<table className={styles.categoryTable}>
+			{anySubcategoryHasTransactionsForSelectedMonth && (
 				<colgroup>
-				<col style={{flex: 1}} />
-				<col style={{flex: 1}} />
-				<col style={{flex: 1}} />
-				<col style={{width: '25px'}} />
+					<col style={{flex: 1}} />
+					<col style={{flex: 1}} />
+					<col style={{flex: 1}} />
+					<col style={{width: '25px'}} />
 				</colgroup>
 			)}
-			{!anySubcategoryHasTransactions && (
+			{!anySubcategoryHasTransactionsForSelectedMonth && (
 				<colgroup>
-				<col style={{flex: 1}} />
-				{showBudgetedAmounts && <col style={{flex: 1}} />}
-				<col style={{flex: 1}} />
+					<col style={{flex: 1}} />
+					{showBudgetedAmounts && <col style={{flex: 1}} />}
+					<col style={{flex: 1}} />
 				</colgroup>
 			)}
 			<thead>

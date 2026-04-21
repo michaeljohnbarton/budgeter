@@ -6,14 +6,6 @@
 	margin-bottom: 32px;
 }
 
-.categoryTableFixed {
-	table-layout: fixed;
-}
-
-.categoryTableAuto {
-	table-layout: auto;
-}
-
 .categoryTable td,
 .categoryTable th {
 	padding: 4px 6px;

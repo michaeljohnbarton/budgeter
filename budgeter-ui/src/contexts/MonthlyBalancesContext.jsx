@@ -29,12 +29,27 @@ export function MonthlyBalancesProvider({ children }) {
 		}
 	}
 
+	async function updateMonthlyBalance(monthlyBalanceId, payload, patch = false) {
+		try {
+			setLoading(LoadingType.OVERLAY);
+			await monthlyBalanceService.update(monthlyBalanceId, payload, patch);
+			await fetchMonthlyBalances({ force: true });
+		} catch (err) {
+			if (err.message === API_CONNECTION_FAILED_MESSAGE) {
+				setError(API_CONNECTION_ERROR_MESSAGE);
+			}
+			throw err;
+		} finally {
+			setLoading(LoadingType.NONE);
+		}
+	}
+
 	useEffect(() => {
 		fetchMonthlyBalances();
 	}, []);
 
 	return (
-		<MonthlyBalancesContext.Provider value={{ monthlyBalances, error, fetchMonthlyBalances }}>
+		<MonthlyBalancesContext.Provider value={{ monthlyBalances, error, fetchMonthlyBalances, updateMonthlyBalance }}>
 			{children}
 		</MonthlyBalancesContext.Provider>
 	);

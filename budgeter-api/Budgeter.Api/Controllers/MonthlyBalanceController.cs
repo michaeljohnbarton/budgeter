@@ -69,5 +69,27 @@ namespace Budgeter.Api.Controllers
 				return NotFound(e.Message);
 			}
 		}
+
+		[HttpPatch("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public IActionResult Patch([FromRoute] int id, [FromBody] PatchMonthlyBalance monthlyBalanceToUpdate)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				_monthlyBalanceService.Patch(id, monthlyBalanceToUpdate);
+				return Ok();
+			}
+			catch (NotFoundException e)
+			{
+				return NotFound(e.Message);
+			}
+		}
 	}
 }
