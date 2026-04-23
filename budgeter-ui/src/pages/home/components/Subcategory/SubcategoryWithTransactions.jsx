@@ -12,7 +12,7 @@ import CurrencyField from '../../../../commonComponents/currencyField/CurrencyFi
 
 function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, showBudgetedAmounts, monthlyBalancePropagationType }) {
 	const { selectedMonthId } = useMonths();
-	const { monthlyBalances } = useMonthlyBalances();
+	const { monthlyBalances, updateMonthlyBalance } = useMonthlyBalances();
 	const { transactions, updateTransaction, deleteTransaction } = useTransactions();
 	const { openModalForNewTransactionInSubcategory } = useTransactionModal();
 	const [activeEdit, setActiveEdit] = useState({ transactionId: null, field: null });
@@ -25,18 +25,23 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 		openModalForNewTransactionInSubcategory(bankAccountId, categoryId, subcategory.id);
 	};
 
-	const startEditing = (transaction, field) => {
+	const startEditingTransaction = (transaction, field) => {
 		const signedAmountCents = transaction.isCredit ? transaction.amountCents : -transaction.amountCents;
 		setActiveEdit({ transactionId: transaction.id, field });
 		setEditingDescription(transaction.description);
 		setEditingAmountCents(signedAmountCents);
 	};
 
+	const startEditingSubcategoryBudgetedAmount = () => {
+		setActiveEdit({ field: 'budgetedAmount' });
+		setEditingAmountCents(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents);
+	}
+
 	const finishEditing = () => {
 		setActiveEdit({ transactionId: null, field: null });
 	};
 
-	const saveDescription = async (transaction) => {
+	const saveTransactionDescription = async (transaction) => {
 		finishEditing();
 		const trimmedDescription = editingDescription.trim();
 		if (trimmedDescription === transaction.description) return;
@@ -50,7 +55,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 		}
 	};
 
-	const saveAmount = async (transaction) => {
+	const saveTransactionActualAmount = async (transaction) => {
 		finishEditing();
 		const amountCents = Math.abs(editingAmountCents);
 		const isCredit = editingAmountCents >= 0;
@@ -65,13 +70,28 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 		}
 	};
 
+	const saveSubcategoryBudgetedAmount = async () => {
+		finishEditing();
+		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents) return;
+
+		try {
+			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth.id, { budgetedAmountCents: editingAmountCents }, true);
+			toast.success('Budgeted monthly balance updated successfully');
+		}
+		catch (error) {
+			toast.error(error.message || 'Failed to update budgeted monthly balance');
+		}
+	};
+
 	const handleInputKeyDown = (event, transaction, field) => {
 		if (event.key === 'Enter') {
 			event.preventDefault();
 			if (field === 'description') {
-				saveDescription(transaction);
+				saveTransactionDescription(transaction);
+			} else if (field === 'actualAmount') {
+				saveTransactionActualAmount(transaction);
 			} else {
-				saveAmount(transaction);
+				saveSubcategoryBudgetedAmount();
 			}
 		}
 	};
@@ -91,6 +111,8 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 		}
 	};
 
+	const isEditingBudgetedAmount = activeEdit.field === 'budgetedAmount';
+
 	return (
 		<>
 			<tr>
@@ -102,7 +124,25 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 			{ showBudgetedAmounts && (
 				<tr className={styles.first}>
 					<td colSpan="2">Budgeted</td>
-					<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents / 100)}</td>
+					<td className={styles.amountDisplay}>
+						{isEditingBudgetedAmount ? (
+							<CurrencyField
+								id="editingBudgetedAmountCents"
+								className={styles.transactionInput}
+								textAlign="right"
+								centsValue={editingAmountCents}
+								onChangeCents={setEditingAmountCents}
+								onBlur={() => saveSubcategoryBudgetedAmount()}
+								onKeyDown={(e) => handleInputKeyDown(e, 'budgetedAmount')}
+								allowNegativeValue={true}
+								autoFocus={true}
+							/>
+						) : (
+							<span className={styles.editableCell} onClick={() => startEditingSubcategoryBudgetedAmount()}>
+								{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents / 100)}
+							</span>
+						)}
+					</td>
 				</tr>
 			)}
 			<tr className={ monthlyBalancePropagationType === MONTHLY_BALANCE_PROPAGATION_TYPE.Subcategory ? "" : styles.last}>
@@ -122,7 +162,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 					if (isLast) rowClass += `${styles.last}`;
 
 					const isEditingDescription = activeEdit.transactionId === t.id && activeEdit.field === 'description';
-					const isEditingAmount = activeEdit.transactionId === t.id && activeEdit.field === 'amount';
+					const isEditingAmount = activeEdit.transactionId === t.id && activeEdit.field === 'actualAmount';
 
 					return (
 						<tr key={t.id} className={rowClass}>
@@ -133,11 +173,11 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 										autoFocus
 										value={editingDescription}
 										onChange={(e) => setEditingDescription(e.target.value)}
-										onBlur={() => saveDescription(t)}
+										onBlur={() => saveTransactionDescription(t)}
 										onKeyDown={(e) => handleInputKeyDown(e, t, 'description')}
 									/>
 								) : (
-									<span className={styles.editableCell} onClick={() => startEditing(t, 'description')}>
+									<span className={styles.editableCell} onClick={() => startEditingTransaction(t, 'description')}>
 										{t.description}
 									</span>
 								)}
@@ -145,18 +185,18 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 							<td className={clsx(styles.amountDisplay, styles.tdLastChild)}>
 								{isEditingAmount ? (
 									<CurrencyField
-										id="editingAmountCents"
+										id="editingActualAmountCents"
 										className={styles.transactionInput}
 										textAlign="right"
 										centsValue={editingAmountCents}
 										onChangeCents={setEditingAmountCents}
-										onBlur={() => saveAmount(t)}
-										onKeyDown={(e) => handleInputKeyDown(e, t, 'amount')}
+										onBlur={() => saveTransactionActualAmount(t)}
+										onKeyDown={(e) => handleInputKeyDown(e, t, 'actualAmount')}
 										allowNegativeValue={true}
 										autoFocus={true}
 									/>
 								) : (
-									<span className={styles.editableCell} onClick={() => startEditing(t, 'amount')}>
+									<span className={styles.editableCell} onClick={() => startEditingTransaction(t, 'actualAmount')}>
 										{CURRENCY_FORMATTER.format(t.amountCents / 100 * (t.isCredit ? 1 : -1))}
 									</span>
 								)}
