@@ -43,7 +43,7 @@ Rules:
 
 ## Ticket file template
 
-Every ticket file under [budgeter-backlog/tickets](../../budgeter-backlog/tickets) and [budgeter-backlog/tickets/Done](../../budgeter-backlog/tickets/Done) should follow this structure:
+New ticket files and materially revised stories under [budgeter-backlog/tickets](../../budgeter-backlog/tickets) and [budgeter-backlog/tickets/Done](../../budgeter-backlog/tickets/Done) should follow this structure:
 
 ```md
 # <ID> - <Ticket Name>
@@ -53,18 +53,23 @@ Every ticket file under [budgeter-backlog/tickets](../../budgeter-backlog/ticket
 * **Name** - <ticket name>
 * **Status** - New | Planned | In Progress | Done
 
-## Description
-<summary of the work>
+## User Story
+As a <user or actor>, I want <capability or behavior>, so that <user benefit or outcome>.
+
+## Acceptance Criteria
+- Given <context>, when <action>, then <observable outcome>.
 
 ## Comments
 - <comment 1>
 - <comment 2>
 ```
 
+The Summary retains its existing three fields and meaning. Keep the User Story focused on the actor's goal and benefit, and express verifiable behavior in Acceptance Criteria. Preserve useful context and decisions in Comments; do not use Comments as a substitute for acceptance criteria. Existing tickets may retain their legacy `Description` section until they are materially revised; do not perform a bulk migration.
+
 When a new ticket is added:
 1. Create a Markdown file under [budgeter-backlog/tickets](../../budgeter-backlog/tickets) unless it is already complete, in which case place it in [budgeter-backlog/tickets/Done](../../budgeter-backlog/tickets/Done).
 2. Use a clear name based on the ticket, such as `001-ticket-name.md`.
-3. Use the exact heading and section structure shown above: title, Summary, Description, Comments.
+3. Use the exact heading and section structure shown above: title, Summary, User Story, Acceptance Criteria, Comments.
 4. Keep the Summary as the three bullet points with bold labels and hyphen separators.
 5. Update the correct backlog table to point to that file and reflect the current status.
 
