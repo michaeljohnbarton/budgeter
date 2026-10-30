@@ -34,4 +34,4 @@ applyTo: "budgeter-api/Budgeter.Api/**"
 ## Verification
 
 - Build/run the solution or launch the `Budgeter.Api` profile from VS Code after API changes. Confirm Swagger loads at `http://localhost:60060/swagger` and exercise the affected endpoint against an initialized database.
-- No API test project was found under `budgeter-api`; endpoint and transactional behavior currently require manual verification unless tests are added.
+- No API test project was found under `budgeter-api`; endpoint and transactional behavior currently require manual verification. Do not add automated tests unless the user explicitly requests test work.

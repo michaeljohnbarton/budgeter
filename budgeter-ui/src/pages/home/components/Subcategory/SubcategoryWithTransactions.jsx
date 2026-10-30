@@ -3,7 +3,8 @@ import styles from './Subcategory.module.css';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
 import { FaTrash } from 'react-icons/fa';
-import { CURRENCY_FORMATTER, MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../../utils/constants';
+import { MONTHLY_BALANCE_PROPAGATION_TYPE } from '../../../../utils/constants';
+import { formatCurrencyFromCents } from '../../../../utils/formatCurrency';
 import { useMonths } from '../../../../contexts/MonthsContext';
 import { useTransactions } from '../../../../contexts/TransactionsContext';
 import { useTransactionModal } from '../../../../contexts/TransactionModalContext';
@@ -19,7 +20,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 	const [editingDescription, setEditingDescription] = useState('');
 	const [editingAmountCents, setEditingAmountCents] = useState(null);
 	const transactionsForSubcategoryAndMonth = transactions.filter(t => t.subcategoryId === subcategory.id && t.monthId === selectedMonthId);
-	const monthlyBalanceForSubcategoryAndMonth = monthlyBalances.find(mb => mb.monthId === selectedMonthId && mb.subcategoryId === subcategory.id) || {};
+	const monthlyBalanceForSubcategoryAndMonth = monthlyBalances.find(mb => mb.monthId === selectedMonthId && mb.subcategoryId === subcategory.id);
 
 	const handleAddClick = () => {
 		openModalForNewTransactionInSubcategory(bankAccountId, categoryId, subcategory.id);
@@ -34,7 +35,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 
 	const startEditingSubcategoryBudgetedAmount = () => {
 		setActiveEdit({ field: 'budgetedAmount' });
-		setEditingAmountCents(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents);
+		setEditingAmountCents(monthlyBalanceForSubcategoryAndMonth?.budgetedAmountCents);
 	}
 
 	const finishEditing = () => {
@@ -72,10 +73,10 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 
 	const saveSubcategoryBudgetedAmount = async () => {
 		finishEditing();
-		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents) return;
+		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth?.budgetedAmountCents) return;
 
 		try {
-			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth.id, { budgetedAmountCents: editingAmountCents }, true);
+			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth?.id, { budgetedAmountCents: editingAmountCents }, true);
 			toast.success('Budgeted monthly balance updated successfully');
 		}
 		catch (error) {
@@ -139,7 +140,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 							/>
 						) : (
 							<span className={styles.editableCell} onClick={() => startEditingSubcategoryBudgetedAmount()}>
-								{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents / 100)}
+								{formatCurrencyFromCents(monthlyBalanceForSubcategoryAndMonth?.budgetedAmountCents)}
 							</span>
 						)}
 					</td>
@@ -147,7 +148,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 			)}
 			<tr className={ monthlyBalancePropagationType === MONTHLY_BALANCE_PROPAGATION_TYPE.Subcategory ? "" : styles.last}>
 				<td colSpan="2">{showBudgetedAmounts ? "Actual" : "Current Balance"}</td>
-				<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.actualAmountCents / 100)}</td>
+				<td className={styles.amountDisplay}>{formatCurrencyFromCents(monthlyBalanceForSubcategoryAndMonth?.actualAmountCents)}</td>
 			</tr>
 			{ monthlyBalancePropagationType === MONTHLY_BALANCE_PROPAGATION_TYPE.Subcategory && (
 				<tr className={styles.last}>
@@ -197,7 +198,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 									/>
 								) : (
 									<span className={styles.editableCell} onClick={() => startEditingTransaction(t, 'actualAmount')}>
-										{CURRENCY_FORMATTER.format(t.amountCents / 100 * (t.isCredit ? 1 : -1))}
+										{formatCurrencyFromCents(t.amountCents * (t.isCredit ? 1 : -1))}
 									</span>
 								)}
 							</td>
@@ -218,7 +219,7 @@ function SubcategoryWithTransactions({ subcategory, bankAccountId, categoryId, s
 				transactionsForSubcategoryAndMonth.length === 0 && (
 					<tr className={clsx(styles.last, styles.emptyTransaction)}>
 						<td colSpan="2">None</td>
-						<td className={styles.amountDisplay}>{CURRENCY_FORMATTER.format(0)}</td>
+						<td className={styles.amountDisplay}>{formatCurrencyFromCents(0)}</td>
 					</tr>
 				)
 			}

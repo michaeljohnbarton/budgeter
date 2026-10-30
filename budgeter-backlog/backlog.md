@@ -4,7 +4,7 @@
 
 | ID | Name | Status | Path / Link |
 | --- | --- | --- | --- |
-| 36 | Implement previous month remaining logic | In Progress | [tickets/036-implement-previous-month-remaining-logic.md](tickets/036-implement-previous-month-remaining-logic.md) |
+| 36 | Implement previous month remaining logic | New | [tickets/036-implement-previous-month-remaining-logic.md](tickets/036-implement-previous-month-remaining-logic.md) |
 | 37 | Implement special monthly deposit transaction | New | [tickets/037-implement-special-monthly-deposit-transaction.md](tickets/037-implement-special-monthly-deposit-transaction.md) |
 | 38 | Implement total spending row for "funds" | New | [tickets/038-implement-total-spending-row-for-funds.md](tickets/038-implement-total-spending-row-for-funds.md) |
 | 39 | Custom confirmation dialog when exiting modal | New | [tickets/039-custom-confirmation-dialog-when-exiting-modal.md](tickets/039-custom-confirmation-dialog-when-exiting-modal.md) |
@@ -58,3 +58,4 @@
 | 33 | Update edit of transaction to be more similar to spreadsheet behavior | Done | [tickets/Done/033-update-edit-of-transaction-to-be-more-similar-to-spreadsheet-behavior.md](tickets/Done/033-update-edit-of-transaction-to-be-more-similar-to-spreadsheet-behavior.md) |
 | 34 | Implement edit of actual amount for subcategory without transactions | Done | [tickets/Done/034-implement-edit-of-actual-amount-for-subcategory-without-transactions.md](tickets/Done/034-implement-edit-of-actual-amount-for-subcategory-without-transactions.md) |
 | 35 | Implement edit of budgeted amount for subcategory | Done | [tickets/Done/035-implement-edit-of-budgeted-amount-for-subcategory.md](tickets/Done/035-implement-edit-of-budgeted-amount-for-subcategory.md) |
+| 50 | Fix NaN budgeted and actual amounts in UI | Done | [tickets/Done/050-fix-nan-budgeted-and-actual-amounts-in-ui.md](tickets/Done/050-fix-nan-budgeted-and-actual-amounts-in-ui.md) |

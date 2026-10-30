@@ -30,6 +30,10 @@ export function MonthlyBalancesProvider({ children }) {
 	}
 
 	async function updateMonthlyBalance(monthlyBalanceId, payload, patch = false) {
+		if (monthlyBalanceId == null) {
+			throw new Error("Monthly balance record does not exist");
+		}
+
 		try {
 			setLoading(LoadingType.OVERLAY);
 			await monthlyBalanceService.update(monthlyBalanceId, payload, patch);

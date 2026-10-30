@@ -22,7 +22,7 @@ applyTo: "budgeter-api/**"
 ## Build and run
 
 - The solution file is `budgeter-api.sln`; all three projects target `net10.0`, use nullable reference types, and enable implicit usings.
-- Build the solution after cross-project changes. There is no test project under `budgeter-api`, so behavior changes require manual verification through the web API unless tests are added.
+- Build the solution after cross-project changes. There is no test project under `budgeter-api`, so behavior changes require manual verification through the web API. Do not add automated tests unless the user explicitly requests test work.
 - Local API startup uses the `Budgeter.Api` project launch profile, which listens on `http://localhost:60060` in Development and exposes Swagger at `/swagger`. A working local SQL Server `budgeter` database is required for persistence operations; setup is documented in `budgeter-database/README.md`.
 
 ## Change hygiene

@@ -42,7 +42,7 @@ When changing persistence behavior, compare the database scripts, repository mod
 4. Validate from the changed layer outward. Build the API solution for backend changes, regenerate and execute the relevant database entry point for database changes, and build/test the UI for frontend changes. For cross-project work, perform all applicable checks.
 5. For behavior that depends on SQL Server, CORS, routing, or browser interaction, supplement builds with a local manual check through the API and affected UI workflow. Existing scoped guidance documents the relevant commands and known test coverage.
 
-There are currently no established API, repository, provider, or UI test suites covering the full application. Treat a successful compile/build as structural verification, not proof that database state, HTTP contracts, transactions, or browser workflows are correct.
+There are currently no established API, repository, provider, or UI test suites covering the full application, and adding tests is not currently part of normal implementation work unless the user explicitly requests it. Treat a successful compile/build as structural verification, not proof that database state, HTTP contracts, transactions, or browser workflows are correct; use focused manual verification for those behaviors.
 
 ## Active code and local conventions
 

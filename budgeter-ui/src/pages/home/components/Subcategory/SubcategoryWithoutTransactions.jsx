@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './Subcategory.module.css';
 import { toast } from 'react-toastify';
-import { CURRENCY_FORMATTER } from '../../../../utils/constants';
+import { formatCurrencyFromCents } from '../../../../utils/formatCurrency';
 import { useMonths } from '../../../../contexts/MonthsContext';
 import { useMonthlyBalances } from '../../../../contexts/MonthlyBalancesContext';
 import CurrencyField from '../../../../commonComponents/currencyField/CurrencyField';
@@ -9,14 +9,14 @@ import CurrencyField from '../../../../commonComponents/currencyField/CurrencyFi
 function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyInCategoryHasTransactions, isLast }) {
 	const { selectedMonthId } = useMonths();
 	const { monthlyBalances, updateMonthlyBalance } = useMonthlyBalances();
-	const monthlyBalanceForSubcategoryAndMonth = monthlyBalances.find(mb => mb.monthId === selectedMonthId && mb.subcategoryId === subcategory.id) || {};
+	const monthlyBalanceForSubcategoryAndMonth = monthlyBalances.find(mb => mb.monthId === selectedMonthId && mb.subcategoryId === subcategory.id);
 
 	const [activeEdit, setActiveEdit] = useState({ field: null });
 	const [editingAmountCents, setEditingAmountCents] = useState(null);
 
 	const startEditing = (field) => {
 		setActiveEdit({ field });
-		setEditingAmountCents(monthlyBalanceForSubcategoryAndMonth[field === 'actualAmount' ? 'actualAmountCents' : 'budgetedAmountCents']);
+		setEditingAmountCents(monthlyBalanceForSubcategoryAndMonth?.[field === 'actualAmount' ? 'actualAmountCents' : 'budgetedAmountCents']);
 	};
 
 	const finishEditing = () => {
@@ -25,10 +25,10 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 
 	const saveActualAmount = async () => {
 		finishEditing();
-		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth.actualAmountCents) return;
+		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth?.actualAmountCents) return;
 
 		try {
-			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth.id, { actualAmountCents: editingAmountCents }, true);
+			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth?.id, { actualAmountCents: editingAmountCents }, true);
 			toast.success('Actual monthly balance updated successfully');
 		}
 		catch (error) {
@@ -38,10 +38,10 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 
 	const saveBudgetedAmount = async () => {
 		finishEditing();
-		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents) return;
+		if (editingAmountCents === monthlyBalanceForSubcategoryAndMonth?.budgetedAmountCents) return;
 
 		try {
-			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth.id, { budgetedAmountCents: editingAmountCents }, true);
+			await updateMonthlyBalance(monthlyBalanceForSubcategoryAndMonth?.id, { budgetedAmountCents: editingAmountCents }, true);
 			toast.success('Budgeted monthly balance updated successfully');
 		}
 		catch (error) {
@@ -91,7 +91,7 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 								/>
 							) : (
 								<span className={styles.editableCell} onClick={() => startEditing('budgetedAmount')}>
-									{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents / 100)}
+									{formatCurrencyFromCents(monthlyBalanceForSubcategoryAndMonth?.budgetedAmountCents)}
 								</span>
 							)}
 						</td>
@@ -113,8 +113,8 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 								autoFocus={true}
 							/>
 						) : (
-							<span className={styles.editableCell} onClick={() => startEditing('actualAmount')}>
-								{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.actualAmountCents / 100)}
+								<span className={styles.editableCell} onClick={() => startEditing('actualAmount')}>
+									{formatCurrencyFromCents(monthlyBalanceForSubcategoryAndMonth?.actualAmountCents)}
 							</span>
 						)}
 					</td>
@@ -142,7 +142,7 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 								/>
 							) : (
 								<span className={styles.editableCell} onClick={() => startEditing('budgetedAmount')}>
-									{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.budgetedAmountCents / 100)}
+									{formatCurrencyFromCents(monthlyBalanceForSubcategoryAndMonth?.budgetedAmountCents)}
 								</span>
 							)}
 						</td>
@@ -162,7 +162,7 @@ function SubcategoryWithoutTransactions({ subcategory, showBudgetedAmounts, anyI
 							/>
 						) : (
 							<span className={styles.editableCell} onClick={() => startEditing('actualAmount')}>
-								{CURRENCY_FORMATTER.format(monthlyBalanceForSubcategoryAndMonth.actualAmountCents / 100)}
+								{formatCurrencyFromCents(monthlyBalanceForSubcategoryAndMonth?.actualAmountCents)}
 							</span>
 						)}
 					</td>

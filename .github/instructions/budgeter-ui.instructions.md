@@ -28,7 +28,7 @@ applyTo: "budgeter-ui/**"
 ## Data and domain conventions
 
 - Amounts are represented as integer cents in context state and API payloads. Use the shared `CurrencyField` for dollar input/display conversion and `CURRENCY_FORMATTER` for ordinary display formatting.
-- Shared domain constants live in `src/utils/constants.js`: `MAX_RANK`, `CURRENCY_FORMATTER`, and `MONTHLY_BALANCE_PROPAGATION_TYPE`. Do not recreate these values in pages or contexts.
+- `src/utils/constants.js` contains constant values and enum-like objects only, such as `MAX_RANK`, `CURRENCY_FORMATTER`, and `MONTHLY_BALANCE_PROPAGATION_TYPE`. Keep functions and other behavior in dedicated utility modules under `src/utils`; do not add functions to `constants.js`.
 - `sortByRankThenName` returns a sorted copy, treating a missing rank as `MAX_RANK` and using `name` as the tie-breaker. Preserve non-mutating behavior when reusing or extending it.
 - Backend and client use singular, case-sensitive resource names such as `Month`, `BankAccount`, `Category`, `Subcategory`, `MonthlyBalance`, and `Transaction`. Keep this naming consistent across service paths and payload integration.
 
@@ -41,8 +41,8 @@ applyTo: "budgeter-ui/**"
 
 ## Development and validation
 
-- From `budgeter-ui`, install dependencies with `npm install`, start the UI with `npm start`, build with `npm run build`, and run the configured test command with `npm test -- --watchAll=false`.
-- There are currently no `*.test.*` or `*.spec.*` files under `src`; the production build is the primary automated integration check. For UI behavior changes, manually exercise the affected route and mutation/error workflow as described by the relevant scoped instruction file.
+- From `budgeter-ui`, install dependencies with `npm install`, start the UI with `npm start`, and build with `npm run build`.
+- There are currently no `*.test.*` or `*.spec.*` files under `src`; do not add automated tests during ordinary UI work unless the user explicitly requests test work. The production build is the primary automated integration check, and UI behavior changes require manual exercise of the affected route and mutation/error workflow as described by the relevant scoped instruction file.
 - The UI requires the API at its configured local URL for data-backed flows. A successful build does not verify API availability, CORS, database state, or endpoint payload compatibility.
 - Preserve `package-lock.json` with dependency changes. Do not edit generated `build` output because this project has no checked-in build directory in the active source tree.
 

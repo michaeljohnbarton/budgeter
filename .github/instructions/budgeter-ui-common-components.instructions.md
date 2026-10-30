@@ -30,7 +30,7 @@ applyTo: "budgeter-ui/src/commonComponents/**"
 ## Validation
 
 - The UI package defines `npm start`, `npm run build`, and `npm test -- --watchAll=false` (the last command uses the configured Create React App test runner). There are currently no `*.test.*` or `*.spec.*` files under `src`.
-- For a component-only change, run the production build from `budgeter-ui` to catch JSX, import, and CSS-module errors. Add focused tests when introducing behavior that can be isolated from the page contexts.
+- For a component-only change, run the production build from `budgeter-ui` to catch JSX, import, and CSS-module errors. Automated tests are out of scope unless the user explicitly requests test work; manually verify isolated behavior when it is not covered by the build.
 
 ## Known constraints
 
